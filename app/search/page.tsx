@@ -6,7 +6,7 @@ import { searchProducts } from 'components/layout/products-list/actions';
 import FiltersContainer, {
   FiltersListPlaceholder
 } from 'components/layout/search/filters/filters-container';
-import Header, { HeaderPlaceholder } from 'components/layout/search/header';
+import { HeaderPlaceholder } from 'components/layout/search/header';
 import ProductsGridPlaceholder from 'components/layout/search/placeholder';
 import SortingMenu from 'components/layout/search/sorting-menu';
 import { Suspense } from 'react';
@@ -23,7 +23,7 @@ export default async function SearchPage({
 }) {
   const { q: searchValue } = searchParams as { [key: string]: string };
   const { products, pageInfo } = await searchProducts({ searchParams });
-  //const resultsText = products.length > 1 ? 'results' : 'result';
+  const searchHandle = searchValue || '';
 
   return (
     <>
@@ -43,11 +43,15 @@ export default async function SearchPage({
           <div className="lg:col-span-2 xl:col-span-3">
             <div className="mb-2">
               <Suspense fallback={<BreadcrumbHome />} key={`breadcrumb-${searchValue}`}>
-                <Breadcrumb type="collection" handle="dummy" />
+                <Breadcrumb type="search" handle={searchHandle} />
               </Suspense>
             </div>
             <Suspense fallback={<HeaderPlaceholder />} key={`header-${searchValue}`}>
-              <Header collection="dummy" />
+              <div className="mb-3 mt-3 max-w-5xl lg:mb-1">
+                <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+                  Search results for &quot;{searchValue}&quot;
+                </h1>
+              </div>
             </Suspense>
             <div className="mb-5 flex w-full items-center justify-between gap-2 lg:justify-end">
               <SortingMenu />

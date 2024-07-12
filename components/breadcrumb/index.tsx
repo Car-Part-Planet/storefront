@@ -11,7 +11,7 @@ import {
 } from './breadcrumb-list';
 
 type BreadcrumbProps = {
-  type: 'product' | 'collection';
+  type: 'product' | 'collection' | 'search';
   handle: string;
 };
 
@@ -33,6 +33,13 @@ const BreadcrumbComponent = async ({ type, handle }: BreadcrumbProps) => {
     items.push({
       title: product.title,
       href: `/product/${product.handle}`
+    });
+  }
+
+  if (type === 'search') {
+    items.push({
+      title: `Search: "${handle}"`,
+      href: `/search?q=${handle}`
     });
   }
 
