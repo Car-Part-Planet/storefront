@@ -1,7 +1,13 @@
+import Breadcrumb from 'components/breadcrumb';
+import BreadcrumbHome from 'components/breadcrumb/breadcrumb-home';
 import YMMFilters, { YMMFiltersPlaceholder } from 'components/filters';
-import Grid from 'components/grid';
 import ProductsList from 'components/layout/products-list';
 import { searchProducts } from 'components/layout/products-list/actions';
+import FiltersContainer, {
+  FiltersListPlaceholder
+} from 'components/layout/search/filters/filters-container';
+import Header, { HeaderPlaceholder } from 'components/layout/search/header';
+import ProductsGridPlaceholder from 'components/layout/search/placeholder';
 import SortingMenu from 'components/layout/search/sorting-menu';
 import { Suspense } from 'react';
 
@@ -17,33 +23,50 @@ export default async function SearchPage({
 }) {
   const { q: searchValue } = searchParams as { [key: string]: string };
   const { products, pageInfo } = await searchProducts({ searchParams });
-  const resultsText = products.length > 1 ? 'results' : 'result';
+  //const resultsText = products.length > 1 ? 'results' : 'result';
 
   return (
     <>
-      <Suspense fallback={<YMMFiltersPlaceholder />}>
-        <YMMFilters />
-      </Suspense>
-      <div className="my-3 flex w-full justify-end">
-        <SortingMenu />
+      <div className="mx-auto mt-6 max-w-screen-2xl px-8 pb-10">
+        <div className="grid lg:grid-cols-3 lg:gap-x-10 xl:grid-cols-4">
+          <aside className="hidden lg:block">
+            <div className="mb-5">
+              <Suspense fallback={<YMMFiltersPlaceholder />}>
+                <YMMFilters />
+              </Suspense>
+            </div>
+            <h3 className="sr-only">Filters</h3>
+            <Suspense fallback={<FiltersListPlaceholder />} key={`filters-${searchValue}`}>
+              <FiltersContainer searchParams={searchParams} collection="dummy" />
+            </Suspense>
+          </aside>
+          <div className="lg:col-span-2 xl:col-span-3">
+            <div className="mb-2">
+              <Suspense fallback={<BreadcrumbHome />} key={`breadcrumb-${searchValue}`}>
+                <Breadcrumb type="collection" handle="dummy" />
+              </Suspense>
+            </div>
+            <Suspense fallback={<HeaderPlaceholder />} key={`header-${searchValue}`}>
+              <Header collection="dummy" />
+            </Suspense>
+            <div className="mb-5 flex w-full items-center justify-between gap-2 lg:justify-end">
+              <SortingMenu />
+            </div>
+            <Suspense fallback={<ProductsGridPlaceholder />} key={`products-${searchValue}`}>
+              {products.length === 0 ? (
+                <p className="py-3 text-lg">{`No products found for "${searchValue}"`}</p>
+              ) : (
+                <ProductsList
+                  initialProducts={products}
+                  pageInfo={pageInfo}
+                  collection={searchValue}
+                  searchParams={searchParams}
+                />
+              )}
+            </Suspense>
+          </div>
+        </div>
       </div>
-      {searchValue ? (
-        <p className="mb-4">
-          {products.length === 0
-            ? 'There are no products that match '
-            : `Showing ${resultsText} for `}
-          <span className="font-bold">&quot;{searchValue}&quot;</span>
-        </p>
-      ) : null}
-      {products.length > 0 ? (
-        <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          <ProductsList
-            initialProducts={products}
-            pageInfo={pageInfo}
-            searchParams={searchParams}
-          />
-        </Grid>
-      ) : null}
     </>
   );
 }
