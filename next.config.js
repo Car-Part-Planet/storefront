@@ -20,6 +20,12 @@ module.exports = {
         source: '/password',
         destination: '/',
         permanent: true
+      },
+      // Redirect all product pages to the equivalent collection year
+      {
+        source: '/:partType/:make/:model/:year/:product',
+        destination: '/:partType/:make/:model/:year',
+        permanent: true
       }
     ];
   }
