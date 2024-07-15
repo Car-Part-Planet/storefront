@@ -4,6 +4,13 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
+  const userAgent = request.headers.get('user-agent') || '';
+  if (/Googlebot/.test(userAgent)) {
+    const response = new NextResponse('Service Unavailable', { status: 503 });
+    response.headers.set('Retry-After', '3600');
+    return response;
+  }
+
   if (request.nextUrl.pathname.startsWith('/account')) {
     const origin = getOrigin(request);
 
