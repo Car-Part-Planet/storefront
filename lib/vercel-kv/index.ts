@@ -35,7 +35,7 @@ export const getMMYFilters = async (): Promise<MMYFilterResponse> => {
 };
 
 export const getRedirectData = async (pathname: string): Promise<RedirectEntry | undefined> => {
-  if (!storeCode) {
+  if (!storeCode || storeCode !== 're') {
     return undefined;
   }
 
