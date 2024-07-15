@@ -13,7 +13,7 @@ const FiltersContainer = async ({
     collection
   });
 
-  return <FiltersList filters={filters} defaultOpen={false} />;
+  return <FiltersList filters={filters} defaultOpenId={filters[0]?.id} />;
 };
 
 export const FiltersListPlaceholder = () => {

@@ -59,7 +59,7 @@ const SubMenu = async ({ collection }: { collection: string }) => {
   }
 
   return subMenu.length ? (
-    <div className="border-t pt-4">
+    <div className="pt-4">
       <div className="text-sm font-medium text-gray-900">{title}</div>
       <ul
         role="list"
@@ -79,7 +79,7 @@ const SubMenu = async ({ collection }: { collection: string }) => {
 
 export const SubMenuPlaceholder = () => {
   return (
-    <div className="border-t pt-4">
+    <div className="pt-4">
       <ul role="list" className="ml-1 mt-2 animate-pulse space-y-3 border-b border-gray-200 pb-6">
         <li className="h-3 w-1/2 rounded bg-gray-200" />
         <li className="h-3 w-1/2 rounded bg-gray-200" />

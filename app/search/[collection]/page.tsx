@@ -101,13 +101,14 @@ export default async function CategorySearchPage(props: {
                 <YMMFilters />
               </Suspense>
             </div>
-            <Suspense fallback={<SubMenuPlaceholder />}>
-              <SubMenu collection={collectionHandle} />
-            </Suspense>
+
             <h3 className="sr-only">Filters</h3>
             <Suspense fallback={<FiltersListPlaceholder />} key={`filters-${collectionHandle}`}>
               <FiltersContainer searchParams={props.searchParams} collection={collectionHandle} />
               <HelpfulLinks collection={collectionHandle} />
+            </Suspense>
+            <Suspense fallback={<SubMenuPlaceholder />}>
+              <SubMenu collection={collectionHandle} />
             </Suspense>
           </aside>
           <div className="lg:col-span-2 xl:col-span-3">

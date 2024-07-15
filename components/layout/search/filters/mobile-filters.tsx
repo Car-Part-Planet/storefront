@@ -54,9 +54,9 @@ const MobileFilters = ({ filters, menu }: { filters: Filter[]; menu?: ReactNode 
                     <XMarkIcon className="size-6" aria-hidden="true" />
                   </button>
                 </div>
-                <div className="mt-4 border-t border-gray-200 px-4 pt-4">
+                <div className="mt-4 border-t border-gray-200 px-4 pb-4">
+                  <Filters filters={filters} defaultOpenId={filters[0]?.id} />
                   {menu}
-                  <Filters filters={filters} defaultOpen={false} />
                 </div>
               </DialogPanel>
             </TransitionChild>

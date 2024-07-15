@@ -102,7 +102,7 @@ const Hero = () => {
               </p>
             </div>
           </div>
-          <div className="relative mx-auto flex w-full max-w-4xl flex-col items-center @container md:w-3/4">
+          <div className="relative mx-auto flex w-full max-w-5xl flex-col items-center @container md:w-3/4">
             <Suspense fallback={<HomePageFiltersPlaceholder />}>
               <HomePageFilters />
             </Suspense>

@@ -43,6 +43,7 @@ export const HomePageFiltersPlaceholder = () => {
         <div className="h-9 w-full rounded bg-gray-50 opacity-50" />
         <div className="h-9 w-full rounded bg-gray-50 opacity-50" />
         <div className="h-9 w-full rounded bg-gray-50 opacity-50" />
+        <div className="h-9 w-full rounded bg-gray-50 opacity-50" />
       </div>
     </>
   );

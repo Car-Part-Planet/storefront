@@ -8,7 +8,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import PriceRange from './price-range';
 import SelectedList from './selected-list';
 
-const Filters = ({ filters, defaultOpen = true }: { filters: Filter[]; defaultOpen?: boolean }) => {
+const Filters = ({ filters, defaultOpenId }: { filters: Filter[]; defaultOpenId?: string }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -38,7 +38,7 @@ const Filters = ({ filters, defaultOpen = true }: { filters: Filter[]; defaultOp
             key={id}
             as="div"
             className="flex h-auto max-h-[300px] flex-col gap-y-3 overflow-hidden pt-5"
-            defaultOpen={defaultOpen}
+            defaultOpen={defaultOpenId === id}
           >
             <DisclosureButton className="group flex items-center justify-between">
               <div className="text-sm font-medium text-gray-900">{label}</div>
