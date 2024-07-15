@@ -5,6 +5,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
+  console.log('client ip adress', request.ip);
+  console.log('user agent', request.headers.get('user-agent'));
+
   // If the user agent is Googlebot, return a 503 status code to disable crawling
   const userAgent = request.headers.get('user-agent') || '';
   if (/Googlebot/.test(userAgent)) {
