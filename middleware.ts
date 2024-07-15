@@ -41,6 +41,17 @@ export const config = {
     '/remanufactured-engines/:path*',
     {
       // Custom matcher function to match all requests from Googlebot
+      source: '/',
+      has: [
+        {
+          type: 'header',
+          key: 'user-agent',
+          value: '(?i)Googlebot' // Case-insensitive match for Googlebot
+        }
+      ]
+    },
+    {
+      // Custom matcher function to match all requests from Googlebot
       source: '/:path*',
       has: [
         {
