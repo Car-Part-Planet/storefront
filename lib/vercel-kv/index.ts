@@ -1,7 +1,7 @@
 'use server';
 
 import { kv } from '@vercel/kv';
-import { MMYFilterResponse } from './types';
+import { MMYFilterResponse, RedirectEntry } from './types';
 
 const { STORE_PREFIX } = process.env;
 
@@ -31,5 +31,25 @@ export const getMMYFilters = async (): Promise<MMYFilterResponse> => {
     console.log('Error fetching MMY filters: ', error);
 
     return { partTypes: [], makes: [], models: [], years: [] };
+  }
+};
+
+export const getRedirectData = async (pathname: string): Promise<RedirectEntry | undefined> => {
+  if (!storeCode || storeCode !== 're') {
+    return undefined;
+  }
+
+  const redirectKey = `${storeCode}.redirectData`;
+  try {
+    const redirectData = (await kv.get(redirectKey)) as { [key: string]: RedirectEntry };
+    if (redirectData[pathname]) {
+      return redirectData[pathname];
+    }
+
+    return undefined;
+  } catch (error) {
+    console.log('Error fetching redirect data: ', error);
+
+    return undefined;
   }
 };
