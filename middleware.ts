@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
   if (/Googlebot/.test(userAgent)) {
     const response = new NextResponse('Service Unavailable', { status: 503 });
     response.headers.set('Retry-After', '3600');
-    response.headers.delete('x-robots-tag'); // Remove the x-robots-tag header
+    response.headers.delete('X-Robots-Tag'); // Remove the x-robots-tag header
     return response;
   }
 
