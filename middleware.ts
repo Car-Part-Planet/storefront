@@ -8,6 +8,7 @@ export async function middleware(request: NextRequest) {
   if (/Googlebot/.test(userAgent)) {
     const response = new NextResponse('Service Unavailable', { status: 503 });
     response.headers.set('Retry-After', '3600');
+    response.headers.delete('x-robots-tag'); // Remove the x-robots-tag header
     return response;
   }
 
@@ -37,6 +38,17 @@ export const config = {
     '/transmissions/:path*',
     '/engines/:path*',
     '/transfer-cases/:path*',
-    '/remanufactured-engines/:path*'
+    '/remanufactured-engines/:path*',
+    {
+      // Custom matcher function to match all requests from Googlebot
+      source: '/:path*',
+      has: [
+        {
+          type: 'header',
+          key: 'user-agent',
+          value: '(?i)Googlebot' // Case-insensitive match for Googlebot
+        }
+      ]
+    }
   ]
 };
