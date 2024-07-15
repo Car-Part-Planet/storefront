@@ -18,10 +18,6 @@ export const metadata: Metadata = {
     default: SITE_NAME!,
     template: `%s | ${SITE_NAME}`
   },
-  robots: {
-    follow: true,
-    index: true
-  },
   ...(twitterCreator &&
     twitterSite && {
       twitter: {

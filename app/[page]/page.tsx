@@ -18,6 +18,10 @@ export async function generateMetadata({
   return {
     title: page.seo?.title || page.title,
     description: page.seo?.description || page.bodySummary,
+    robots: {
+      follow: true,
+      index: true
+    },
     openGraph: {
       publishedTime: page.createdAt,
       modifiedTime: page.updatedAt,

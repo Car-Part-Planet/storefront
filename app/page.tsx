@@ -16,6 +16,10 @@ export async function generateMetadata(): Promise<Metadata> {
     description: `${SITE_NAME} is your ultimate destination for all your drivetrain replacement needs.`,
     openGraph: {
       type: 'website'
+    },
+    robots: {
+      follow: true,
+      index: true
     }
   };
 }

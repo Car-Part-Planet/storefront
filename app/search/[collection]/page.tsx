@@ -31,7 +31,11 @@ export async function generateMetadata({
   return {
     title: collection.seo?.title || collection.title,
     description:
-      collection.seo?.description || collection.description || `${collection.title} products`
+      collection.seo?.description || collection.description || `${collection.title} products`,
+    robots: {
+      follow: true,
+      index: true
+    }
   };
 }
 
