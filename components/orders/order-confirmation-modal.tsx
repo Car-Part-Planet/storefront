@@ -248,14 +248,19 @@ export default function OrderConfirmationModal({
                   type="date"
                   readOnly
                   label="Date"
+                  name="date"
                   value={new Date().toLocaleDateString('en-CA', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit'
                   })}
                 />
-                <Input required label="Print your name to sign" />
-                <Input required label="Credit card holder's electronic signature" />
+                <Input name="signature1" required label="Print your name to sign" />
+                <Input
+                  name="signature2"
+                  required
+                  label="Credit card holder's electronic signature"
+                />
               </div>
               <div className="flex justify-end gap-2">
                 <Button variant="text" onClick={onClose}>
