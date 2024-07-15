@@ -4,6 +4,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
+  const userAgent = request.headers.get('user-agent') || '';
+  if (/Googlebot/.test(userAgent)) {
+    const response = new NextResponse('Service Unavailable', { status: 503 });
+    response.headers.set('Retry-After', '3600');
+    response.headers.delete('X-Robots-Tag'); // Remove the x-robots-tag header
+    return response;
+  }
+
   if (request.nextUrl.pathname.startsWith('/account')) {
     const origin = getOrigin(request);
 
@@ -24,12 +32,13 @@ export async function middleware(request: NextRequest) {
   }
 }
 
-export const config = {
-  matcher: [
-    '/account/:path*',
-    '/transmissions/:path*',
-    '/engines/:path*',
-    '/transfer-cases/:path*',
-    '/remanufactured-engines/:path*'
-  ]
-};
+// TODO: Uncomment this code when remove the googlebot middleware
+// export const config = {
+//   matcher: [
+//     '/account/:path*',
+//     '/transmissions/:path*',
+//     '/engines/:path*',
+//     '/transfer-cases/:path*',
+//     '/remanufactured-engines/:path*'
+//   ]
+// };
