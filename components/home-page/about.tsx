@@ -42,7 +42,7 @@ const About = async () => {
 
           <DisplayTabs items={features} />
         </div>
-        <ButtonLink link={{ text: 'Learn More', url: '/about' }} />
+        <ButtonLink link={{ text: 'Learn More', url: '/about-us' }} />
       </div>
     </div>
   );
