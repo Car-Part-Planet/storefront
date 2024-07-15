@@ -32,34 +32,13 @@ export async function middleware(request: NextRequest) {
   }
 }
 
-export const config = {
-  matcher: [
-    '/account/:path*',
-    '/transmissions/:path*',
-    '/engines/:path*',
-    '/transfer-cases/:path*',
-    '/remanufactured-engines/:path*',
-    {
-      // Custom matcher function to match all requests from Googlebot
-      source: '/',
-      has: [
-        {
-          type: 'header',
-          key: 'user-agent',
-          value: '(?i)Googlebot' // Case-insensitive match for Googlebot
-        }
-      ]
-    },
-    {
-      // Custom matcher function to match all requests from Googlebot
-      source: '/:path*',
-      has: [
-        {
-          type: 'header',
-          key: 'user-agent',
-          value: '(?i)Googlebot' // Case-insensitive match for Googlebot
-        }
-      ]
-    }
-  ]
-};
+// TODO: Uncomment this code when remove the googlebot middleware
+// export const config = {
+//   matcher: [
+//     '/account/:path*',
+//     '/transmissions/:path*',
+//     '/engines/:path*',
+//     '/transfer-cases/:path*',
+//     '/remanufactured-engines/:path*'
+//   ]
+// };
