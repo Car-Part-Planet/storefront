@@ -23,13 +23,11 @@ const WhyChoose = async () => {
       <div className="col-span-1 grid grid-cols-subgrid gap-x-6 gap-y-12 lg:col-span-4">
         {reasons.map((reason) => (
           <div className="col-span-1 flex lg:col-span-2" key={reason.id}>
-            <Suspense>
+            <Suspense fallback={<div className="h-[50px] w-[50px]" />}>
               <ImageDisplay
                 fileId={reason.file as string}
                 title={(reason.title || reason.name) as string}
                 className="h-[50px] w-[50px]"
-                sizes="50px"
-                unoptimized
               />
             </Suspense>
             <div className="mx-3 h-[100px] min-w-0.5 bg-gray-200" />

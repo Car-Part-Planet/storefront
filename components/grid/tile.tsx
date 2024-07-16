@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ArrowRightIcon, PhotoIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 import Price from 'components/price';
@@ -95,7 +96,7 @@ export function GridTileImage({
           <div className="flex items-center justify-center gap-x-7 border-t py-3">
             {product.engineCylinders?.length ? (
               <div className="flex flex-col items-center gap-2">
-                <Image
+                <img
                   src="/icons/cylinder.png"
                   alt="Cylinder icon"
                   width={16}
@@ -108,7 +109,7 @@ export function GridTileImage({
             ) : null}
             {product.fuelType ? (
               <div className="flex flex-col items-center gap-2">
-                <Image
+                <img
                   src="/icons/fuel.png"
                   alt="Fuel icon"
                   width={16}
