@@ -18,7 +18,6 @@ export async function middleware(request: NextRequest) {
   }
 
   const pathname = request.nextUrl.pathname;
-
   if (pathname.startsWith('/account')) {
     const origin = getOrigin(request);
 
