@@ -1,6 +1,26 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
+export interface AccessTokenResponseBody {
+  access_token: string;
+  expires_in: number;
+  id_token: string;
+  refresh_token: string;
+  error?: string;
+  error_description?: string;
+}
+
+export type AccessTokenResponse = Promise<
+  | {
+      success: false;
+      data?: undefined;
+    }
+  | {
+      success: true;
+      data: AccessTokenResponseBody;
+    }
+>;
+
 export const CUSTOMER_API_URL = process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_URL!;
 export const CUSTOMER_API_CLIENT_ID = process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID || '';
 export const ORIGIN_URL = process.env.SHOPIFY_ORIGIN_URL || '';
@@ -44,10 +64,16 @@ export async function generateRandomString() {
   return timestamp + randomString;
 }
 
-export async function getNonce(token: string) {
+export function getNonce(token: string) {
+  return decodeJwt(token).payload.nonce;
+}
+
+function decodeJwt(token: string) {
   const [header, payload, signature] = token.split('.');
+
   const decodedHeader = JSON.parse(atob(header || ''));
   const decodedPayload = JSON.parse(atob(payload || ''));
+
   return {
     header: decodedHeader,
     payload: decodedPayload,
@@ -55,95 +81,161 @@ export async function getNonce(token: string) {
   };
 }
 
+export async function generateLoginUrlServerAction() {
+  const customerAccountUrl = CUSTOMER_API_URL;
+  const clientId = CUSTOMER_API_CLIENT_ID;
+  const origin = ORIGIN_URL;
+  const loginUrl = new URL(`${customerAccountUrl}/auth/oauth/authorize`);
+
+  const state = await generateRandomString();
+  const nonce = await generateRandomString();
+
+  loginUrl.searchParams.set('client_id', clientId);
+  loginUrl.searchParams.append('response_type', 'code');
+  loginUrl.searchParams.append('redirect_uri', `${origin}/api/authorize`);
+  loginUrl.searchParams.set(
+    'scope',
+    'openid email https://api.customers.com/auth/customer.graphql'
+  );
+  const verifier = await generateCodeVerifier();
+  const challenge = await generateCodeChallenge(verifier);
+
+  cookies().set('shop_verifier', verifier as string, {});
+  cookies().set('shop_state', state as string, {});
+  cookies().set('shop_nonce', nonce as string, {});
+
+  loginUrl.searchParams.append('state', state);
+  loginUrl.searchParams.append('nonce', nonce);
+  loginUrl.searchParams.append('code_challenge', challenge);
+  loginUrl.searchParams.append('code_challenge_method', 'S256');
+
+  return loginUrl;
+}
+
+export async function generateLoginRedirectResponse() {
+  const customerAccountUrl = CUSTOMER_API_URL;
+  const clientId = CUSTOMER_API_CLIENT_ID;
+  const origin = ORIGIN_URL;
+  const loginUrl = new URL(`${customerAccountUrl}/auth/oauth/authorize`);
+
+  const state = await generateRandomString();
+  const nonce = await generateRandomString();
+
+  loginUrl.searchParams.set('client_id', clientId);
+  loginUrl.searchParams.append('response_type', 'code');
+  loginUrl.searchParams.append('redirect_uri', `${origin}/api/authorize`);
+  loginUrl.searchParams.set(
+    'scope',
+    'openid email https://api.customers.com/auth/customer.graphql'
+  );
+  const verifier = await generateCodeVerifier();
+  const challenge = await generateCodeChallenge(verifier);
+
+  loginUrl.searchParams.append('state', state);
+  loginUrl.searchParams.append('nonce', nonce);
+  loginUrl.searchParams.append('code_challenge', challenge);
+  loginUrl.searchParams.append('code_challenge_method', 'S256');
+
+  let response = NextResponse.redirect(loginUrl.toString());
+
+  response = removeAllCookies(response);
+  response.cookies.set('shop_verifier', verifier as string, {});
+  response.cookies.set('shop_state', state as string, {});
+  response.cookies.set('shop_nonce', nonce as string, {});
+  return response;
+}
+
 export async function initialAccessToken(
   request: NextRequest,
   newOrigin: string,
-  customerAccountApiUrl: string,
-  clientId: string
-) {
+  customerAccountId: string,
+  customerAccountUrl: string
+): AccessTokenResponse {
   const code = request.nextUrl.searchParams.get('code');
   const state = request.nextUrl.searchParams.get('state');
+
   /*
-  STEP 1: Check for all necessary cookies and other information
+  STEP 1: Check for all necessary cookies
   */
-  if (!code) {
-    console.log('Error: No Code Auth');
-    return { success: false, message: `No Code` };
+  if (!code || !state) {
+    console.log('No code or state parameter found in the redirect URL.');
+    return { success: false };
   }
-  if (!state) {
-    console.log('Error: No State Auth');
-    return { success: false, message: `No State` };
+
+  const sessionState = request.cookies.get('shop_state')?.value;
+
+  if (state !== sessionState) {
+    console.log(
+      'The session state does not match the state parameter. Make sure that the session is configured correctly and passed to `createCustomerAccountClient`.'
+    );
+    return { success: false };
   }
-  const shopState = request.cookies.get('shop_state');
-  const shopStateValue = shopState?.value;
-  if (!shopStateValue) {
-    console.log('Error: No Shop State Value');
-    return { success: false, message: `No Shop State` };
-  }
-  if (state !== shopStateValue) {
-    console.log('Error: Shop state mismatch');
-    return { success: false, message: `No Shop State Mismatch` };
-  }
-  const codeVerifier = request.cookies.get('shop_verifier');
-  const codeVerifierValue = codeVerifier?.value;
-  if (!codeVerifierValue) {
+
+  const codeVerifier = request.cookies.get('shop_verifier')?.value;
+
+  if (!codeVerifier) {
     console.log('No Code Verifier');
-    return { success: false, message: `No Code Verifier` };
+    return { success: false };
   }
+
   /*
-  STEP 2: GET ACCESS TOKEN
+  STEP 2: Get Access Token
   */
   const body = new URLSearchParams();
   body.append('grant_type', 'authorization_code');
-  body.append('client_id', clientId);
+  body.append('client_id', customerAccountId);
   body.append('redirect_uri', `${newOrigin}/api/authorize`);
   body.append('code', code);
-  body.append('code_verifier', codeVerifier?.value);
-  const userAgent = '*';
-  const headersNew = new Headers();
-  headersNew.append('Content-Type', 'application/x-www-form-urlencoded');
-  headersNew.append('User-Agent', userAgent);
-  headersNew.append('Origin', newOrigin || '');
-  const tokenRequestUrl = `${customerAccountApiUrl}/auth/oauth/token`;
+  body.append('code_verifier', codeVerifier);
 
-  const response = await fetch(tokenRequestUrl, {
+  const userAgent = '*';
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/x-www-form-urlencoded');
+  headers.append('User-Agent', userAgent);
+  headers.append('Origin', newOrigin || '');
+
+  const url = `${customerAccountUrl}/auth/oauth/token`;
+
+  const response = await fetch(url, {
     method: 'POST',
-    headers: headersNew,
-    body
+    headers,
+    body,
+    cache: 'no-store'
   });
 
   if (!response.ok) {
     const error = await response.text();
-    console.log('data response error auth', error);
+    console.log(error);
     console.log('response auth', response.status);
-    return { success: false, message: `Response error auth` };
+    return { success: false };
   }
-  const data = await response.json();
-  if (data?.errors) {
-    const errorMessage = data?.errors?.[0]?.message ?? 'Unknown error auth';
-    return { success: false, message: `${errorMessage}` };
+
+  const data: AccessTokenResponseBody = await response.json();
+
+  const responseNonce = await getNonce(data.id_token);
+  const sessionNonce = request.cookies.get('shop_nonce')?.value;
+
+  if (responseNonce !== sessionNonce) {
+    console.log(`Returned nonce does not match: ${sessionNonce} !== ${responseNonce}`);
+    return { success: false };
   }
-  const nonce = await getNonce(data?.id_token || '');
-  const nonceValue = nonce.payload.nonce;
-  const shopNonce = request.cookies.get('shop_nonce');
-  const shopNonceValue = shopNonce?.value;
-  if (nonceValue !== shopNonceValue) {
-    console.log('Error nonce match');
-    return { success: false, message: `Error: Nonce mismatch` };
-  }
+
   return { success: true, data };
 }
 
 export async function exchangeAccessToken(
-  token: string,
+  accessToken: string,
   customerAccountId: string,
   customerAccountApiUrl: string,
   origin: string
-) {
-  const clientId = customerAccountId;
-  //this is a constant - see the docs. https://shopify.dev/docs/api/customer#useaccesstoken-propertydetail-audience
+): AccessTokenResponse {
+  /**
+   * this is a constant - see the docs.
+   * https://shopify.dev/docs/api/customer#useaccesstoken-propertydetail-audience
+   */
   const customerApiClientId = '30243aa5-17c1-465a-8493-944bcc4e88aa';
-  const accessToken = token;
+  const clientId = customerAccountId;
+
   const body = new URLSearchParams();
   body.append('grant_type', 'urn:ietf:params:oauth:grant-type:token-exchange');
   body.append('client_id', clientId);
@@ -159,31 +251,38 @@ export async function exchangeAccessToken(
   headers.append('User-Agent', userAgent);
   headers.append('Origin', origin);
 
+  const url = `${customerAccountApiUrl}/auth/oauth/token`;
   // Token Endpoint goes here
-  const response = await fetch(`${customerAccountApiUrl}/auth/oauth/token`, {
+  const response = await fetch(url, {
     method: 'POST',
     headers,
-    body
+    body,
+    cache: 'no-store'
   });
 
-  const data = await response.json();
+  const data: AccessTokenResponseBody = await response.json();
+
   if (data.error) {
-    return { success: false, data: data?.error_description };
+    console.log(data.error_description);
+    return { success: false };
   }
   return { success: true, data };
 }
 
 export async function refreshToken({ request, origin }: { request: NextRequest; origin: string }) {
   const newBody = new URLSearchParams();
-  const refreshToken = request.cookies.get('shop_refresh_token');
-  const refreshTokenValue = refreshToken?.value;
-  if (!refreshTokenValue) {
-    console.log('Error: No Refresh Token');
+  const refreshToken = request.cookies.get('shop_refresh_token')?.value;
+
+  if (!refreshToken) {
+    console.log(
+      'No refreshToken found in the session. Make sure your session is configured correctly.'
+    );
     return { success: false, message: `no_refresh_token` };
   }
+
   const clientId = CUSTOMER_API_CLIENT_ID;
   newBody.append('grant_type', 'refresh_token');
-  newBody.append('refresh_token', refreshTokenValue);
+  newBody.append('refresh_token', refreshToken);
   newBody.append('client_id', clientId);
   const headers = {
     'content-type': 'application/x-www-form-urlencoded',
@@ -268,20 +367,20 @@ export async function removeAllCookiesServerAction() {
 
 export async function createAllCookies({
   response,
-  customerAccessToken,
+  accessToken,
   expires_in,
   refresh_token,
   expiresAt,
   id_token
 }: {
   response: NextResponse;
-  customerAccessToken: string;
+  accessToken: string;
   expires_in: number;
   refresh_token: string;
   expiresAt: string;
   id_token?: string;
 }) {
-  response.cookies.set('shop_customer_token', customerAccessToken, {
+  response.cookies.set('shop_customer_token', accessToken, {
     httpOnly: true, //if true can only read the cookie in server
     sameSite: 'lax',
     secure: true,
@@ -324,56 +423,44 @@ export async function createAllCookies({
 
   return response;
 }
-export async function isLoggedIn(request: NextRequest, origin: string) {
-  const customerToken = request.cookies.get('shop_customer_token');
-  const customerTokenValue = customerToken?.value;
-  const refreshToken = request.cookies.get('shop_refresh_token');
-  const refreshTokenValue = refreshToken?.value;
+
+export async function ensureLoggedIn(request: NextRequest, origin: string) {
+  const accessToken = request.cookies.get('shop_customer_token')?.value;
+  const refreshToken = request.cookies.get('shop_refresh_token')?.value;
+  const expiresAt = request.cookies.get('shop_expires_at')?.value;
+  const loginRedirectResponse = await generateLoginRedirectResponse();
 
   const newHeaders = new Headers(request.headers);
-  if (!customerTokenValue && !refreshTokenValue) {
-    const redirectUrl = new URL(`${origin}`);
-    const response = NextResponse.redirect(`${redirectUrl}`);
-    return removeAllCookies(response);
+
+  if ((!accessToken && !refreshToken) || !expiresAt) {
+    return loginRedirectResponse;
   }
 
-  const expiresToken = request.cookies.get('shop_expires_at');
-  const expiresTokenValue = expiresToken?.value;
-  if (!expiresTokenValue) {
-    const redirectUrl = new URL(`${origin}`);
-    const response = NextResponse.redirect(`${redirectUrl}`);
-    return removeAllCookies(response);
-    //return { success: false, message: `no_expires_at` }
-  }
   const isExpired = await checkExpires({
-    request: request,
-    expiresAt: expiresTokenValue,
-    origin: origin
+    request,
+    expiresAt,
+    origin
   });
+
   //only execute the code below to reset the cookies if it was expired!
   if (isExpired.ranRefresh) {
     const isSuccess = isExpired?.refresh?.success;
     if (!isSuccess) {
-      const redirectUrl = new URL(`${origin}`);
-      const response = NextResponse.redirect(`${redirectUrl}`);
-      return removeAllCookies(response);
-      //return { success: false, message: `no_refresh_token` }
+      return loginRedirectResponse;
     } else {
       const refreshData = isExpired?.refresh?.data;
       const newCustomerAccessToken = refreshData?.customerAccessToken;
       const expires_in = refreshData?.expires_in;
-      //const test_expires_in = 180 //to test to see if it expires in 60 seconds!
-      const expiresAt = new Date(new Date().getTime() + (expires_in! - 120) * 1000).getTime() + '';
+      const expiresAt = new Date(new Date().getTime() + (expires_in - 120) * 1000).getTime() + '';
       newHeaders.set('x-shop-customer-token', `${newCustomerAccessToken}`);
       const resetCookieResponse = NextResponse.next({
         request: {
-          // New request headers
           headers: newHeaders
         }
       });
       return await createAllCookies({
         response: resetCookieResponse,
-        customerAccessToken: newCustomerAccessToken,
+        accessToken: newCustomerAccessToken as string,
         expires_in,
         refresh_token: refreshData?.refresh_token,
         expiresAt
@@ -381,7 +468,7 @@ export async function isLoggedIn(request: NextRequest, origin: string) {
     }
   }
 
-  newHeaders.set('x-shop-customer-token', `${customerTokenValue}`);
+  newHeaders.set('x-shop-customer-token', `${accessToken}`);
   return NextResponse.next({
     request: {
       // New request headers
@@ -404,68 +491,64 @@ export function getOrigin(request: NextRequest) {
 }
 
 export async function authorize(request: NextRequest, origin: string) {
-  const clientId = CUSTOMER_API_CLIENT_ID;
+  const customerAccountId = CUSTOMER_API_CLIENT_ID;
+  const customerAccountUrl = CUSTOMER_API_URL;
+
   const newHeaders = new Headers(request.headers);
-  /***
-  STEP 1: Get the initial access token or deny access
-  ****/
-  const dataInitialToken = await initialAccessToken(request, origin, CUSTOMER_API_URL, clientId);
-  console.log('data initial token', dataInitialToken);
-  if (!dataInitialToken.success) {
-    console.log('Error: Access Denied. Check logs', dataInitialToken.message);
+
+  /**
+   * STEP 1: Get the initial access token or deny access
+   */
+  const { success, data } = await initialAccessToken(
+    request,
+    origin,
+    customerAccountId,
+    customerAccountUrl
+  );
+
+  if (!success) {
     newHeaders.set('x-shop-access', 'denied');
     return NextResponse.json({
       request: {
-        // New request headers
         headers: newHeaders
       }
     });
   }
-  const { access_token, expires_in, id_token, refresh_token } = dataInitialToken.data;
-  /***
-  STEP 2: Get a Customer Access Token
-  ****/
+
+  const { access_token, expires_in, id_token, refresh_token } = data;
+
+  /**
+   * STEP 2: Get a Customer Access Token
+   */
   const customerAccessToken = await exchangeAccessToken(
     access_token,
-    clientId,
-    CUSTOMER_API_URL,
+    customerAccountId,
+    customerAccountUrl,
     origin || ''
   );
-  console.log('customer access token', customerAccessToken);
+
   if (!customerAccessToken.success) {
-    console.log('Error: Customer Access Token');
     newHeaders.set('x-shop-access', 'denied');
     return NextResponse.json({
       request: {
-        // New request headers
         headers: newHeaders
       }
     });
   }
-  //console.log("customer access Token", customerAccessToken.data.access_token)
-  /**STEP 3: Set Customer Access Token cookies
-  We are setting the cookies here b/c if we set it on the request, and then redirect
-  it doesn't see to set sometimes
-  **/
+
+  /**
+   * STEP 3: Set Customer Access Token cookies
+   **/
   newHeaders.set('x-shop-access', 'allowed');
-  /*
-  const authResponse = NextResponse.next({
-    request: {
-      // New request headers
-      headers: newHeaders,
-    },
-  })
-  */
+
   const accountUrl = new URL(`${origin}/account`);
   const authResponse = NextResponse.redirect(`${accountUrl}`);
 
-  //sets an expires time 2 minutes before expiration which we can use in refresh strategy
-  //const test_expires_in = 180 //to test to see if it expires in 60 seconds!
   const expiresAt = new Date(new Date().getTime() + (expires_in! - 120) * 1000).getTime() + '';
 
   return await createAllCookies({
     response: authResponse,
-    customerAccessToken: customerAccessToken?.data?.access_token,
+    accessToken: customerAccessToken.data.access_token,
     expires_in,
     refresh_token,
     expiresAt,

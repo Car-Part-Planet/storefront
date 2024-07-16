@@ -1,5 +1,5 @@
 import { URL_PREFIXES } from 'lib/constants';
-import { getOrigin, isLoggedIn } from 'lib/shopify/auth';
+import { getOrigin, ensureLoggedIn } from 'lib/shopify/auth';
 import { getRedirectData } from 'lib/vercel-kv';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/account')) {
     const origin = getOrigin(request);
 
-    return await isLoggedIn(request, origin);
+    return await ensureLoggedIn(request, origin);
   }
 
   const search = request.nextUrl.search;
