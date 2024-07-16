@@ -508,7 +508,6 @@ export async function authorize(request: NextRequest, origin: string) {
 
   if (!success) {
     newHeaders.set('x-shop-access', 'denied');
-    removeAllCookiesServerAction();
     return NextResponse.json({
       request: {
         headers: newHeaders
