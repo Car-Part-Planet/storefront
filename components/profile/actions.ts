@@ -22,11 +22,8 @@ export async function login() {
 }
 
 export async function isLoggedIn() {
-  console.log('[profile/actions.tsx] Optimistically checking if user is logged in.');
   const customerToken = cookies().get('shop_customer_token')?.value;
   const refreshToken = cookies().get('shop_refresh_token')?.value;
-  console.log('[profile/actions.tsx] customerToken:', customerToken);
-  console.log('[profile/actions.tsx] refreshToken:', refreshToken);
 
   if (!customerToken && !refreshToken) {
     return false;
