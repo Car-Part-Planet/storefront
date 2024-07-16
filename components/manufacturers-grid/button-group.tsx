@@ -1,35 +1,31 @@
-'use client';
-
 import { ArrowRightIcon } from '@heroicons/react/16/solid';
-import { MAKE_FILTER_ID } from 'lib/constants';
 import { Metaobject } from 'lib/shopify/types';
-import { createUrl } from 'lib/utils';
-import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
-const ButtonGroup = ({ manufacturer }: { manufacturer: Metaobject }) => {
-  const searchParams = useSearchParams();
-  const _newSearchParams = new URLSearchParams(searchParams.toString());
-  const router = useRouter();
-  const handleClick = (type: 'engines' | 'transmissions') => {
-    _newSearchParams.set(MAKE_FILTER_ID, manufacturer.id);
-
-    router.push(createUrl(`/${type}`, _newSearchParams));
-  };
-
+const ButtonGroup = ({
+  manufacturer,
+  prefetch
+}: {
+  manufacturer: Metaobject;
+  prefetch: boolean;
+}) => {
   return (
     <div className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-center md:gap-x-2">
-      <button
+      <Link
+        href={`/engines/${manufacturer.name}`}
         className="flex items-center gap-1 rounded border border-primary px-1 py-0.5 text-xs text-primary"
-        onClick={() => handleClick('engines')}
+        prefetch={prefetch}
       >
         Engines <ArrowRightIcon className="size-3" />
-      </button>
-      <button
+      </Link>
+
+      <Link
         className="flex items-center gap-1 rounded border border-transparent bg-primary/10 px-1 py-0.5 text-xs text-primary"
-        onClick={() => handleClick('transmissions')}
+        href={`/transmissions/${manufacturer.name}`}
+        prefetch={prefetch}
       >
         Transmissions <ArrowRightIcon className="size-3" />
-      </button>
+      </Link>
     </div>
   );
 };

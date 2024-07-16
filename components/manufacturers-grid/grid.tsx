@@ -23,7 +23,7 @@ const ManufacturersGrid = ({ manufacturers, variant = 'home' }: ManufacturersGri
             <span className="font-medium text-blue-800">Popular Manufacturers</span>
           </p>
           <div className="mt-6 grid grid-cols-2 gap-x-12 gap-y-5 md:grid-cols-3 md:gap-y-8 lg:grid-cols-4 xl:grid-cols-5">
-            {popularManufacturers.map((manufacturer) => (
+            {popularManufacturers.map((manufacturer, index) => (
               <div key={manufacturer.id} className="flex flex-col gap-2">
                 {variant === 'home' ? (
                   <ManufacturerItem manufacturer={manufacturer} />
@@ -34,7 +34,9 @@ const ManufacturersGrid = ({ manufacturers, variant = 'home' }: ManufacturersGri
                     href={`/${variant}/${kebabCase(manufacturer.name)}`}
                   />
                 )}
-                {variant === 'home' && <ButtonGroup manufacturer={manufacturer} />}
+                {variant === 'home' && (
+                  <ButtonGroup manufacturer={manufacturer} prefetch={index < 5} />
+                )}
               </div>
             ))}
           </div>
@@ -60,7 +62,7 @@ const ManufacturersGrid = ({ manufacturers, variant = 'home' }: ManufacturersGri
                   href={`/${variant}/${kebabCase(manufacturer.name)}`}
                 />
               )}
-              {variant === 'home' && <ButtonGroup manufacturer={manufacturer} />}
+              {variant === 'home' && <ButtonGroup manufacturer={manufacturer} prefetch={false} />}
             </div>
           ))}
       </div>

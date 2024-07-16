@@ -132,6 +132,9 @@ importers:
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.1
+      tailwindcss-content-visibility:
+        specifier: ^0.2.0
+        version: 0.2.0(tailwindcss@3.4.1)
       typescript:
         specifier: 5.4.3
         version: 5.4.3
@@ -2206,6 +2209,11 @@ packages:
     engines: {node: '>=16.x', pnpm: '>=7.x'}
     peerDependencies:
       tailwindcss: '*'
+
+  tailwindcss-content-visibility@0.2.0:
+    resolution: {integrity: sha512-GsmCKKkyTz7yirk++A1PXZ5rS0Ea8uzEYKKL+czlpgvcLfM7l3EVsTy5HTqhdvRYb4A/zr/nasd/t6oTCqIjUg==}
+    peerDependencies:
+      tailwindcss: ^3.0.0
 
   tailwindcss@3.4.1:
     resolution: {integrity: sha512-qAYmXRfk3ENzuPBakNK0SRrUDipP8NQnEY6772uDhflcQz5EhRdD7JNZxyrFHVQNCwULPBn6FNPp9brpO7ctcA==}
@@ -4652,6 +4660,10 @@ snapshots:
   tailwind-variants@0.2.1(tailwindcss@3.4.1):
     dependencies:
       tailwind-merge: 2.2.2
+      tailwindcss: 3.4.1
+
+  tailwindcss-content-visibility@0.2.0(tailwindcss@3.4.1):
+    dependencies:
       tailwindcss: 3.4.1
 
   tailwindcss@3.4.1:
