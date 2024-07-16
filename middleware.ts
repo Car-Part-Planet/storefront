@@ -8,15 +8,6 @@ export async function middleware(request: NextRequest) {
   console.log('client ip adress', request.ip);
   console.log('user agent', request.headers.get('user-agent'));
 
-  // If the user agent is Googlebot, return a 503 status code to disable crawling
-  const userAgent = request.headers.get('user-agent') || '';
-  if (/Googlebot/.test(userAgent)) {
-    const response = new NextResponse('Service Unavailable', { status: 503 });
-    response.headers.set('Retry-After', '3600');
-    response.headers.delete('X-Robots-Tag'); // Remove the x-robots-tag header
-    return response;
-  }
-
   const pathname = request.nextUrl.pathname;
   if (pathname.startsWith('/account')) {
     const origin = getOrigin(request);
@@ -47,17 +38,6 @@ export async function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
-
-// TODO: Uncomment this code when remove the googlebot middleware
-// export const config = {
-//   matcher: [
-//     '/account/:path*',
-//     '/transmissions/:path*',
-//     '/engines/:path*',
-//     '/transfer-cases/:path*',
-//     '/remanufactured-engines/:path*'
-//   ]
-// };
 
 export const config = {
   matcher: [
