@@ -11,8 +11,3 @@ export type MMYFilterResponse = {
   models: FilterOption[];
   years: FilterOption[];
 };
-
-export type RedirectEntry = {
-  destination: string;
-  permanent: boolean;
-};

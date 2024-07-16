@@ -25,10 +25,11 @@ export async function middleware(request: NextRequest) {
     return await isLoggedIn(request, origin);
   }
 
-  const redirectData = await getRedirectData(pathname);
-  if (redirectData) {
+  const search = request.nextUrl.search;
+  const destination = await getRedirectData(search ? `${pathname}${search}` : pathname);
+  if (destination) {
     const url = request.nextUrl.clone();
-    url.pathname = redirectData.destination;
+    url.pathname = destination;
     return NextResponse.redirect(url, 301);
   }
 

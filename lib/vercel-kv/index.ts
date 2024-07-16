@@ -1,7 +1,7 @@
 'use server';
 
 import { kv } from '@vercel/kv';
-import { MMYFilterResponse, RedirectEntry } from './types';
+import { MMYFilterResponse } from './types';
 
 const { STORE_PREFIX } = process.env;
 
@@ -34,16 +34,16 @@ export const getMMYFilters = async (): Promise<MMYFilterResponse> => {
   }
 };
 
-export const getRedirectData = async (pathname: string): Promise<RedirectEntry | undefined> => {
+export const getRedirectData = async (pathname: string): Promise<string | undefined> => {
   if (!storeCode || !['re', 'rt', 'cpp'].includes(storeCode)) {
     return undefined;
   }
 
-  const redirectKey = `${storeCode}.redirectData`;
+  const redirectKey = `${storeCode}.${pathname}`;
   try {
-    const redirectData = (await kv.get(redirectKey)) as { [key: string]: RedirectEntry };
-    if (redirectData[pathname]) {
-      return redirectData[pathname];
+    const redirectUrl = (await kv.get(redirectKey)) as string;
+    if (redirectUrl) {
+      return redirectUrl;
     }
 
     return undefined;
