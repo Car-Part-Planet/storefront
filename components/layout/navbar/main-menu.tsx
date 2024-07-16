@@ -2,6 +2,7 @@
 
 import { Popover, PopoverGroup, PopoverPanel, Transition } from '@headlessui/react';
 import clsx from 'clsx';
+import { URL_PREFIXES } from 'lib/constants';
 import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -49,6 +50,7 @@ const MainMenu = ({ menu }: { menu: Menu[] }) => {
                           !isOpen && !isActiveItem
                       }
                     )}
+                    prefetch={URL_PREFIXES.includes(item.path) ? true : false}
                   >
                     {item.title}
                   </Link>

@@ -84,6 +84,7 @@ const ProfilePopover = ({ menu }: ProfilePopoverProps) => {
                       as={Link}
                       className="flex w-full flex-row items-center justify-between"
                       href="/account"
+                      prefetch={false}
                     >
                       My Orders <ArrowRightIcon className="h-3" />
                     </CloseButton>
