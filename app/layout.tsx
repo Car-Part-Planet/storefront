@@ -27,7 +27,7 @@ export const metadata: Metadata = {
       }
     }),
   icons: {
-    icon: `/${STORE_PREFIX}/logo-icon.svg`
+    icon: `/logo/${STORE_PREFIX}/logo-icon.svg`
   },
   alternates: {
     canonical: './'

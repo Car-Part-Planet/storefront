@@ -22,6 +22,7 @@ const ManufacturerItem = ({
             fileId={manufacturer.logo as string}
             title={manufacturer.display_name || 'Logo'}
             className="aspect-1 w-8"
+            loading="lazy"
           />
         </Suspense>
       </div>
