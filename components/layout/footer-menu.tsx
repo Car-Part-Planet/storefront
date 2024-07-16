@@ -17,6 +17,7 @@ const FooterMenuItem = ({ item }: { item: Menu }) => {
   return (
     <li>
       <Link
+        prefetch={false}
         href={item.path}
         className={clsx(
           'block py-2 text-lg underline-offset-4 hover:underline md:inline-block md:text-sm',

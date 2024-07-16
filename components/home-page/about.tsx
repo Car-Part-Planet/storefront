@@ -21,7 +21,7 @@ const About = async () => {
     <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-x-0 gap-y-10 px-6 py-16 lg:grid-cols-2 lg:gap-x-10">
       <div className="relative">
         <Image
-          src="/about.png"
+          src="/images/about.png"
           alt="About Us"
           sizes="(min-width: 1920px) 588px, (min-width: 770px) 50vw, 100vw"
           width={588}
