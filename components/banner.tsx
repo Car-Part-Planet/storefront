@@ -15,7 +15,7 @@ function Banner() {
         Business Hours <ChevronDownIcon className="h-5 w-5" />
       </div>
       <Tooltip id="work-hours-tooltip">
-        <p>Monday - Friday: 9:00am - 8:00pm EST</p>
+        <p>Monday - Friday: 9:00am - 7:00pm EST</p>
         <p>Saturday 11:00am - 4:00pm EST</p>
       </Tooltip>
     </div>

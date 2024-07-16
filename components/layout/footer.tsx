@@ -26,7 +26,7 @@ export default async function Footer() {
           <a href={phoneNumber?.link} className="ml-2 text-white">
             {phoneNumber?.title}
           </a>
-          <p className="ml-2">Monday - Friday 9:00am - 8:00pm EST</p>
+          <p className="ml-2">Monday - Friday 9:00am - 7:00pm EST</p>
           <p className="ml-2">Saturday 11:00am - 4:00pm EST</p>
         </div>
         <Suspense
