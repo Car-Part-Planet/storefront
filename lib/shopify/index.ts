@@ -1124,13 +1124,18 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
 }
 
-export const getImage = async (id: string): Promise<Image> => {
-  const res = await shopifyFetch<ShopifyImageOperation>({
-    query: getImageQuery,
-    variables: { id }
-  });
+export const getImage = async (id: string): Promise<Image | null> => {
+  try {
+    const res = await shopifyFetch<ShopifyImageOperation>({
+      query: getImageQuery,
+      variables: { id }
+    });
 
-  return res.body.data.node.image;
+    return res.body.data.node.image;
+  } catch (error) {
+    console.log('Error fetching image', error);
+    return null;
+  }
 };
 
 export const stageUploadFile = async (params: UploadInput) => {

@@ -15,6 +15,8 @@ const ImageDisplay = async ({
 } & React.ImgHTMLAttributes<HTMLImageElement>) => {
   if (!fileId) return null;
   const image = await getImage(fileId);
+  if (!image) return null;
+
   return (
     <img
       src={image.url}
@@ -39,6 +41,8 @@ export const NextImageDisplay = async ({
 } & Omit<React.ComponentProps<typeof Image>, 'src' | 'alt'>) => {
   if (!fileId) return null;
   const image = await getImage(fileId);
+  if (!image) return null;
+
   return (
     <Image
       src={image.url}
