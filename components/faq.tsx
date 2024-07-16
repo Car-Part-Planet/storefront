@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import { PhoneIcon } from '@heroicons/react/24/outline';
 import { phoneNumber } from 'lib/constants';
 import { getMetaobject } from 'lib/shopify';
-import Image from 'next/image';
 import { Suspense } from 'react';
 import AccordionBlock from './page/accordion-block';
 import Tag from './tag';
@@ -25,12 +25,10 @@ const FAQ = async ({ handle }: { handle: string }) => {
         </div>
         <div className="relative col-span-1 hidden lg:block">
           <div className="absolute right-0 h-[500px] w-4/5">
-            <Image
-              src="/faq-background.png"
+            <img
+              src="/images/faq-background.png"
               alt="FAQs background"
-              fill
-              className="w-full object-cover object-center"
-              sizes="(min-width 1200px) 80vw"
+              className="absolute h-full w-full object-cover object-center"
             />
           </div>
           <div className="absolute left-0 top-0 flex min-h-[300px] min-w-[400px] translate-y-1/4 flex-col gap-3 bg-dark px-12 py-14">
