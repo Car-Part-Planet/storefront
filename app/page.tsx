@@ -7,7 +7,6 @@ import Footer from 'components/layout/footer';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-export const runtime = 'edge';
 const { SITE_NAME } = process.env;
 
 export async function generateMetadata(): Promise<Metadata> {
