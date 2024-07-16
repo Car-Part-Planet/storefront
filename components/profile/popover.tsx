@@ -7,14 +7,14 @@ import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { doLogin, doLogout } from './actions';
+import { login, logout } from './actions';
 import OpenProfile from './open-profile';
 
 type ProfilePopoverProps = {
   menu: Menu[];
 };
 
-function SignInButton({ message }: { message: string | null }) {
+function SignInButton({ message }: { message?: string | null }) {
   const { pending } = useFormStatus();
 
   return (
@@ -50,8 +50,8 @@ const LogoutButton = () => {
 };
 
 const ProfilePopover = ({ menu }: ProfilePopoverProps) => {
-  const [message, action] = useFormState(doLogin, null);
-  const [, logoutAction] = useFormState(doLogout, null);
+  const [message, authorizeAction] = useFormState(login, null);
+  const [, logoutAction] = useFormState(logout, null);
   const { isAuthenticated, loading } = useAuth();
 
   return (
@@ -72,8 +72,8 @@ const ProfilePopover = ({ menu }: ProfilePopoverProps) => {
           <div className="flex flex-col gap-2 overflow-hidden rounded-md bg-white px-4 py-3 text-black shadow-xl ring-1 ring-black/5">
             <span className="text-sm font-medium">My Account</span>
             {!isAuthenticated && !loading && (
-              <form action={action}>
-                <SignInButton message={message} />
+              <form action={authorizeAction}>
+                <SignInButton />
               </form>
             )}
             {menu.length ? (
