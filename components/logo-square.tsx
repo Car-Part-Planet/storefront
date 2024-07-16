@@ -6,7 +6,7 @@ export default function LogoSquare({ dark = false }: { dark?: boolean }) {
     <div className="w-36 sm:w-auto">
       {dark ? (
         <Image
-          src={`/${STORE_PREFIX}/dark-logo.svg`}
+          src={`/logo/${STORE_PREFIX}/dark-logo.svg`}
           alt="Logo"
           width={327}
           height={61}
@@ -15,7 +15,7 @@ export default function LogoSquare({ dark = false }: { dark?: boolean }) {
         />
       ) : (
         <Image
-          src={`/${STORE_PREFIX}/logo.svg`}
+          src={`/logo/${STORE_PREFIX}/logo.svg`}
           alt="Logo"
           width={327}
           height={61}
