@@ -1,6 +1,7 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Divider from 'components/divider';
 import ActivateWarranty from 'components/orders/activate-warranty';
+import CoreReturn from 'components/orders/core-return';
 import MobileOrderActions from 'components/orders/mobile-order-actions';
 import OrderConfirmation from 'components/orders/order-confirmation';
 import OrderStatuses from 'components/orders/order-statuses';
@@ -66,6 +67,7 @@ export default async function AccountPage() {
                     </Link>
                     <ActivateWarranty order={order} />
                     <OrderConfirmation order={order} />
+                    <CoreReturn order={order} />
                   </div>
                 </div>
                 <div className="p-4 pt-0 sm:p-6 sm:pt-0">

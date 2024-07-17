@@ -2,16 +2,22 @@
 import { Button } from 'components/ui';
 import { CoreReturnStatus, Order } from 'lib/shopify/types';
 import { useState } from 'react';
-import { CoreReturnModal } from './core-return-modal';
+import CoreReturnModal from './core-return-modal';
 import { isBeforeToday } from 'lib/utils';
 
-export function CoreReturn({ order }: { order: Order }) {
+export default function CoreReturn({ order }: { order: Order }) {
   const [isOpen, setIsOpen] = useState(false);
-  const isPassDeadline = isBeforeToday(order?.coreReturnDeadline?.value);
+  const coreReturnDeadline = order?.coreReturnDeadline?.value;
+  const coreReturnStatus = order?.coreReturnStatus?.value;
 
-  if (order.coreReturnStatus?.value !== CoreReturnStatus.CoreNeeded || isPassDeadline) {
+  if (!coreReturnDeadline) return null;
+
+  const isPassDeadline = isBeforeToday(coreReturnDeadline);
+
+  if (coreReturnStatus !== CoreReturnStatus.CoreNeeded || isPassDeadline) {
     return null;
   }
+
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>Core Return</Button>
