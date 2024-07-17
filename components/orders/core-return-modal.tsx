@@ -5,7 +5,7 @@ import StatesCombobox from 'components/states-combobox';
 import { useTransition } from 'react';
 import { returnCore } from './actions';
 
-export function CoreReturnModal({
+export default function CoreReturnModal({
   isOpen,
   onClose,
   order

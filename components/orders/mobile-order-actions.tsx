@@ -4,20 +4,30 @@ import dynamic from 'next/dynamic';
 import { Button, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
-import { Order, WarrantyStatus } from 'lib/shopify/types';
+import { CoreReturnStatus, Order, WarrantyStatus } from 'lib/shopify/types';
 import { isBeforeToday } from 'lib/utils';
 import Link from 'next/link';
 import { useState } from 'react';
-import ActivateWarrantyModal from './activate-warranty-modal';
 
+const ActivateWarrantyModal = dynamic(() => import('./activate-warranty-modal'));
 const OrderConfirmationModal = dynamic(() => import('./order-confirmation-modal'));
+const CoreReturnModal = dynamic(() => import('./core-return-modal'));
 
 const MobileOrderActions = ({ order }: { order: Order }) => {
   const [isWarrantyOpen, setIsWarrantyOpen] = useState(false);
   const [isOrderConfirmaionOpen, setIsOrderConfirmationOpen] = useState(false);
+  const [isCoreReturnOpen, setIsCoreReturnOpen] = useState(false);
 
-  const isWarrantyActivated = order?.warrantyStatus?.value === WarrantyStatus.Activated;
-  const isPassDeadline = isBeforeToday(order?.warrantyActivationDeadline?.value);
+  const isWarrantyActivationAvailable =
+    Boolean(order?.warrantyActivationDeadline) &&
+    order?.warrantyStatus?.value === WarrantyStatus.NotActivated;
+
+  const isCoreReturnNeeded =
+    !!order?.coreReturnDeadline?.value &&
+    order?.coreReturnStatus?.value === CoreReturnStatus.CoreNeeded;
+
+  const isPastWarrantyActivationDeadline = isBeforeToday(order?.warrantyActivationDeadline?.value);
+  const isPastCoreReturnDeadline = isBeforeToday(order?.coreReturnDeadline?.value);
   const isOrderConfirmed = order?.orderConfirmation?.value;
 
   return (
@@ -48,21 +58,6 @@ const MobileOrderActions = ({ order }: { order: Order }) => {
                 </Link>
               )}
             </MenuItem>
-            {!isPassDeadline && !isWarrantyActivated && (
-              <MenuItem>
-                {({ focus }) => (
-                  <Button
-                    className={clsx(
-                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'flex w-full px-4 py-2 text-sm'
-                    )}
-                    onClick={() => setIsWarrantyOpen(true)}
-                  >
-                    Activate Warranty
-                  </Button>
-                )}
-              </MenuItem>
-            )}
             {!isOrderConfirmed && (
               <MenuItem>
                 {({ focus }) => (
@@ -78,18 +73,57 @@ const MobileOrderActions = ({ order }: { order: Order }) => {
                 )}
               </MenuItem>
             )}
+            {isWarrantyActivationAvailable && !isPastWarrantyActivationDeadline && (
+              <MenuItem>
+                {({ focus }) => (
+                  <Button
+                    className={clsx(
+                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                      'flex w-full px-4 py-2 text-sm'
+                    )}
+                    onClick={() => setIsWarrantyOpen(true)}
+                  >
+                    Activate Warranty
+                  </Button>
+                )}
+              </MenuItem>
+            )}
+            {isCoreReturnNeeded && !isPastCoreReturnDeadline && (
+              <MenuItem>
+                {({ focus }) => (
+                  <Button
+                    className={clsx(
+                      focus ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                      'flex w-full px-4 py-2 text-sm'
+                    )}
+                    onClick={() => setIsCoreReturnOpen(true)}
+                  >
+                    Core Return
+                  </Button>
+                )}
+              </MenuItem>
+            )}
           </div>
         </MenuItems>
       </Menu>
-      <ActivateWarrantyModal
-        isOpen={isWarrantyOpen}
-        onClose={() => setIsWarrantyOpen(false)}
-        order={order}
-      />
-      {!isOrderConfirmed && (
+      {isWarrantyOpen && (
+        <ActivateWarrantyModal
+          isOpen={isWarrantyOpen}
+          onClose={() => setIsWarrantyOpen(false)}
+          order={order}
+        />
+      )}
+      {isOrderConfirmaionOpen && (
         <OrderConfirmationModal
           isOpen={isOrderConfirmaionOpen}
           onClose={() => setIsOrderConfirmationOpen(false)}
+          order={order}
+        />
+      )}
+      {isCoreReturnOpen && (
+        <CoreReturnModal
+          isOpen={isCoreReturnOpen}
+          onClose={() => setIsCoreReturnOpen(false)}
           order={order}
         />
       )}

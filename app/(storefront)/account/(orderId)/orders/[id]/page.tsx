@@ -15,7 +15,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ActivateWarranty from 'components/orders/activate-warranty';
 import OrderStatuses from 'components/orders/order-statuses';
-import { CoreReturn } from 'components/orders/core-return';
+import CoreReturn from 'components/orders/core-return';
 
 function Unfulfilled({ order }: { order: Order }) {
   // Build a map of line item IDs to quantities fulfilled

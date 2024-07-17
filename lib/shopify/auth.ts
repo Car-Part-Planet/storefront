@@ -343,7 +343,6 @@ export async function checkExpires({
 }
 
 export function removeAllCookies(response: NextResponse) {
-  //response.cookies.delete('shop_auth_token') //never set. We don't use it anywhere.
   response.cookies.delete('shop_customer_token');
   response.cookies.delete('shop_refresh_token');
   response.cookies.delete('shop_id_token');
