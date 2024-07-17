@@ -15,8 +15,8 @@ type VehicleDetailsProps = {
 
 const VehicleDetails = ({ control }: VehicleDetailsProps) => {
   return (
-    <div className="mb-5 mt-3 border-y border-gray-300 pb-5 pt-3">
-      <div className="text-base font-medium text-gray-900">Vehicle Details</div>
+    <div className="pb-8">
+      <h2 className="text-lg font-medium text-gray-900">Vehicle Details</h2>
       <Controller
         name="customer_vin"
         control={control}
@@ -25,7 +25,7 @@ const VehicleDetails = ({ control }: VehicleDetailsProps) => {
             <Label className="block text-sm font-medium text-gray-700">Vin Number</Label>
             <Input
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 text-dark shadow-sm focus:outline-none data-[focus]:border-primary/50 data-[focus]:ring-primary/50 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 text-dark shadow-sm focus:outline-none data-[focus]:border-primary/80 data-[focus]:ring-primary/80 sm:text-sm"
               autoFocus
               {...field}
             />
@@ -44,7 +44,7 @@ const VehicleDetails = ({ control }: VehicleDetailsProps) => {
             <Label className="block text-sm font-medium text-gray-700">Current Mileage</Label>
             <Input
               type="number"
-              className="mt-1 block w-full rounded-md border-gray-300 text-dark shadow-sm focus:outline-none data-[focus]:border-primary/50 data-[focus]:ring-primary/50 sm:text-sm"
+              className="mt-1 block w-full rounded-md border-gray-300 text-dark shadow-sm focus:outline-none data-[focus]:border-primary/80 data-[focus]:ring-primary/80 sm:text-sm"
               {...field}
             />
             {error && (

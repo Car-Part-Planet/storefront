@@ -1,10 +1,9 @@
 'use client';
-import React from 'react';
 import { Button as ButtonBase, ButtonProps as ButtonBaseProps } from '@headlessui/react';
-import { tv, type VariantProps } from 'tailwind-variants';
-import clsx from 'clsx';
 import LoadingDots from 'components/loading-dots';
-import { focusInput } from 'lib/utils';
+import { cn, focusInput } from 'lib/utils';
+import React from 'react';
+import { tv, type VariantProps } from 'tailwind-variants';
 
 const buttonVariants = tv({
   slots: {
@@ -180,7 +179,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <ButtonBase
         as={Component}
         ref={forwardedRef}
-        className={clsx(root(), className)}
+        className={cn(root(), className)}
         disabled={disabled || isLoading}
         {...props}
       >

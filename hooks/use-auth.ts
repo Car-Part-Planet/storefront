@@ -1,11 +1,18 @@
-import AuthContext from 'contexts/auth-context';
-import { useContext } from 'react';
+import { isLoggedIn, login } from 'components/profile/actions';
+import { useEffect, useState, useTransition } from 'react';
+import { useFormState } from 'react-dom';
 
-export default function useAuth() {
-  const context = useContext(AuthContext);
+export const useAuth = () => {
+  const [loading, startTransition] = useTransition();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [, authorizeAction] = useFormState(login, null);
 
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-}
+  useEffect(() => {
+    startTransition(async () => {
+      const loggedIn = await isLoggedIn();
+      setIsAuthenticated(loggedIn);
+    });
+  }, []);
+
+  return { isAuthenticated, authorizeAction, loading };
+};

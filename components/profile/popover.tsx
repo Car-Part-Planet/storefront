@@ -2,12 +2,12 @@
 import { CloseButton, Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
 import { ArrowRightIcon } from '@heroicons/react/16/solid';
 import { Button } from 'components/ui';
-import useAuth from 'hooks/use-auth';
+import { useAuth } from 'hooks/use-auth';
 import { Menu } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { login, logout } from './actions';
+import { logout } from './actions';
 import OpenProfile from './open-profile';
 
 type ProfilePopoverProps = {
@@ -50,9 +50,8 @@ const LogoutButton = () => {
 };
 
 const ProfilePopover = ({ menu }: ProfilePopoverProps) => {
-  const [, authorizeAction] = useFormState(login, null);
   const [, logoutAction] = useFormState(logout, null);
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, authorizeAction } = useAuth();
 
   return (
     <Popover className="relative">
