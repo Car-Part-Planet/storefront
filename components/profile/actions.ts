@@ -16,7 +16,7 @@ import { redirect } from 'next/navigation';
  * https://shopify.dev/docs/api/customer#step-authorization
  */
 export async function login() {
-  const loginUrl = generateLoginUrlServerAction();
+  const loginUrl = await generateLoginUrlServerAction();
 
   redirect(loginUrl.toString()); // Navigate to the new post page
 }

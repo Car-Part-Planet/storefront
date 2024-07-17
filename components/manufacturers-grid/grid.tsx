@@ -32,6 +32,7 @@ const ManufacturersGrid = ({ manufacturers, variant = 'home' }: ManufacturersGri
                     manufacturer={manufacturer}
                     className="rounded border border-primary px-2 py-1"
                     href={`/${variant}/${kebabCase(manufacturer.name)}`}
+                    prefetch={index < 5}
                   />
                 )}
                 {variant === 'home' && (
@@ -60,6 +61,7 @@ const ManufacturersGrid = ({ manufacturers, variant = 'home' }: ManufacturersGri
                   manufacturer={manufacturer}
                   className="rounded border border-primary px-2 py-1"
                   href={`/${variant}/${kebabCase(manufacturer.name)}`}
+                  prefetch={false}
                 />
               )}
               {variant === 'home' && <ButtonGroup manufacturer={manufacturer} prefetch={false} />}
