@@ -26,7 +26,7 @@ const BottomContent = async ({ collectionHandle }: { collectionHandle: string })
   const [partType] = collectionHandle.split('_');
 
   return (
-    <div className="mx-auto my-10 flex max-w-7xl flex-col gap-3 px-6">
+    <div className="mx-auto my-10 flex max-w-7xl flex-col gap-3 px-6 content-visibility-auto contain-intrinsic-size-[auto_800px]">
       <Suspense>
         <Content collection={collection} />
       </Suspense>

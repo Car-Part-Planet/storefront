@@ -50,7 +50,7 @@ const LogoutButton = () => {
 };
 
 const ProfilePopover = ({ menu }: ProfilePopoverProps) => {
-  const [message, authorizeAction] = useFormState(login, null);
+  const [, authorizeAction] = useFormState(login, null);
   const [, logoutAction] = useFormState(logout, null);
   const { isAuthenticated, loading } = useAuth();
 

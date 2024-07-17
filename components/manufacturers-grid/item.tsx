@@ -7,11 +7,13 @@ import { twMerge } from 'tailwind-merge';
 const ManufacturerItem = ({
   manufacturer,
   className,
-  href
+  href,
+  prefetch
 }: {
   manufacturer: Metaobject;
   className?: string;
   href?: string;
+  prefetch?: boolean;
 }) => {
   const children = (
     <div className={twMerge('flex w-full flex-row items-center justify-between', className)}>
@@ -30,7 +32,11 @@ const ManufacturerItem = ({
   );
 
   if (href) {
-    return <Link href={href}>{children}</Link>;
+    return (
+      <Link href={href} prefetch={prefetch}>
+        {children}
+      </Link>
+    );
   }
   return children;
 };
