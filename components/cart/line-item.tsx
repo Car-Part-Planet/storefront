@@ -1,16 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 import { PlusIcon } from '@heroicons/react/16/solid';
 import Price from 'components/price';
 import { DEFAULT_OPTION } from 'lib/constants';
 import { CartItem } from 'lib/shopify/types';
 import { createUrl } from 'lib/utils';
-import Image from 'next/image';
 import Link from 'next/link';
 import { DeleteItemButton } from './delete-item-button';
 import { EditItemQuantityButton } from './edit-item-quantity-button';
 
 type LineItemProps = {
   item: CartItem;
-  closeCart: () => void;
 };
 
 type MerchandiseSearchParams = {
@@ -21,7 +20,7 @@ const CoreCharge = ({ coreCharge, quantity }: { coreCharge?: CartItem; quantity:
   if (!coreCharge) return null;
 
   return (
-    <div className="ml-20 mt-2 flex flex-row items-center">
+    <div className="flex flex-row items-center">
       <PlusIcon className="mr-1.5 size-3" />
       <div className="flex flex-row items-center justify-start gap-2">
         {coreCharge.merchandise.selectedOptions[0] ? (
@@ -39,7 +38,7 @@ const CoreCharge = ({ coreCharge, quantity }: { coreCharge?: CartItem; quantity:
     </div>
   );
 };
-const LineItem = ({ item, closeCart }: LineItemProps) => {
+const LineItem = ({ item }: LineItemProps) => {
   const merchandiseSearchParams = {} as MerchandiseSearchParams;
 
   item.merchandise.selectedOptions.forEach(({ name, value }) => {
@@ -54,49 +53,56 @@ const LineItem = ({ item, closeCart }: LineItemProps) => {
   );
 
   return (
-    <li className="flex w-full flex-col border-b border-neutral-300 pb-3">
-      <div className="relative flex w-full flex-row justify-between px-1 py-4">
-        <div className="absolute z-40 -mt-2 ml-[55px]">
-          <DeleteItemButton item={item} />
-        </div>
-        <Link href={merchandiseUrl} onClick={closeCart} className="z-30 flex flex-row space-x-4">
-          <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800">
-            <Image
-              className="h-full w-full object-cover"
-              width={64}
-              height={64}
-              alt={
-                item.merchandise.product?.featuredImage?.altText || item.merchandise.product.title
-              }
-              src={item.merchandise.product?.featuredImage?.url}
-            />
+    <li className="flex py-6 sm:py-10">
+      <div className="flex-shrink-0">
+        <img
+          alt={item.merchandise.product?.featuredImage?.altText || item.merchandise.product.title}
+          src={item.merchandise.product?.featuredImage?.url}
+          className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
+        />
+      </div>
+      <div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
+        <div className="relative pr-6">
+          <div>
+            <div className="flex justify-between">
+              <h3 className="text-sm">
+                <Link
+                  href={merchandiseUrl}
+                  className="font-medium text-gray-700 hover:text-gray-800"
+                >
+                  {item.merchandise.product.title}
+                </Link>
+              </h3>
+            </div>
+            <div className="mt-1 flex text-sm">
+              {item.merchandise.title !== DEFAULT_OPTION ? (
+                <p className="text-gray-500">{item.merchandise.title}</p>
+              ) : null}
+            </div>
+            <div className="mt-1 flex w-full flex-wrap items-center gap-3">
+              <Price
+                className="text-sm font-medium text-gray-900"
+                amount={item.cost.totalAmount.amount}
+                currencyCode={item.cost.totalAmount.currencyCode}
+              />
+              <CoreCharge coreCharge={item.coreCharge} quantity={item.quantity} />
+            </div>
+            <div className="mt-4 flex h-9 w-fit flex-row items-center rounded-sm border border-neutral-300 dark:border-neutral-700">
+              <EditItemQuantityButton item={item} type="minus" />
+              <p className="w-6 text-center">
+                <span className="w-full text-sm">{item.quantity}</span>
+              </p>
+              <EditItemQuantityButton item={item} type="plus" />
+            </div>
           </div>
 
-          <div className="flex flex-1 flex-col gap-1 text-base">
-            <span className="leading-tight">{item.merchandise.product.title}</span>
-            {item.merchandise.title !== DEFAULT_OPTION ? (
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                {item.merchandise.title}
-              </p>
-            ) : null}
+          <div className="absolute right-0 top-0">
+            <div className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
+              <DeleteItemButton item={item} />
+            </div>
           </div>
-        </Link>
-      </div>
-      <div className="ml-20 flex items-center justify-between gap-2">
-        <Price
-          className="font-semibold"
-          amount={item.cost.totalAmount.amount}
-          currencyCode={item.cost.totalAmount.currencyCode}
-        />
-        <div className="flex h-9 w-fit flex-row items-center rounded-sm border border-neutral-300 dark:border-neutral-700">
-          <EditItemQuantityButton item={item} type="minus" />
-          <p className="w-6 text-center">
-            <span className="w-full text-sm">{item.quantity}</span>
-          </p>
-          <EditItemQuantityButton item={item} type="plus" />
         </div>
       </div>
-      <CoreCharge coreCharge={item.coreCharge} quantity={item.quantity} />
     </li>
   );
 };

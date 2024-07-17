@@ -1,6 +1,7 @@
 import { getCart } from 'lib/shopify';
 import { cookies } from 'next/headers';
-import CartModal from './modal';
+import Link from 'next/link';
+import OpenCart from './open-cart';
 
 export default async function Cart() {
   const cartId = cookies().get('cartId')?.value;
@@ -10,5 +11,9 @@ export default async function Cart() {
     cart = await getCart(cartId);
   }
 
-  return <CartModal cart={cart} />;
+  return (
+    <Link href="/cart">
+      <OpenCart quantity={cart?.totalQuantity} />
+    </Link>
+  );
 }

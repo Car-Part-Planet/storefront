@@ -10,7 +10,6 @@ export default function LogoSquare({ dark = false }: { dark?: boolean }) {
           alt="Logo"
           width={327}
           height={61}
-          priority
           className="h-full w-full"
         />
       ) : (
@@ -19,6 +18,7 @@ export default function LogoSquare({ dark = false }: { dark?: boolean }) {
           alt="Logo"
           width={327}
           height={61}
+          priority
           className="h-full w-full"
         />
       )}
