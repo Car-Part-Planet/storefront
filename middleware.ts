@@ -3,6 +3,19 @@ import { ensureLoggedIn, getOrigin } from 'lib/shopify/auth';
 import { getRedirectData } from 'lib/vercel-kv';
 import { NextRequest, NextResponse } from 'next/server';
 
+const shouldRemoveSearchParams = (search: string) => {
+  const paramString = search.split('?')[1];
+  console.log({ paramString });
+  if (!paramString) {
+    return true;
+  }
+  const searchParams = new URLSearchParams(paramString);
+  if (searchParams.size === 1 && (searchParams.has('tag') || searchParams.has('code'))) {
+    return false;
+  }
+  return true;
+};
+
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   console.log('client ip adress', request.ip);
@@ -14,12 +27,17 @@ export async function middleware(request: NextRequest) {
     return await ensureLoggedIn(request, origin);
   }
 
-  const search = request.nextUrl.search;
-  const destination = await getRedirectData(search ? `${pathname}${search}` : pathname);
+  const search = request.nextUrl.search; // get the search query string
+  let destination;
+
+  if (!search || shouldRemoveSearchParams(search)) {
+    destination = await getRedirectData(pathname);
+  } else {
+    destination = await getRedirectData(`${pathname}${decodeURIComponent(search)}`);
+  }
+
   if (destination) {
-    const url = request.nextUrl.clone();
-    url.pathname = destination;
-    return NextResponse.redirect(url, 301);
+    return NextResponse.redirect(new URL(destination, request.url), 301);
   }
 
   if (URL_PREFIXES.some((url) => pathname.startsWith(url))) {
