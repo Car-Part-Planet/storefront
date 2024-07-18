@@ -1,10 +1,13 @@
 import { ArrowLeftIcon, CheckCircleIcon, TruckIcon } from '@heroicons/react/24/outline';
+import ActivateWarranty from 'components/orders/activate-warranty';
+import CoreReturn from 'components/orders/core-return';
 import OrderConfirmation from 'components/orders/order-confirmation';
-import PaymentsDetails from 'components/orders/payment-details';
+import OrderStatuses from 'components/orders/order-statuses';
 import OrderSummary from 'components/orders/order-summary';
 import OrderSummaryMobile from 'components/orders/order-summary-mobile';
-import Badge from 'components/ui/badge';
+import PaymentsDetails from 'components/orders/payment-details';
 import { Card } from 'components/ui';
+import Badge from 'components/ui/badge';
 import Heading from 'components/ui/heading';
 import Label from 'components/ui/label';
 import Text from 'components/ui/text';
@@ -13,9 +16,6 @@ import { Fulfillment, Order } from 'lib/shopify/types';
 import { toPrintDate } from 'lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import ActivateWarranty from 'components/orders/activate-warranty';
-import OrderStatuses from 'components/orders/order-statuses';
-import CoreReturn from 'components/orders/core-return';
 
 function Unfulfilled({ order }: { order: Order }) {
   // Build a map of line item IDs to quantities fulfilled
@@ -148,6 +148,9 @@ function Fulfillments({ order }: { order: Order }) {
 }
 
 function OrderDetails({ order }: { order: Order }) {
+  const hasShippingAddress = order.shippingAddress !== null;
+  const hasBillingAddress = order.billingAddress !== null;
+
   return (
     <Card className="flex flex-col gap-4">
       <Heading size="sm">Order Details</Heading>
@@ -163,16 +166,27 @@ function OrderDetails({ order }: { order: Order }) {
           <div className="flex flex-col gap-2">
             <Label>Shipping Address</Label>
             <div>
-              <Text>
-                {order.shippingAddress!.firstName} {order.shippingAddress!.lastName}
-              </Text>
-              <Text>{order.shippingAddress!.address1}</Text>
-              {order.shippingAddress!.address2 && <Text>{order.shippingAddress!.address2}</Text>}
-              <Text>
-                {order.shippingAddress!.city} {order.shippingAddress!.provinceCode}{' '}
-                {order.shippingAddress!.zip}
-              </Text>
-              <Text>{order.shippingAddress!.country}</Text>
+              {hasShippingAddress ? (
+                <>
+                  <Text>
+                    {order.shippingAddress!.firstName} {order.shippingAddress!.lastName}
+                  </Text>
+                  <Text>{order.shippingAddress!.address1}</Text>
+                  {order.shippingAddress!.address2 && (
+                    <Text>{order.shippingAddress!.address2}</Text>
+                  )}
+                  <Text>
+                    {order.shippingAddress!.city} {order.shippingAddress!.provinceCode}{' '}
+                    {order.shippingAddress!.zip}
+                  </Text>
+                  <Text>{order.shippingAddress!.country}</Text>
+                </>
+              ) : (
+                <Text>
+                  This order is from our legacy platform. Please contact support if you need
+                  assisstance.
+                </Text>
+              )}
             </div>
           </div>
           <div className="flex flex-col gap-2">
@@ -188,16 +202,25 @@ function OrderDetails({ order }: { order: Order }) {
           <div className="flex flex-col gap-2">
             <Label>Billing Address</Label>
             <div>
-              <Text>
-                {order.billingAddress!.firstName} {order.billingAddress!.lastName}
-              </Text>
-              <Text>{order.billingAddress!.address1}</Text>
-              {order.billingAddress!.address2 && <Text>{order.billingAddress!.address2}</Text>}
-              <Text>
-                {order.billingAddress!.city} {order.billingAddress!.provinceCode}{' '}
-                {order.billingAddress!.zip}
-              </Text>
-              <Text>{order.billingAddress!.country}</Text>
+              {hasBillingAddress ? (
+                <>
+                  <Text>
+                    {order.billingAddress!.firstName} {order.billingAddress!.lastName}
+                  </Text>
+                  <Text>{order.billingAddress!.address1}</Text>
+                  {order.billingAddress!.address2 && <Text>{order.billingAddress!.address2}</Text>}
+                  <Text>
+                    {order.billingAddress!.city} {order.billingAddress!.provinceCode}{' '}
+                    {order.billingAddress!.zip}
+                  </Text>
+                  <Text>{order.billingAddress!.country}</Text>
+                </>
+              ) : (
+                <Text>
+                  This order is from our legacy platform. Please contact support if you need
+                  assisstance.
+                </Text>
+              )}
             </div>
           </div>
         </div>
