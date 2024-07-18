@@ -1,10 +1,10 @@
+import { GoogleTagManager } from '@next/third-parties/google';
 import Banner from 'components/banner';
 import Navbar from 'components/layout/navbar';
 import { GeistSans } from 'geist/font/sans';
 import { ensureStartsWith } from 'lib/utils';
 import { Metadata } from 'next';
 import { ReactNode, Suspense } from 'react';
-import { GoogleTagManager } from '@next/third-parties/google';
 import '../globals.css';
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME, STORE_PREFIX, SHOPIFY_ORIGIN_URL, GTM_ID } =
@@ -40,11 +40,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="en" className={GeistSans.variable}>
       {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
       <body className="min-h-screen bg-white text-black selection:bg-primary-muted">
-        <div className="flex h-screen flex-col">
-          <header>
+        <div className="flex h-screen max-h-screen flex-col overflow-auto">
+          <header className="sticky top-0 z-10">
             <Banner />
             <Navbar />
           </header>
+
           <Suspense>
             <main>{children}</main>
           </Suspense>

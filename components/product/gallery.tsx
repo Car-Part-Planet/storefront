@@ -85,13 +85,7 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
                   className="h-full w-full"
                   href={createUrl(pathname, imageSearchParams)}
                 >
-                  <TileImage
-                    alt={image.altText}
-                    src={image.src}
-                    width={80}
-                    height={80}
-                    active={isActive}
-                  />
+                  <TileImage alt={image.altText} src={image.src} active={isActive} />
                 </Link>
               </li>
             );
