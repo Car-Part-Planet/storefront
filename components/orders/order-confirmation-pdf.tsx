@@ -1,7 +1,7 @@
-import Markdown from 'markdown-to-jsx';
-import { Document, Image, Page, Text, StyleSheet, View, Link } from '@react-pdf/renderer';
+import { Document, Image, Link, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 import { Order, OrderConfirmationContent } from 'lib/shopify/types';
 import { toPrintDate } from 'lib/utils';
+import Markdown from 'markdown-to-jsx';
 
 const PDFPrice = ({
   style,
@@ -104,6 +104,9 @@ export default function OrderConfirmationPdf({
     }
   });
 
+  const hasShippingAddress = order.shippingAddress !== null;
+  const hasBillingAddress = order.billingAddress !== null;
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -120,35 +123,53 @@ export default function OrderConfirmationPdf({
             <View style={{ flex: 1 }}>
               <Text style={[styles.label, { marginBottom: 6 }]}>Shipping Address</Text>
               <View>
-                <Text style={styles.span}>
-                  {order.shippingAddress!.firstName} {order.shippingAddress!.lastName}
-                </Text>
-                <Text style={styles.span}>{order.shippingAddress!.address1}</Text>
-                {order.shippingAddress!.address2 && (
-                  <Text style={styles.p}>{order.shippingAddress!.address2}</Text>
+                {hasShippingAddress ? (
+                  <>
+                    <Text style={styles.span}>
+                      {order.shippingAddress!.firstName} {order.shippingAddress!.lastName}
+                    </Text>
+                    <Text style={styles.span}>{order.shippingAddress!.address1}</Text>
+                    {order.shippingAddress!.address2 && (
+                      <Text style={styles.p}>{order.shippingAddress!.address2}</Text>
+                    )}
+                    <Text style={styles.span}>
+                      {order.shippingAddress!.city} {order.shippingAddress!.provinceCode}{' '}
+                      {order.shippingAddress!.zip}
+                    </Text>
+                    <Text style={styles.p}>{order.shippingAddress!.country}</Text>
+                  </>
+                ) : (
+                  <Text style={styles.p}>
+                    This order is from our legacy platform. Please contact support if you need
+                    assisstance.
+                  </Text>
                 )}
-                <Text style={styles.span}>
-                  {order.shippingAddress!.city} {order.shippingAddress!.provinceCode}{' '}
-                  {order.shippingAddress!.zip}
-                </Text>
-                <Text style={styles.p}>{order.shippingAddress!.country}</Text>
               </View>
             </View>
             <View style={{ flex: 1 }}>
               <Text style={[styles.label, { marginBottom: 6 }]}>Billing Address</Text>
               <View>
-                <Text style={styles.span}>
-                  {order.billingAddress!.firstName} {order.billingAddress!.lastName}
-                </Text>
-                <Text style={styles.span}>{order.billingAddress!.address1}</Text>
-                {order.billingAddress!.address2 && (
-                  <Text style={styles.span}>{order.billingAddress!.address2}</Text>
+                {hasBillingAddress ? (
+                  <>
+                    <Text style={styles.span}>
+                      {order.billingAddress!.firstName} {order.billingAddress!.lastName}
+                    </Text>
+                    <Text style={styles.span}>{order.billingAddress!.address1}</Text>
+                    {order.billingAddress!.address2 && (
+                      <Text style={styles.span}>{order.billingAddress!.address2}</Text>
+                    )}
+                    <Text style={styles.span}>
+                      {order.billingAddress!.city} {order.billingAddress!.provinceCode}{' '}
+                      {order.billingAddress!.zip}
+                    </Text>
+                    <Text style={styles.p}>{order.billingAddress!.country}</Text>
+                  </>
+                ) : (
+                  <Text style={styles.p}>
+                    This order is from our legacy platform. Please contact support if you need
+                    assisstance.
+                  </Text>
                 )}
-                <Text style={styles.span}>
-                  {order.billingAddress!.city} {order.billingAddress!.provinceCode}{' '}
-                  {order.billingAddress!.zip}
-                </Text>
-                <Text style={styles.p}>{order.billingAddress!.country}</Text>
               </View>
             </View>
           </View>
