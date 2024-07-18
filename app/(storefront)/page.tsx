@@ -7,7 +7,7 @@ import Footer from 'components/layout/footer';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-const { SITE_NAME } = process.env;
+const { SITE_NAME, SITE_VERIFICATION_ID } = process.env;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -19,6 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: {
       follow: true,
       index: true
+    },
+    verification: {
+      google: SITE_VERIFICATION_ID
     }
   };
 }
