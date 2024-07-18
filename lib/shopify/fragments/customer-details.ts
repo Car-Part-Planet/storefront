@@ -24,7 +24,7 @@ const customerDetailsFragment = /* GraphQL */ `
         }
       }
     }
-    orders(first: 20, sortKey: PROCESSED_AT, reverse: true) {
+    orders(first: 30, sortKey: PROCESSED_AT, reverse: true) {
       edges {
         node {
           ...OrderCard
