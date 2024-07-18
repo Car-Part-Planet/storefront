@@ -39,7 +39,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en" className={GeistSans.variable}>
       {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
-      <body className="min-h-screen bg-white text-black selection:bg-primary-muted">
+      <body className="min-h-screen overflow-hidden bg-white text-black selection:bg-primary-muted">
         <div className="flex h-screen max-h-screen flex-col overflow-auto">
           <header className="sticky top-0 z-10">
             <Banner />
