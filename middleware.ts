@@ -1,12 +1,11 @@
 import { URL_PREFIXES } from 'lib/constants';
-import { getOrigin, ensureLoggedIn } from 'lib/shopify/auth';
+import { ensureLoggedIn, getOrigin } from 'lib/shopify/auth';
 import { getRedirectData } from 'lib/vercel-kv';
 import { NextRequest, NextResponse } from 'next/server';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   console.log('client ip adress', request.ip);
-  console.log('user agent', request.headers.get('user-agent'));
 
   const pathname = request.nextUrl.pathname;
   if (pathname.startsWith('/account')) {

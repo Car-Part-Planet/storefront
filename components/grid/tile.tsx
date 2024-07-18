@@ -151,17 +151,20 @@ export const TileImage = ({
   ...props
 }: {
   active?: boolean;
-} & React.ComponentProps<typeof Image>) => {
+} & React.ImgHTMLAttributes<HTMLImageElement>) => {
   return (
     <div
-      className={clsx('aspect-h-1 aspect-w-1 relative overflow-hidden rounded border bg-white', {
-        'border-2 border-secondary': active,
-        'border-neutral-200': !active
-      })}
+      className={clsx(
+        'aspect-h-1 aspect-w-1 relative h-[80px] w-[80px] overflow-hidden rounded  border bg-white',
+        {
+          'border-2 border-secondary': active,
+          'border-neutral-200': !active
+        }
+      )}
     >
       {props.src ? (
         // eslint-disable-next-line jsx-a11y/alt-text -- `alt` is inherited from `props`, which is being enforced with TypeScript
-        <Image className={clsx('h-full w-full object-contain object-center')} {...props} />
+        <img className="h-full w-full object-contain object-center" loading="lazy" {...props} />
       ) : (
         <div
           className="flex h-full w-full items-center justify-center text-gray-400"
