@@ -5,7 +5,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const shouldRemoveSearchParams = (search: string) => {
   const paramString = search.split('?')[1];
-  console.log({ paramString });
   if (!paramString) {
     return true;
   }
