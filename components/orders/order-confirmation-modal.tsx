@@ -1,15 +1,15 @@
-import Image from 'next/image';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
-import { toPrintDate } from 'lib/utils';
-import PaymentsDetails from './payment-details';
-import Price from 'components/price';
 import Divider from 'components/divider';
-import Markdown from 'markdown-to-jsx';
-import { Order, OrderConfirmationContent } from 'lib/shopify/types';
-import { FormEventHandler, useEffect, useRef, useState, useTransition } from 'react';
-import { confirmOrder, fetchOrderConfirmationContent } from 'components/orders/actions';
-import { Button, Heading, Text, Label, Input } from 'components/ui';
 import LoadingDots from 'components/loading-dots';
+import { confirmOrder, fetchOrderConfirmationContent } from 'components/orders/actions';
+import Price from 'components/price';
+import { Button, Heading, Input, Label, Text } from 'components/ui';
+import { Order, OrderConfirmationContent } from 'lib/shopify/types';
+import { toPrintDate } from 'lib/utils';
+import Markdown from 'markdown-to-jsx';
+import Image from 'next/image';
+import { FormEventHandler, useEffect, useRef, useState, useTransition } from 'react';
+import PaymentsDetails from './payment-details';
 
 function OrderConfirmationDetails({
   content,
@@ -18,6 +18,9 @@ function OrderConfirmationDetails({
   content: OrderConfirmationContent;
   order: Order;
 }) {
+  const hasShippingAddress = order.shippingAddress !== null;
+  const hasBillingAddress = order.billingAddress !== null;
+
   return (
     <div className="space-y-4">
       <figure>
@@ -40,31 +43,49 @@ function OrderConfirmationDetails({
         <div className="flex-1 space-y-2">
           <Label>Shipping Address</Label>
           <div>
-            <Text>
-              {order.shippingAddress!.firstName} {order.shippingAddress!.lastName}
-            </Text>
-            <Text>{order.shippingAddress!.address1}</Text>
-            {order.shippingAddress!.address2 && <Text>{order.shippingAddress!.address2}</Text>}
-            <Text>
-              {order.shippingAddress!.city} {order.shippingAddress!.provinceCode}{' '}
-              {order.shippingAddress!.zip}
-            </Text>
-            <Text>{order.shippingAddress!.country}</Text>
+            {hasShippingAddress ? (
+              <>
+                <Text>
+                  {order.shippingAddress!.firstName} {order.shippingAddress!.lastName}
+                </Text>
+                <Text>{order.shippingAddress!.address1}</Text>
+                {order.shippingAddress!.address2 && <Text>{order.shippingAddress!.address2}</Text>}
+                <Text>
+                  {order.shippingAddress!.city} {order.shippingAddress!.provinceCode}{' '}
+                  {order.shippingAddress!.zip}
+                </Text>
+                <Text>{order.shippingAddress!.country}</Text>
+              </>
+            ) : (
+              <Text>
+                This is an order from our legacy platform. Some data may be missing or innacurate.
+                Please contact support for further assistance.
+              </Text>
+            )}
           </div>
         </div>
         <div className="flex-1 space-y-2">
           <Label>Billing Address</Label>
           <div>
-            <Text>
-              {order.billingAddress!.firstName} {order.billingAddress!.lastName}
-            </Text>
-            <Text>{order.billingAddress!.address1}</Text>
-            {order.billingAddress!.address2 && <Text>{order.billingAddress!.address2}</Text>}
-            <Text>
-              {order.billingAddress!.city} {order.billingAddress!.provinceCode}{' '}
-              {order.billingAddress!.zip}
-            </Text>
-            <Text>{order.billingAddress!.country}</Text>
+            {hasBillingAddress ? (
+              <>
+                <Text>
+                  {order.billingAddress!.firstName} {order.billingAddress!.lastName}
+                </Text>
+                <Text>{order.billingAddress!.address1}</Text>
+                {order.billingAddress!.address2 && <Text>{order.billingAddress!.address2}</Text>}
+                <Text>
+                  {order.billingAddress!.city} {order.billingAddress!.provinceCode}{' '}
+                  {order.billingAddress!.zip}
+                </Text>
+                <Text>{order.billingAddress!.country}</Text>
+              </>
+            ) : (
+              <Text>
+                This is an order from our legacy platform. Some data may be missing or innacurate.
+                Please contact support for further assistance.
+              </Text>
+            )}
           </div>
         </div>
       </div>
