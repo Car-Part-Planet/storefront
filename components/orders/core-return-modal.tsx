@@ -1,7 +1,7 @@
 import { Dialog, DialogBackdrop, DialogPanel, Fieldset, Legend } from '@headlessui/react';
-import { Order } from 'lib/shopify/types';
-import { Button, Heading, Input } from 'components/ui';
 import StatesCombobox from 'components/states-combobox';
+import { Button, Heading, Input } from 'components/ui';
+import { Order } from 'lib/shopify/types';
 import { useTransition } from 'react';
 import { returnCore } from './actions';
 
@@ -55,27 +55,27 @@ export default function CoreReturnModal({
                   required
                 />
                 <Input
-                  defaultValue={order.shippingAddress.phone}
+                  defaultValue={order.shippingAddress?.phone}
                   label="Phone"
                   name="phone"
                   type="tel"
                   required
                 />
                 <Input
-                  defaultValue={order.shippingAddress.address1}
+                  defaultValue={order.shippingAddress?.address1}
                   label="Address"
                   name="address"
                   required
                   className="col-span-2"
                 />
                 <Input
-                  defaultValue={order.shippingAddress.city}
+                  defaultValue={order.shippingAddress?.city}
                   label="City"
                   name="city"
                   required
                 />
-                <Input defaultValue={order.shippingAddress.zip} label="Zip" name="zip" required />
-                <StatesCombobox defaultStateCode={order.shippingAddress.provinceCode} />
+                <Input defaultValue={order.shippingAddress?.zip} label="Zip" name="zip" required />
+                <StatesCombobox defaultStateCode={order.shippingAddress?.provinceCode} />
               </Fieldset>
               <div className="flex justify-end gap-2">
                 <Button variant="text" onClick={onClose} type="button">
