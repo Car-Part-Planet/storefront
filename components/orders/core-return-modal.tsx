@@ -55,27 +55,32 @@ export default function CoreReturnModal({
                   required
                 />
                 <Input
-                  defaultValue={order.shippingAddress?.phone}
+                  defaultValue={order.shippingAddress?.phone || ''}
                   label="Phone"
                   name="phone"
                   type="tel"
                   required
                 />
                 <Input
-                  defaultValue={order.shippingAddress?.address1}
+                  defaultValue={order.shippingAddress?.address1 || ''}
                   label="Address"
                   name="address"
                   required
                   className="col-span-2"
                 />
                 <Input
-                  defaultValue={order.shippingAddress?.city}
+                  defaultValue={order.shippingAddress?.city || ''}
                   label="City"
                   name="city"
                   required
                 />
-                <Input defaultValue={order.shippingAddress?.zip} label="Zip" name="zip" required />
-                <StatesCombobox defaultStateCode={order.shippingAddress?.provinceCode} />
+                <Input
+                  defaultValue={order.shippingAddress?.zip || ''}
+                  label="Zip"
+                  name="zip"
+                  required
+                />
+                <StatesCombobox defaultStateCode={order.shippingAddress?.provinceCode || ''} />
               </Fieldset>
               <div className="flex justify-end gap-2">
                 <Button variant="text" onClick={onClose} type="button">

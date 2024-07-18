@@ -156,8 +156,8 @@ export type Order = {
   fulfillments: Fulfillment[];
   transactions: Transaction[];
   lineItems: LineItem[];
-  shippingAddress: Address;
-  billingAddress: Address;
+  shippingAddress: Address | null;
+  billingAddress: Address | null;
   /** the price of all line items, excluding taxes and surcharges */
   subtotal: Money;
   totalShipping: Money;

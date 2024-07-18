@@ -546,7 +546,11 @@ function reshapeOrders(orders: ShopifyOrder[]): any[] | Promise<Order[]> {
 }
 
 function reshapeOrder(shopifyOrder: ShopifyOrder): Order {
-  const reshapeAddress = (address: ShopifyAddress): Address => {
+  const reshapeAddress = (address: ShopifyAddress | null): Address | null => {
+    if (!address) {
+      return null;
+    }
+
     return {
       address1: address.address1,
       address2: address.address2,
