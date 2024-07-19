@@ -53,7 +53,7 @@ const ProductsList = ({
 
   return (
     <>
-      <Grid className="hide-scrollbar max-h-[1000px] grid-cols-1 overflow-y-auto border-b border-gray-100 pb-4 sm:grid-cols-2 sm:gap-x-8 lg:grid-cols-3">
+      <Grid className="h-auto grid-cols-2 overflow-y-auto border-b border-gray-100 pb-4 sm:gap-x-8 lg:max-h-[1000px] lg:grid-cols-3">
         {products.map((product, index) => (
           <Grid.Item key={product.handle} className="animate-fadeIn">
             <GridTileImage

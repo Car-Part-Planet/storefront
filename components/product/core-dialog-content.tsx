@@ -5,7 +5,7 @@ const { SITE_NAME } = process.env;
 
 const CoreDialogContent = () => {
   return (
-    <div className="mt-5 flex h-full flex-col space-y-5 overflow-hidden">
+    <div className="mt-5 flex flex-col space-y-5">
       <section>
         <p className="text-md mb-3 font-semibold">What is a core charge?</p>
         <p className="mb-3 text-sm">
