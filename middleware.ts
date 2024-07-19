@@ -16,7 +16,6 @@ const shouldRemoveSearchParams = (search: string) => {
 };
 
 export async function middleware(request: NextRequest) {
-  console.log('middleware.ts');
   console.log('client ip adress', request.ip);
 
   const pathname = request.nextUrl.pathname;
