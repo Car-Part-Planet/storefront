@@ -15,7 +15,7 @@ const ManufacturersGrid = ({ manufacturers, variant = 'home' }: ManufacturersGri
   );
 
   return (
-    <div className="h-auto max-h-[700px] w-full overflow-auto rounded px-10 py-6 shadow">
+    <div className="h-auto w-full overflow-auto rounded px-10 py-6 shadow lg:max-h-[700px]">
       {popularManufacturers.length ? (
         <>
           <p className="flex items-center gap-2">

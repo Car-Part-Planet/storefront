@@ -115,3 +115,13 @@ const phoneNumberMap: Record<string, { title: string; link: string }> = {
 const { STORE_PREFIX } = process.env;
 
 export const phoneNumber = phoneNumberMap[STORE_PREFIX!];
+
+const filterTitleMap: Record<string, string> = {
+  'reman-transmission': 'Find Your Transmission',
+  'car-part-planet': 'Find Your Part',
+  'reman-engine': 'Find Your Engine',
+  'transmission-locator': 'Find Your Transmission',
+  'engine-locator': 'Find Your Engine'
+};
+
+export const filterTitle = filterTitleMap[STORE_PREFIX!];

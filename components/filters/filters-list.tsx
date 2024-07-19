@@ -3,13 +3,11 @@
 import { Button } from '@headlessui/react';
 import { YEAR_FILTER_ID } from 'lib/constants';
 import { Menu } from 'lib/shopify/types';
-import { createUrl, findParentCollection } from 'lib/utils';
+import { createUrl, findParentCollection, toShopifyId } from 'lib/utils';
 import { FilterOption } from 'lib/vercel-kv/types';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import FilterField from './field';
-
-const toShopifyId = (id: string) => `gid://shopify/Metaobject/${id}`;
 
 type FiltersListProps = {
   makes: FilterOption[];

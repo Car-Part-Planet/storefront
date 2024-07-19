@@ -198,3 +198,5 @@ export const findVariantWithMinPrice = (variants: ProductVariant[]) => {
     return min;
   }, availableVariants[0]!);
 };
+
+export const toShopifyId = (id: string) => `gid://shopify/Metaobject/${id}`;
