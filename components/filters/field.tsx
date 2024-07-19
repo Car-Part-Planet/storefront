@@ -65,7 +65,6 @@ const FilterField = <T extends { [key: string]: unknown }>({
         by={displayKey}
         onChange={onChange}
         onClose={() => setQuery('')}
-        immediate
         disabled={disabled}
       >
         <div className="relative">

@@ -51,13 +51,11 @@ const FiltersList = ({
 
   useEffect(() => {
     const selectedYear = years.find((year) => toShopifyId(year.value) === yearIdFromSearchParams);
-    const [partType, make, model] = selectedYear?.parent?.split('_') || [];
-
-    setPartType(partTypes.find((type) => type.label === partType) || null);
+    const [, make, model] = selectedYear?.parent?.split('_') || [];
     setMake(makes.find((makeOption) => makeOption.label === make) || null);
     setModel(models.find((modelOption) => modelOption.label === model) || null);
     setYear(selectedYear || null);
-  }, [makes, models, partTypes, yearIdFromSearchParams, years]);
+  }, [makes, models, yearIdFromSearchParams, years]);
 
   const disabled = !partType || !make || !model || !year;
 
@@ -86,7 +84,7 @@ const FiltersList = ({
   const onSearch = () => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.set(YEAR_FILTER_ID, year?.value ? toShopifyId(year.value) : '');
-
+    console.log(createUrl(`/${partType?.value}`, newSearchParams));
     router.push(createUrl(`/${partType?.value}`, newSearchParams), { scroll: false });
   };
 
