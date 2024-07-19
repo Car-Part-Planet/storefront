@@ -36,13 +36,13 @@ const PriceSection = ({ variants }: { variants: ProductVariant[] }) => {
   return (
     <div className="flex w-full flex-col gap-1">
       {typeof minUsedVariantPrice === 'number' && (
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-col items-center justify-between md:flex-row">
           <span className="text-sm">{CONDITIONS.Used}</span>
           <Price amount={String(minUsedVariantPrice)} currencyCode={currencyCode} />
         </div>
       )}
       {typeof minRemanufacturedPrice === 'number' && (
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-col items-center justify-between md:flex-row">
           <span className="text-sm">{CONDITIONS.Remanufactured}</span>
           <Price amount={String(minRemanufacturedPrice)} currencyCode={currencyCode} />
         </div>
@@ -87,9 +87,9 @@ export function GridTileImage({
             )}
           </div>
         </div>
-        <h3 className="mt-4 px-4 pb-2 text-sm font-semibold leading-6 text-gray-800">
+        <p className="mb-2 mt-4 line-clamp-3 px-4 text-sm font-semibold leading-6 text-gray-800">
           {product.title}
-        </h3>
+        </p>
       </div>
       <div className="px-4">
         {shouldShowDescription && (

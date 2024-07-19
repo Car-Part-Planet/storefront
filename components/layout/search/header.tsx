@@ -37,8 +37,10 @@ const Header = async ({ collection }: { collection: string }) => {
   return collectionData ? (
     <>
       <div className="mb-3 mt-3 max-w-5xl lg:mb-1">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900">{collectionData.title}</h1>
-        <p className="mt-2 text-base text-gray-500">{collectionData.description}</p>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 md:text-4xl">
+          {collectionData.title}
+        </h1>
+        <p className="mt-2 text-sm text-gray-500 md:text-base">{collectionData.description}</p>
       </div>
       <Suspense fallback={<HelpfulLinksPlaceholder />}>
         <HelpfulLinks ids={collectionData.helpfulLinksTop} />
