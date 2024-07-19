@@ -185,3 +185,16 @@ export const getInitialSearchParams = (searchParams: URLSearchParams) => {
 
   return initialFilters;
 };
+
+export const findVariantWithMinPrice = (variants: ProductVariant[]) => {
+  const availableVariants = variants.filter((variant) => variant.availableForSale);
+
+  if (!availableVariants.length) return null;
+
+  return availableVariants.reduce((min, variant) => {
+    if (Number(variant.price.amount) < Number(min.price.amount)) {
+      min = variant;
+    }
+    return min;
+  }, availableVariants[0]!);
+};

@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import Price from 'components/price';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
 import { CoreChargeOption, Money, ProductOption, ProductVariant } from 'lib/shopify/types';
-import { createUrl } from 'lib/utils';
+import { createUrl, findVariantWithMinPrice } from 'lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
 
@@ -44,21 +44,11 @@ export function VariantSelector({
     return { ...acc, [variant.id]: variant };
   }, {});
 
-  // Filter out variants that are not available for sale
-  const availableVariants = variants.filter((variant) => variant.availableForSale);
-
-  // Calculate minimum price from available variants
-  const minAvailablePrice = availableVariants.length
-    ? availableVariants.reduce(
-        (min, variant) => Math.min(min, Number(variant.price.amount)),
-        Number(availableVariants[0]?.price.amount)
-      )
-    : null;
-
-  const currencyCode = availableVariants[0]?.price.currencyCode || 'USD';
+  const variantWithMinPrice = findVariantWithMinPrice(variants);
+  const currencyCode = variants[0]?.price.currencyCode || 'USD';
 
   const updatedMinPrice = {
-    amount: minAvailablePrice ? String(minAvailablePrice) : minPrice.amount,
+    amount: variantWithMinPrice ? String(variantWithMinPrice.price.amount) : minPrice.amount,
     currencyCode: currencyCode
   };
 
@@ -69,7 +59,8 @@ export function VariantSelector({
     });
 
     if (!hasSelectedVariant) {
-      const defaultVariant = variants.find((variant) => variant.availableForSale);
+      const defaultVariant =
+        variantWithMinPrice || variants.find((variant) => variant.availableForSale);
       if (defaultVariant) {
         const optionSearchParams = new URLSearchParams(searchParams.toString());
         defaultVariant.selectedOptions.forEach((option) => {

@@ -19,10 +19,7 @@ export function ProductDescription({ product }: { product: Product }) {
       <div className="mb-4 flex flex-col">
         <h1 className="text-xl font-bold md:text-2xl">{product.title}</h1>
 
-        <VariantDetails
-          variants={product.variants}
-          defaultPrice={product.priceRange.minVariantPrice}
-        />
+        <VariantDetails product={product} />
       </div>
       <Suspense fallback={null}>
         <VariantSelector
