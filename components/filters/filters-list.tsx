@@ -84,7 +84,6 @@ const FiltersList = ({
   const onSearch = () => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.set(YEAR_FILTER_ID, year?.value ? toShopifyId(year.value) : '');
-    console.log(createUrl(`/${partType?.value}`, newSearchParams));
     router.push(createUrl(`/${partType?.value}`, newSearchParams), { scroll: false });
   };
 
