@@ -33,7 +33,7 @@ const BottomContent = async ({ collectionHandle }: { collectionHandle: string })
       {!collection.transmissionCodeLinks && !collection.engineSizeLinks ? null : (
         <div className="mt-10 space-y-3">
           <Tag text="Get Started" />
-          <div className="space-y-16">
+          <div className="space-y-16 pb-3">
             <Suspense>
               <TransmissionCode collection={collection} />
             </Suspense>
