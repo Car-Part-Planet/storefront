@@ -73,7 +73,7 @@ const FilterField = <T extends { [key: string]: unknown }>({
             displayValue={getDisplayValue}
             placeholder={`Select ${label}`}
             onChange={(event) => setQuery(event.target.value)}
-            className="w-full rounded border border-gray-200 py-1.5 pl-3 pr-8 text-sm ring-2 ring-transparent focus:outline-none focus-visible:outline-none data-[disabled]:cursor-not-allowed data-[autofocus]:border-0 data-[focus]:border-transparent data-[disabled]:opacity-50 data-[focus]:ring-2 data-[autofocus]:ring-secondary data-[focus]:ring-secondary data-[focus]:ring-offset-0"
+            className="w-full rounded border border-gray-200 py-1.5 pl-3 pr-8 text-base ring-2 ring-transparent focus:outline-none focus-visible:outline-none data-[disabled]:cursor-not-allowed data-[autofocus]:border-0 data-[focus]:border-transparent data-[disabled]:opacity-50 data-[focus]:ring-2 data-[autofocus]:ring-secondary data-[focus]:ring-secondary data-[focus]:ring-offset-0 md:text-sm"
             autoFocus={autoFocus}
           />
           <ComboboxButton className="group absolute inset-y-0 right-0 px-2.5 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50">
