@@ -15,7 +15,6 @@ const shouldRemoveSearchParams = (search: string) => {
   return true;
 };
 
-// This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   console.log('client ip adress', request.ip);
 
@@ -68,21 +67,21 @@ export const config = {
      * - logo
      */
     {
-      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico).*)',
+      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)',
       missing: [
         { type: 'header', key: 'next-router-prefetch' },
         { type: 'header', key: 'purpose', value: 'prefetch' }
       ]
     },
     {
-      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico).*)',
+      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)',
       has: [
         { type: 'header', key: 'next-router-prefetch' },
         { type: 'header', key: 'purpose', value: 'prefetch' }
       ]
     },
     {
-      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico).*)',
+      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)',
       has: [{ type: 'header', key: 'x-present' }],
       missing: [{ type: 'header', key: 'x-missing', value: 'prefetch' }]
     }

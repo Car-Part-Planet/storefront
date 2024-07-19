@@ -2,29 +2,32 @@
 
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import Price from 'components/price';
-import { Money, ProductVariant } from 'lib/shopify/types';
+import { Product, ProductVariant } from 'lib/shopify/types';
+import { findVariantWithMinPrice } from 'lib/utils';
 import { useSearchParams } from 'next/navigation';
 
 type VariantDetailsProps = {
-  variants: ProductVariant[];
-  defaultPrice: Money;
+  product: Product;
 };
 
-const VariantDetails = ({ variants, defaultPrice }: VariantDetailsProps) => {
+const VariantDetails = ({ product }: VariantDetailsProps) => {
   const searchParams = useSearchParams();
-  const variant = variants.find((variant: ProductVariant) =>
+  const variant = product.variants.find((variant: ProductVariant) =>
     variant.selectedOptions.every(
       (option) => option.value === searchParams.get(option.name.toLowerCase())
     )
   );
 
-  const price = variant?.price.amount || defaultPrice.amount;
+  const variantWithMinPrice = findVariantWithMinPrice(product.variants);
+
+  const price = variant?.price.amount || variantWithMinPrice?.price.amount || 0;
+  const currencyCode = variant?.price.currencyCode || 'USD';
 
   return (
     <div className="mt-1">
       <Price
-        amount={price}
-        currencyCode={variant?.price.currencyCode || defaultPrice.currencyCode}
+        amount={String(price)}
+        currencyCode={currencyCode}
         className="text-2xl font-semibold"
       />
       <div className="mt-2 flex flex-col items-start justify-start gap-y-2 sm:flex-row sm:items-center sm:gap-x-2">
