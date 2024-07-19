@@ -5,6 +5,9 @@ import { notFound } from 'next/navigation';
 import Breadcrumb from 'components/breadcrumb';
 import BreadcrumbHome from 'components/breadcrumb/breadcrumb-home';
 import YMMFilters, { YMMFiltersPlaceholder } from 'components/filters';
+import MobileMMYFilters, {
+  MobileMMYFiltersPlaceholder
+} from 'components/filters/mobile-mmy-filters';
 import ProductsList from 'components/layout/products-list';
 import { getProductsInCollection } from 'components/layout/products-list/actions';
 import BottomContent from 'components/layout/search/bottom-content';
@@ -53,11 +56,6 @@ async function CategoryPage({
 
   return (
     <>
-      <div className="my-3 block lg:hidden">
-        <Suspense fallback={<YMMFiltersPlaceholder />}>
-          <YMMFilters />
-        </Suspense>
-      </div>
       <div className="mb-5 flex w-full items-center justify-between gap-2 lg:justify-end">
         <MobileFilters
           filters={filters}
@@ -93,9 +91,9 @@ export default async function CategorySearchPage(props: {
 
   return (
     <>
-      <div className="mx-auto mt-6 max-w-screen-2xl px-8 pb-10">
-        <div className="grid lg:grid-cols-3 lg:gap-x-10 xl:grid-cols-4">
-          <aside className="hidden lg:block">
+      <div className="mx-auto max-w-screen-2xl pb-10">
+        <div className="mt-0 grid lg:mt-6 lg:grid-cols-3 lg:gap-x-10 xl:grid-cols-4">
+          <aside className="hidden pl-8 lg:block">
             <div className="mb-5">
               <Suspense fallback={<YMMFiltersPlaceholder />}>
                 <YMMFilters />
@@ -111,19 +109,26 @@ export default async function CategorySearchPage(props: {
               <SubMenu collection={collectionHandle} />
             </Suspense>
           </aside>
-          <div className="lg:col-span-2 xl:col-span-3">
-            <div className="mb-2">
-              <Suspense fallback={<BreadcrumbHome />} key={`breadcrumb-${collectionHandle}`}>
-                <Breadcrumb type="collection" handle={collectionHandle} />
+          <div className="pr-0 lg:col-span-2 lg:pr-8 xl:col-span-3">
+            <div className="mb-3 block lg:hidden">
+              <Suspense fallback={<MobileMMYFiltersPlaceholder />}>
+                <MobileMMYFilters />
               </Suspense>
             </div>
-            <Suspense fallback={<HeaderPlaceholder />} key={`header-${collectionHandle}`}>
-              <Header collection={collectionHandle} />
-            </Suspense>
+            <div className="px-8 lg:px-0">
+              <div className="mb-2">
+                <Suspense fallback={<BreadcrumbHome />} key={`breadcrumb-${collectionHandle}`}>
+                  <Breadcrumb type="collection" handle={collectionHandle} />
+                </Suspense>
+              </div>
+              <Suspense fallback={<HeaderPlaceholder />} key={`header-${collectionHandle}`}>
+                <Header collection={collectionHandle} />
+              </Suspense>
 
-            <Suspense fallback={<ProductsGridPlaceholder />} key={`products-${collectionHandle}`}>
-              <CategoryPage {...props} />
-            </Suspense>
+              <Suspense fallback={<ProductsGridPlaceholder />} key={`products-${collectionHandle}`}>
+                <CategoryPage {...props} />
+              </Suspense>
+            </div>
           </div>
         </div>
       </div>

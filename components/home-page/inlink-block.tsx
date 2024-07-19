@@ -29,7 +29,7 @@ const TransmissionCodesBlock = async () => {
 
 const InlinkBlock = () => {
   return (
-    <div className="flex flex-col gap-y-3 px-3 content-visibility-auto contain-intrinsic-size-[auto_800px]">
+    <div className="flex flex-col gap-y-3 p-3 content-visibility-auto contain-intrinsic-size-[auto_800px]">
       <Tag text="Get Started" />
       <div className="space-y-16">
         {STORE_PREFIX === 'reman-transmission' || STORE_PREFIX === 'transmission-locator' ? (
