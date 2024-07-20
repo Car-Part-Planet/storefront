@@ -61,16 +61,16 @@ const Tabs = ({ fields }: { fields: { [key: string]: string } }) => {
   });
 
   return (
-    <TabGroup vertical>
-      <div className="flex w-full gap-x-10">
-        <TabList className="flex shrink-0 basis-1/4 flex-col gap-2">
+    <TabGroup>
+      <div className="flex w-full flex-col gap-10 md:flex-row">
+        <TabList className="flex h-auto flex-row gap-2 overflow-x-auto md:shrink-0 md:basis-1/4 md:flex-col md:overflow-hidden">
           {sortedKeys.map((key) => (
             <Tab
               key={key}
-              className="flex items-center justify-between rounded-sm bg-gray-200/60 p-3 text-left text-sm font-medium text-content-strong focus:outline-none focus:ring-0 data-[selected]:bg-primary data-[selected]:text-white"
+              className="flex min-w-fit items-center justify-between rounded-sm bg-gray-200/60 p-3 text-left text-sm font-medium text-content-strong focus:outline-none focus:ring-0 data-[selected]:bg-primary data-[selected]:text-white md:w-full"
             >
               {startCase(key)}
-              <ChevronRightIcon className="size-4" />
+              <ChevronRightIcon className="hidden size-4 md:block" />
             </Tab>
           ))}
         </TabList>

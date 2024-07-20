@@ -3,6 +3,7 @@ import { getMenu } from 'lib/shopify';
 import { getMMYFilters } from 'lib/vercel-kv';
 import { cache } from 'react';
 import FiltersList from './filters-list';
+import MobileHomePageFilter from './mobile-homepage-filters';
 
 const loadMMMYFilters = cache(async () => {
   return await getMMYFilters();
@@ -17,7 +18,12 @@ const HomePageFilters = async () => {
       <h1 className="text-4xl font-bold tracking-tight text-white lg:text-6xl">
         {filterTitle || 'Find Your Part'}
       </h1>
-      <div className="mt-5 flex grow flex-col items-center gap-3 @md:flex-row">
+
+      <MobileHomePageFilter title={filterTitle}>
+        <FiltersList menu={menu} {...data} />
+      </MobileHomePageFilter>
+
+      <div className="mt-5 hidden grow flex-col items-center gap-3 @md:flex-row md:flex">
         <FiltersList menu={menu} {...data} />
       </div>
     </>
@@ -31,6 +37,7 @@ export const HomePageFiltersPlaceholder = () => {
         {filterTitle || 'Find Your Part'}
       </h1>
       <div className="mt-5 flex w-full flex-col items-center gap-3 md:flex-row">
+        <div className="h-9 w-full rounded bg-gray-50 opacity-50" />
         <div className="h-9 w-full rounded bg-gray-50 opacity-50" />
         <div className="h-9 w-full rounded bg-gray-50 opacity-50" />
         <div className="h-9 w-full rounded bg-gray-50 opacity-50" />
