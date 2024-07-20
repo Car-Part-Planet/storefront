@@ -7,7 +7,7 @@ import BreadcrumbHome from 'components/breadcrumb/breadcrumb-home';
 import YMMFilters, { YMMFiltersPlaceholder } from 'components/filters';
 import MobileMMYFilters, {
   MobileMMYFiltersPlaceholder
-} from 'components/filters/mobile-mmy-filters';
+} from 'components/filters/mobile-plp-filters';
 import ProductsList from 'components/layout/products-list';
 import { getProductsInCollection } from 'components/layout/products-list/actions';
 import BottomContent from 'components/layout/search/bottom-content';

@@ -138,7 +138,7 @@ const FiltersList = ({
       <Button
         onClick={onSearch}
         disabled={disabled}
-        className="w-full rounded bg-secondary px-4 py-1.5 text-sm font-medium text-white data-[disabled]:cursor-not-allowed data-[hover]:bg-secondary/85 data-[disabled]:opacity-50 @md:w-auto"
+        className="w-full rounded bg-secondary px-4 py-2 text-sm font-medium text-white data-[disabled]:cursor-not-allowed data-[hover]:bg-secondary/85 data-[disabled]:opacity-50 @md:w-auto"
       >
         Search
       </Button>

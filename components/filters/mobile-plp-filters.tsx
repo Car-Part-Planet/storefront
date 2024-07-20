@@ -14,7 +14,7 @@ const MobileMMYFilters = async () => {
   const menu = await getMenu('main-menu');
 
   return (
-    <FiltersDialog {...data} title={filterTitle}>
+    <FiltersDialog title={filterTitle} {...data}>
       <FiltersList {...data} menu={menu} />
     </FiltersDialog>
   );
