@@ -1,13 +1,8 @@
 import { filterTitle } from 'lib/constants';
 import { getMenu } from 'lib/shopify';
-import { getMMYFilters } from 'lib/vercel-kv';
-import { cache } from 'react';
 import FiltersList from './filters-list';
 import MobileHomePageFilter from './mobile-homepage-filters';
-
-const loadMMMYFilters = cache(async () => {
-  return await getMMYFilters();
-});
+import { loadMMMYFilters } from './utils';
 
 const HomePageFilters = async () => {
   const menu = await getMenu('main-menu');
