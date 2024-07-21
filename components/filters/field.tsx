@@ -66,6 +66,7 @@ const FilterField = <T extends { [key: string]: unknown }>({
         onChange={onChange}
         onClose={() => setQuery('')}
         disabled={disabled}
+        immediate
       >
         <div className="relative">
           <ComboboxInput

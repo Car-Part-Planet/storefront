@@ -7,11 +7,14 @@ import HomePageFilters, { HomePageFiltersPlaceholder } from './filters/hompage-f
 import DynamicHeroIcon from './hero-icon';
 import { NextImageDisplay } from './page/image-display';
 
-const { SITE_NAME } = process.env;
+const { SITE_NAME, STORE_PREFIX } = process.env;
 
 const offers = [
   {
-    title: 'Free Shipping (Commercial Address)',
+    title:
+      STORE_PREFIX === 'reman-transmission'
+        ? 'Flat Rate Shipping (Commercial Address)'
+        : 'Free Shipping (Commercial Address)',
     icon: 'truck'
   },
   {
