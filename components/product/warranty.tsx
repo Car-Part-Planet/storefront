@@ -8,7 +8,18 @@ import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import WarrantySelector from './warranty-selector';
 
-const Warranty = ({ product, siteName }: { product: Product; siteName: string | undefined }) => {
+const engineSites = ['car-part-planet', 'reman-engine', 'engine-locator'];
+const transmissionSites = ['car-part-planet', 'reman-transmission', 'transmission-locator'];
+
+const Warranty = ({
+  product,
+  siteName,
+  storePrefix
+}: {
+  product: Product;
+  siteName: string | undefined;
+  storePrefix: string;
+}) => {
   const searchParams = useSearchParams();
 
   const [openingDialog, setOpeningDialog] = useState<'included' | 'terms-conditions' | null>(null);
@@ -94,187 +105,198 @@ const Warranty = ({ product, siteName }: { product: Product; siteName: string | 
               </p>
             </section>
 
-            <section>
-              <h2 className="mb-2 mt-4 font-bold">Remanufactured Engines</h2>
-            </section>
+            {engineSites.includes(storePrefix) && (
+              <>
+                <section>
+                  <h2 className="mb-2 mt-4 font-bold">Remanufactured Engines</h2>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-bold">Gasoline Engines</p>
-              <p className="text-sm">
-                Gas engines installed in non-fleet or commercial automobiles and light trucks up to
-                11,000 GVW.
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-bold">Gasoline Engines</p>
+                  <p className="text-sm">
+                    Gas engines installed in non-fleet or commercial automobiles and light trucks up
+                    to 11,000 GVW.
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">Year 2000 and Older</p>
-              <p className="text-sm">
-                3-years / unlimited mileage, $50/hour labor reimbursement rate. Parts and labor are
-                paid only upon inspected and approved claims.
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">Year 2000 and Older</p>
+                  <p className="text-sm">
+                    3-years / unlimited mileage, $50/hour labor reimbursement rate. Parts and labor
+                    are paid only upon inspected and approved claims.
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">Year 2001 and Newer</p>
-              <p className="text-sm">
-                5-years / unlimited mileage, $50/hour labor reimbursement rate. Parts and labor are
-                paid only on approved claims after factory inspection. Purchases made prior to
-                January 1, 2018, carry a warranty of 3 years with unlimited mileage. A first-time
-                part replacement is free.
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">Year 2001 and Newer</p>
+                  <p className="text-sm">
+                    5-years / unlimited mileage, $50/hour labor reimbursement rate. Parts and labor
+                    are paid only on approved claims after factory inspection. Purchases made prior
+                    to January 1, 2018, carry a warranty of 3 years with unlimited mileage. A
+                    first-time part replacement is free.
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">
-                Gas Engines in Commercial Fleet Vehicles and Light Trucks
-              </p>
-              <p className="text-sm">
-                3-years / 75,000 miles, $50/hour labor reimbursement rate. Parts and labor are paid
-                only on inspected and approved claims. First-time part replacement is free. Warranty
-                claim reimbursement cannot exceed the total cost of the part purchased.
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">
+                    Gas Engines in Commercial Fleet Vehicles and Light Trucks
+                  </p>
+                  <p className="text-sm">
+                    3-years / 75,000 miles, $50/hour labor reimbursement rate. Parts and labor are
+                    paid only on inspected and approved claims. First-time part replacement is free.
+                    Warranty claim reimbursement cannot exceed the total cost of the part purchased.
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">
-                Gas Engines in Medium/Heavy Duty Trucks (exceeding 11,000 GVW)
-              </p>
-              <p className="text-sm">
-                12 months / 12,000 miles, $50/hour labor reimbursement rate is only on inspected and
-                approved claims. First-time part replacement is FREE.
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">
+                    Gas Engines in Medium/Heavy Duty Trucks (exceeding 11,000 GVW)
+                  </p>
+                  <p className="text-sm">
+                    12 months / 12,000 miles, $50/hour labor reimbursement rate is only on inspected
+                    and approved claims. First-time part replacement is FREE.
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">
-                Diesel Engines (Vehicles exceeding 11,000 G.V.W.)
-              </p>
-              <p className="text-sm">
-                12 months / 12,000 miles, $50/hour labor reimbursement rate is only on inspected and
-                approved claims. First-time part replacement is FREE.
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">
+                    Diesel Engines (Vehicles exceeding 11,000 G.V.W.)
+                  </p>
+                  <p className="text-sm">
+                    12 months / 12,000 miles, $50/hour labor reimbursement rate is only on inspected
+                    and approved claims. First-time part replacement is FREE.
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-bold">Marine Engines</p>
-              <p className="text-sm">
-                18 months / unlimited miles. $50/hour labor reimbursement rate with a cap of $800.
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-bold">Marine Engines</p>
+                  <p className="text-sm">
+                    18 months / unlimited miles. $50/hour labor reimbursement rate with a cap of
+                    $800.
+                  </p>
+                </section>
 
-            <section>
-              <h2 className="mb-2 mt-4 font-bold">Used Engines</h2>
-            </section>
+                <section>
+                  <h2 className="mb-2 mt-4 font-bold">Used Engines</h2>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">Used Engine Definition</p>
-              <p className="text-sm">
-                The term used engine shall mean, a used engine assembly (basic block, cylinder heads
-                and internal components) supplied by {siteName} of the original manufacturer. All
-                other accessories attached, left on the block for the convenience purposes only and
-                are not guaranteed or warrantied. Subject to the limitations listed below,{' '}
-                {siteName} at its discretion will either send a re-placement engine of the same kind
-                that is available at the time or refund the customer purchase price if the engine is
-                defective and no replacement is available. {siteName} will not be responsible for
-                any labor cost incurred by the customer, unless prior agreement is made.
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">Used Engine Definition</p>
+                  <p className="text-sm">
+                    The term used engine shall mean, a used engine assembly (basic block, cylinder
+                    heads and internal components) supplied by {siteName} of the original
+                    manufacturer. All other accessories attached, left on the block for the
+                    convenience purposes only and are not guaranteed or warrantied. Subject to the
+                    limitations listed below, {siteName} at its discretion will either send a
+                    re-placement engine of the same kind that is available at the time or refund the
+                    customer purchase price if the engine is defective and no replacement is
+                    available. {siteName} will not be responsible for any labor cost incurred by the
+                    customer, unless prior agreement is made.
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-2 text-sm">
-                We guarantee that any used engine sold engine sold by {siteName} shall be free from
-                knocking, excessive oil consumption and cracks in the block, and is subject to the
-                following terms and conditions.
-              </p>
-            </section>
+                <section>
+                  <p className="mb-2 text-sm">
+                    We guarantee that any used engine sold engine sold by {siteName} shall be free
+                    from knocking, excessive oil consumption and cracks in the block, and is subject
+                    to the following terms and conditions.
+                  </p>
+                </section>
+              </>
+            )}
 
-            <section>
-              <h2 className="mb-2 mt-4 font-bold">Remanufactured Transmissions</h2>
-            </section>
+            {transmissionSites.includes(storePrefix) && (
+              <>
+                <section>
+                  <h2 className="mb-2 mt-4 font-bold">Remanufactured Transmissions</h2>
+                </section>
 
-            <section>
-              <p className="text-sm">
-                A remanufactured and improved torque converter is included with every transmission.
-                To eliminate the possibility of front seal leaks, vibration, and premature bushing
-                wear, all torque converters are tested for leaks, lock-up, concentricity, and
-                balance. Every fully remanufactured valve body, with complete system correction and
-                recalibration kit, is tested independently. All wear-prone valves are restored to
-                stringent specifcations and vacuum tested to confrm proper function. Each
-                remanufactured transmission is hot, cold, load, and simulated road tested using our
-                proprietary CARS (Computer-Aided Road Simulation) dynamometer program. All
-                remanufactured transmissions are backed by the industry&apos;s best, no-hassle
-                nationwide warranty. Warranty claim reimbursement cannot exceed the total cost of
-                the part purchased.
-              </p>
-            </section>
+                <section>
+                  <p className="text-sm">
+                    A remanufactured and improved torque converter is included with every
+                    transmission. To eliminate the possibility of front seal leaks, vibration, and
+                    premature bushing wear, all torque converters are tested for leaks, lock-up,
+                    concentricity, and balance. Every fully remanufactured valve body, with complete
+                    system correction and recalibration kit, is tested independently. All wear-prone
+                    valves are restored to stringent specifcations and vacuum tested to confrm
+                    proper function. Each remanufactured transmission is hot, cold, load, and
+                    simulated road tested using our proprietary CARS (Computer-Aided Road
+                    Simulation) dynamometer program. All remanufactured transmissions are backed by
+                    the industry&apos;s best, no-hassle nationwide warranty. Warranty claim
+                    reimbursement cannot exceed the total cost of the part purchased.
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">Year 2000 and Older</p>
-              <p className="text-sm">
-                Personal: 36 Months/Unlimited Miles
-                <br />
-                Commercial: 18 Months/100,000 Miles <br />
-                CVT Transmissions: 36 Months/Unlimited Miles <br />
-                Manual Transmissions: 36 Months/Unlimited Miles
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">Year 2000 and Older</p>
+                  <p className="text-sm">
+                    Personal: 36 Months/Unlimited Miles
+                    <br />
+                    Commercial: 18 Months/100,000 Miles <br />
+                    CVT Transmissions: 36 Months/Unlimited Miles <br />
+                    Manual Transmissions: 36 Months/Unlimited Miles
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">Year 2001 and Newer</p>
-              <p className="text-sm">
-                Personal: 60 Months/Unlimited Miles <br />
-                Commercial:
-                <br />
-                Prior to 3/1/2020 18 Months/100,000 Miles
-                <br />
-                After 3/1/2020 36 Months/Unlimited miles
-                <br />
-                CVT Transmissions: 36 Months/Unlimited Miles
-                <br />
-                Manual Transmissions: 36 Months/Unlimited Miles
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">Year 2001 and Newer</p>
+                  <p className="text-sm">
+                    Personal: 60 Months/Unlimited Miles <br />
+                    Commercial:
+                    <br />
+                    Prior to 3/1/2020 18 Months/100,000 Miles
+                    <br />
+                    After 3/1/2020 36 Months/Unlimited miles
+                    <br />
+                    CVT Transmissions: 36 Months/Unlimited Miles
+                    <br />
+                    Manual Transmissions: 36 Months/Unlimited Miles
+                  </p>
+                </section>
 
-            <section>
-              <h2 className="mb-2 mt-4 font-bold">Used Transmissions</h2>
-            </section>
+                <section>
+                  <h2 className="mb-2 mt-4 font-bold">Used Transmissions</h2>
+                </section>
 
-            <section>
-              <p className="text-sm">
-                {siteName}&apos;s used transmission warranty is limited to manufacturing defects of
-                the following parts: transmission housing, torque converter (included for automatic
-                transmissions) and all internal components, including gears and shafts. The warranty
-                does not cover any external wiring, sensors, or other external parts that can be
-                transferred from your current transmission. {siteName} warranty does not cover any
-                attached accessory parts, such as switches, sensors, cables, electronics etc.
-              </p>
-            </section>
+                <section>
+                  <p className="text-sm">
+                    {siteName}&apos;s used transmission warranty is limited to manufacturing defects
+                    of the following parts: transmission housing, torque converter (included for
+                    automatic transmissions) and all internal components, including gears and
+                    shafts. The warranty does not cover any external wiring, sensors, or other
+                    external parts that can be transferred from your current transmission.{' '}
+                    {siteName} warranty does not cover any attached accessory parts, such as
+                    switches, sensors, cables, electronics etc.
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">Year 2000 and Older</p>
-              <p className="text-sm">
-                Personal: 6 Months/ 6,000 miles (parts only)
-                <br />
-                Commercial: 6 Months/ 6,000 miles (parts only)
-                <br />
-                CVT Transmissions: 6 Months/ 6,000 miles (parts only)
-                <br />
-                Manual Transmissions: 6 Months/ 6,000 miles (parts only)
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">Year 2000 and Older</p>
+                  <p className="text-sm">
+                    Personal: 6 Months/ 6,000 miles (parts only)
+                    <br />
+                    Commercial: 6 Months/ 6,000 miles (parts only)
+                    <br />
+                    CVT Transmissions: 6 Months/ 6,000 miles (parts only)
+                    <br />
+                    Manual Transmissions: 6 Months/ 6,000 miles (parts only)
+                  </p>
+                </section>
 
-            <section>
-              <p className="mb-1 mt-2 text-sm font-semibold">Years 2001 and Newer</p>
-              <p className="text-sm">
-                Personal: 1 Year/ 12,000 miles (parts only)
-                <br />
-                Commercial: 6 Months/ 6,000 miles (parts only)
-                <br />
-                CVT Transmissions: 6 Months/ 6,000 miles (parts only)
-                <br />
-                Manual Transmissions: 6 Months/ 6,000 miles (parts only)
-              </p>
-            </section>
+                <section>
+                  <p className="mb-1 mt-2 text-sm font-semibold">Years 2001 and Newer</p>
+                  <p className="text-sm">
+                    Personal: 1 Year/ 12,000 miles (parts only)
+                    <br />
+                    Commercial: 6 Months/ 6,000 miles (parts only)
+                    <br />
+                    CVT Transmissions: 6 Months/ 6,000 miles (parts only)
+                    <br />
+                    Manual Transmissions: 6 Months/ 6,000 miles (parts only)
+                  </p>
+                </section>
+              </>
+            )}
 
             <section>
               <p className="mb-1 mt-2 text-sm font-semibold">WHAT IS NOT COVERED</p>
