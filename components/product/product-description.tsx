@@ -12,8 +12,9 @@ import VariantDetails from './vairant-details';
 import { VariantSelector } from './variant-selector';
 import Warranty from './warranty';
 
+const { STORE_PREFIX, SITE_NAME } = process.env;
+
 export function ProductDescription({ product }: { product: Product }) {
-  const { STORE_PREFIX, SITE_NAME } = process.env;
   return (
     <>
       <div className="mb-4 flex flex-col">
@@ -44,7 +45,7 @@ export function ProductDescription({ product }: { product: Product }) {
       </div>
 
       <div className="mb-2 border-t py-4 dark:border-neutral-700">
-        <Warranty product={product} siteName={SITE_NAME} />
+        <Warranty product={product} siteName={SITE_NAME} storePrefix={STORE_PREFIX!} />
       </div>
 
       <div className="mb-2 border-t py-4 dark:border-neutral-700">
