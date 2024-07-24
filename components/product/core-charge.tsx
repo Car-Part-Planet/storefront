@@ -75,23 +75,37 @@ const CoreCharge = ({ variants, children }: CoreChargeProps) => {
         </SideDialog>
       </div>
       <ul className="flex min-h-16 flex-row space-x-4 pt-2">
-        {coreChargeOptions.map((option) => (
-          <li className="flex w-32" key={option.value}>
+        {coreChargeOptions.length > 0 ? (
+          coreChargeOptions.map((option) => (
+            <li className="flex w-32" key={option.value}>
+              <button
+                onClick={() => handleSelectCoreChargeOption(option.value)}
+                className={cn(
+                  'font-base flex w-full flex-col flex-wrap items-center justify-center space-y-0.5 rounded border text-center text-xs',
+                  {
+                    'border-0 ring-2 ring-secondary': coreVariantIdSearchParam === option.value
+                  }
+                )}
+              >
+                <span className="font-bold">{option.label}</span>
+                <Price {...option.price} />
+              </button>
+            </li>
+          ))
+        ) : (
+          <li className="flex w-32">
             <button
-              onClick={() => handleSelectCoreChargeOption(option.value)}
               className={cn(
                 'font-base flex w-full flex-col flex-wrap items-center justify-center space-y-0.5 rounded border text-center text-xs',
-                {
-                  'border-0 ring-2 ring-secondary': coreVariantIdSearchParam === option.value
-                }
+                'cursor-not-allowed border-0 opacity-50 ring-2 ring-secondary'
               )}
-              disabled={option.value === 'NOT_REQUIRED'}
+              disabled
             >
-              <span className="font-bold">{option.label}</span>
-              <Price {...option.price} />
+              <span className="font-bold">Not Required</span>
+              <Price amount={'0'} currencyCode="USD" />
             </button>
           </li>
-        ))}
+        )}
       </ul>
     </div>
   );
