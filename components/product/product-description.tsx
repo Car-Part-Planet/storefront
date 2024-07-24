@@ -1,4 +1,5 @@
 import { AddToCart } from 'components/cart/add-to-cart';
+import PhoneBlock from 'components/phone-block';
 import Prose from 'components/prose';
 import { Product } from 'lib/shopify/types';
 import { Suspense } from 'react';
@@ -49,7 +50,7 @@ export function ProductDescription({ product }: { product: Product }) {
       </div>
 
       <div className="mb-2 border-t py-4 dark:border-neutral-700">
-        <Delivery storePrefix={STORE_PREFIX} siteName={SITE_NAME} />
+        <Delivery storePrefix={STORE_PREFIX} siteName={SITE_NAME} phoneBlock={<PhoneBlock />} />
       </div>
 
       <PriceSummary
