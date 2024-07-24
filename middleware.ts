@@ -25,17 +25,20 @@ export async function middleware(request: NextRequest) {
     return await ensureLoggedIn(request, origin);
   }
 
-  const search = request.nextUrl.search; // get the search query string
-  let destination;
+  // only enable redirect logic on production
+  if (process.env.NODE_ENV === 'production') {
+    const search = request.nextUrl.search; // get the search query string
+    let destination;
 
-  if (!search || shouldRemoveSearchParams(search)) {
-    destination = await getRedirectData(pathname);
-  } else {
-    destination = await getRedirectData(`${pathname}${decodeURIComponent(search)}`);
-  }
+    if (!search || shouldRemoveSearchParams(search)) {
+      destination = await getRedirectData(pathname);
+    } else {
+      destination = await getRedirectData(`${pathname}${decodeURIComponent(search)}`);
+    }
 
-  if (destination) {
-    return NextResponse.redirect(new URL(destination, request.url), 301);
+    if (destination) {
+      return NextResponse.redirect(new URL(destination, request.url), 301);
+    }
   }
 
   if (URL_PREFIXES.some((url) => pathname.startsWith(url))) {

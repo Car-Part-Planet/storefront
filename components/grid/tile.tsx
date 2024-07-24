@@ -87,9 +87,12 @@ export function GridTileImage({
             )}
           </div>
         </div>
-        <p className="mb-2 mt-4 line-clamp-3 px-4 text-sm font-semibold leading-6 text-gray-800">
+        <Link
+          href={href}
+          className="mb-2 mt-4 line-clamp-3 px-4 text-sm font-semibold leading-6 text-gray-800"
+        >
           {product.title}
-        </p>
+        </Link>
       </div>
       <div className="px-4">
         {shouldShowDescription && (
