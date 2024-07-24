@@ -8,7 +8,7 @@ import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
 import { CoreChargeOption, Money, ProductOption, ProductVariant } from 'lib/shopify/types';
 import { createUrl, findVariantWithMinPrice } from 'lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 type Combination = {
   id: string;
@@ -30,15 +30,19 @@ export function VariantSelector({
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
 
-  const combinations: Combination[] = variants.map((variant) => ({
-    id: variant.id,
-    availableForSale: variant.availableForSale,
-    // Adds key / value pairs for each variant (ie. "color": "Black" and "size": 'M").
-    ...variant.selectedOptions.reduce(
-      (accumulator, option) => ({ ...accumulator, [option.name.toLowerCase()]: option.value }),
-      {}
-    )
-  }));
+  const combinations: Combination[] = useMemo(
+    () =>
+      variants.map((variant) => ({
+        id: variant.id,
+        availableForSale: variant.availableForSale,
+        // Adds key / value pairs for each variant (ie. "color": "Black" and "size": 'M").
+        ...variant.selectedOptions.reduce(
+          (accumulator, option) => ({ ...accumulator, [option.name.toLowerCase()]: option.value }),
+          {}
+        )
+      })),
+    [variants]
+  );
 
   const variantsById: Record<string, ProductVariant> = variants.reduce((acc, variant) => {
     return { ...acc, [variant.id]: variant };
@@ -70,8 +74,7 @@ export function VariantSelector({
         router.replace(defaultUrl, { scroll: false });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [combinations, pathname, router, searchParams, variantWithMinPrice, variants]);
 
   const hasNoOptionsOrJustOneOption =
     !options.length || (options.length === 1 && options[0]?.values.length === 1);
