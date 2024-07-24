@@ -65,87 +65,83 @@ export function GridTileImage({
   const shouldShowDescription = metafieldKeys.some((key) => product[key]);
   const variantsWithCondition = product.variants.filter((variant) => variant.condition !== null);
   return (
-    <div className="flex h-full flex-col rounded-b border bg-white">
-      <div className="grow">
+    <Link href={href}>
+      <div className="flex h-full flex-col rounded-b border bg-white">
+        <div className="grow">
+          <div className="px-4">
+            <div
+              className={clsx('aspect-h-1 aspect-w-1 relative overflow-hidden', {
+                'border-2 border-secondary': active,
+                'border-neutral-200': !active
+              })}
+            >
+              {props.src ? (
+                // eslint-disable-next-line jsx-a11y/alt-text -- `alt` is inherited from `props`, which is being enforced with TypeScript
+                <Image className={clsx('h-full w-full object-contain object-center')} {...props} />
+              ) : (
+                <div
+                  className="flex h-full w-full items-center justify-center text-gray-400"
+                  title="Missing product image"
+                >
+                  <PhotoIcon className="size-7" />
+                </div>
+              )}
+            </div>
+          </div>
+          <p className="mb-2 mt-4 line-clamp-3 px-4 text-sm font-semibold leading-6 text-gray-800">
+            {product.title}
+          </p>
+        </div>
         <div className="px-4">
-          <div
-            className={clsx('aspect-h-1 aspect-w-1 relative overflow-hidden', {
-              'border-2 border-secondary': active,
-              'border-neutral-200': !active
-            })}
-          >
-            {props.src ? (
-              // eslint-disable-next-line jsx-a11y/alt-text -- `alt` is inherited from `props`, which is being enforced with TypeScript
-              <Image className={clsx('h-full w-full object-contain object-center')} {...props} />
+          {shouldShowDescription && (
+            <div className="flex items-center justify-center gap-x-7 border-t py-3">
+              {product.engineCylinders?.length ? (
+                <div className="flex flex-col items-center gap-2">
+                  <img
+                    src="/icons/cylinder.png"
+                    alt="Cylinder icon"
+                    width={16}
+                    height={16}
+                    className="size-4"
+                    sizes="16px"
+                  />
+                  <span className="text-xs tracking-wide">{`${product.engineCylinders[0]} Cylinder`}</span>
+                </div>
+              ) : null}
+              {product.fuelType ? (
+                <div className="flex flex-col items-center gap-2">
+                  <img
+                    src="/icons/fuel.png"
+                    alt="Fuel icon"
+                    width={16}
+                    height={16}
+                    className="size-4"
+                    sizes="16px"
+                  />
+                  <span className="text-xs tracking-wide">{product.fuelType}</span>
+                </div>
+              ) : null}
+            </div>
+          )}
+          <div className="flex justify-end border-t py-3">
+            {variantsWithCondition.length ? (
+              <PriceSection variants={variantsWithCondition} />
             ) : (
-              <div
-                className="flex h-full w-full items-center justify-center text-gray-400"
-                title="Missing product image"
-              >
-                <PhotoIcon className="size-7" />
-              </div>
+              <Price
+                className="text-lg font-medium text-gray-900"
+                amount={product.priceRange.minVariantPrice.amount}
+                currencyCode={product.priceRange.minVariantPrice.currencyCode}
+              />
             )}
           </div>
         </div>
-        <Link
-          href={href}
-          className="mb-2 mt-4 line-clamp-3 px-4 text-sm font-semibold leading-6 text-gray-800"
-        >
-          {product.title}
-        </Link>
-      </div>
-      <div className="px-4">
-        {shouldShowDescription && (
-          <div className="flex items-center justify-center gap-x-7 border-t py-3">
-            {product.engineCylinders?.length ? (
-              <div className="flex flex-col items-center gap-2">
-                <img
-                  src="/icons/cylinder.png"
-                  alt="Cylinder icon"
-                  width={16}
-                  height={16}
-                  className="size-4"
-                  sizes="16px"
-                />
-                <span className="text-xs tracking-wide">{`${product.engineCylinders[0]} Cylinder`}</span>
-              </div>
-            ) : null}
-            {product.fuelType ? (
-              <div className="flex flex-col items-center gap-2">
-                <img
-                  src="/icons/fuel.png"
-                  alt="Fuel icon"
-                  width={16}
-                  height={16}
-                  className="size-4"
-                  sizes="16px"
-                />
-                <span className="text-xs tracking-wide">{product.fuelType}</span>
-              </div>
-            ) : null}
-          </div>
-        )}
-        <div className="flex justify-end border-t py-3">
-          {variantsWithCondition.length ? (
-            <PriceSection variants={variantsWithCondition} />
-          ) : (
-            <Price
-              className="text-lg font-medium text-gray-900"
-              amount={product.priceRange.minVariantPrice.amount}
-              currencyCode={product.priceRange.minVariantPrice.currencyCode}
-            />
-          )}
+
+        <div className="flex items-center justify-center gap-3 rounded-b bg-dark py-3 text-white">
+          <span className="text-sm font-medium tracking-wide">More details</span>
+          <ArrowRightIcon className="size-4" />
         </div>
       </div>
-
-      <Link
-        href={href}
-        className="flex items-center justify-center gap-3 rounded-b bg-dark py-3 text-white"
-      >
-        <span className="text-sm font-medium tracking-wide">More details</span>
-        <ArrowRightIcon className="size-4" />
-      </Link>
-    </div>
+    </Link>
   );
 }
 

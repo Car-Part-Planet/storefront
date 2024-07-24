@@ -6,7 +6,7 @@ import SideDialog from 'components/side-dialog';
 import { DELIVERY_OPTION_KEY } from 'lib/constants';
 import { cn, createUrl } from 'lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 
 const options = ['Commercial', 'Residential'] as const;
 
@@ -49,19 +49,23 @@ const Delivery = ({
     null
   );
 
-  const newSearchParams = new URLSearchParams(searchParams.toString());
-  const selectedDeliveryOption = newSearchParams.get(DELIVERY_OPTION_KEY);
+  const handleSelectDelivery = useCallback(
+    (option: Option) => {
+      const newSearchParams = new URLSearchParams(searchParams.toString());
+      newSearchParams.set(DELIVERY_OPTION_KEY, option);
 
-  const handleSelectDelivery = (option: Option) => {
-    newSearchParams.set(DELIVERY_OPTION_KEY, option);
+      const newUrl = createUrl(pathname, newSearchParams);
+      router.replace(newUrl, { scroll: false });
+    },
+    [pathname, router, searchParams]
+  );
 
-    const newUrl = createUrl(pathname, newSearchParams);
-    router.replace(newUrl, { scroll: false });
-  };
-
-  if (!selectedDeliveryOption) {
-    handleSelectDelivery(options[0]);
-  }
+  const selectedDeliveryOption = searchParams.get(DELIVERY_OPTION_KEY);
+  useEffect(() => {
+    if (!selectedDeliveryOption) {
+      handleSelectDelivery(options[0]);
+    }
+  }, [handleSelectDelivery, selectedDeliveryOption]);
 
   // Conditional price values based on storePrefix
   const commercialPrice = storePrefix === 'reman-transmission' ? 299 : 0;
