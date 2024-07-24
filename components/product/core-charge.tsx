@@ -44,17 +44,12 @@ const CoreCharge = ({ variants, children }: CoreChargeProps) => {
       value: CORE_WAIVER,
       price: { amount: 0, currencyCode: variant?.price.currencyCode }
     },
-    coreVariantId && coreCharge
-      ? {
-          label: 'Pay Core Upfront',
-          value: coreVariantId,
-          price: coreCharge
-        }
-      : {
-          label: 'Not Required',
-          value: 'NOT_REQUIRED',
-          price: { amount: 0, currencyCode: variant?.price.currencyCode }
-        }
+    coreVariantId &&
+      coreCharge && {
+        label: 'Pay Core Upfront',
+        value: coreVariantId,
+        price: coreCharge
+      }
   ].filter(Boolean) as CoreChargeOption[];
 
   if (!optionSearchParams.has(CORE_VARIANT_ID_KEY) && coreChargeOptions.length > 0) {
