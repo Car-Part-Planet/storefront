@@ -99,7 +99,9 @@ export function AddToCart({
     <form action={actionWithVariant}>
       <SubmitButton
         availableForSale={availableForSale}
-        disabled={Boolean(!selectedVariantId || missingCoreVariantId)}
+        disabled={Boolean(
+          !selectedVariantId || missingCoreVariantId || parseFloat(variant.price.amount) === 0
+        )}
       />
       <p aria-live="polite" className="sr-only" role="status">
         {message}

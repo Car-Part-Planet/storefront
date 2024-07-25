@@ -27,8 +27,8 @@ const CartDetails = ({ cart }: { cart: Cart }) => {
   const { control, handleSubmit } = useForm<VehicleFormSchema>({
     resolver: zodResolver(vehicleFormSchema),
     defaultValues: {
-      customer_vin: cart?.attributes.find((a) => a.key === 'customer_vin')?.value || '',
-      customer_mileage: cart?.attributes.find((a) => a.key === 'customer_mileage')?.value || ''
+      customer_vin: cart?.attributes.find((a) => a.key === 'customer_vin')?.value,
+      customer_mileage: cart?.attributes.find((a) => a.key === 'customer_mileage')?.value
     }
   });
 
@@ -85,59 +85,62 @@ const CartDetails = ({ cart }: { cart: Cart }) => {
           })}
         </ul>
       </section>
-
-      <section className="mt-16 divide-y rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
+      <form
+        className="mt-16 divide-y rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <VehicleDetails control={control} />
 
         <div className="pt-5">
-          <h2 className="text-lg font-medium text-gray-900">Order summary</h2>
-          <form className="mt-6" onSubmit={handleSubmit(onSubmit)}>
-            <dl className="space-y-4">
-              <div className="flex items-center justify-between">
-                <dt className="text-sm text-gray-600">Taxes</dt>
-                <dd className="text-sm font-medium text-gray-900">
-                  <Price
-                    amount={cart.cost.totalTaxAmount.amount}
-                    currencyCode={cart.cost.totalTaxAmount.currencyCode}
-                  />
-                </dd>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <dt className="text-sm text-gray-600">
-                  <span>Shipping</span>
-                </dt>
-                <dd className="text-sm font-medium text-gray-900">Calculated at checkout</dd>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <dt className="text-base font-medium text-gray-900">Total</dt>
-                <dd className="text-base font-medium text-gray-900">
-                  <Price
-                    amount={cart.cost.totalAmount.amount}
-                    currencyCode={cart.cost.totalAmount.currencyCode}
-                  />
-                </dd>
-              </div>
-            </dl>
-            <div className="mt-6">
-              <button
-                type="submit"
-                className={clsx(
-                  'w-full rounded-md border border-transparent bg-secondary px-4 py-3 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-gray-50',
-                  { 'cursor-not-allowed opacity-60 hover:opacity-60': loading },
-                  { 'cursor-pointer opacity-90 hover:opacity-100': !loading }
-                )}
-                aria-disabled={loading}
-              >
-                {loading && <LoadingDots className="bg-white" />}
-                Proceed to Checkout
-              </button>
-              <p aria-live="polite" className="sr-only" role="status">
-                {message}
-              </p>
+          <h2 className="mb-3 text-lg font-medium text-gray-900">Order summary</h2>
+          <dl className="space-y-4">
+            <div className="flex items-center justify-between">
+              <dt className="text-sm text-gray-600">Taxes</dt>
+              <dd className="text-sm font-medium text-gray-900">
+                <Price
+                  amount={cart.cost.totalTaxAmount.amount}
+                  currencyCode={cart.cost.totalTaxAmount.currencyCode}
+                />
+              </dd>
             </div>
-          </form>
+            <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+              <dt className="text-sm text-gray-600">
+                <span>Shipping</span>
+              </dt>
+              <dd className="text-sm font-medium text-gray-900">Calculated at checkout</dd>
+            </div>
+            <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+              <dt className="text-base font-medium text-gray-900">Total</dt>
+              <dd className="text-base font-medium text-gray-900">
+                <Price
+                  amount={cart.cost.totalAmount.amount}
+                  currencyCode={cart.cost.totalAmount.currencyCode}
+                />
+              </dd>
+            </div>
+          </dl>
+          <div className="mt-6">
+            <button
+              type="submit"
+              className={clsx(
+                'w-full rounded-md border border-transparent bg-secondary px-4 py-3 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-gray-50',
+                { 'cursor-not-allowed opacity-60 hover:opacity-60': loading },
+                { 'cursor-pointer opacity-90 hover:opacity-100': !loading }
+              )}
+              aria-disabled={loading}
+              disabled={sortedCartLines.some(
+                (line) => parseFloat(line.cost.totalAmount.amount) === 0
+              )}
+            >
+              {loading && <LoadingDots className="bg-white" />}
+              Proceed to Checkout
+            </button>
+            <p aria-live="polite" className="sr-only" role="status">
+              {message}
+            </p>
+          </div>
         </div>
-      </section>
+      </form>
     </div>
   );
 };

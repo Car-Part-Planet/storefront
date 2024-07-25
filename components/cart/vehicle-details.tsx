@@ -3,8 +3,8 @@ import { Control, Controller } from 'react-hook-form';
 import * as zod from 'zod';
 
 export const vehicleFormSchema = zod.object({
-  customer_vin: zod.string({ required_error: 'Vin number is required' }).min(0),
-  customer_mileage: zod.string({ required_error: 'Mileage is required' }).min(0)
+  customer_vin: zod.string({ required_error: 'Vin number is required' }),
+  customer_mileage: zod.string({ required_error: 'Mileage is required' })
 });
 
 export type VehicleFormSchema = zod.infer<typeof vehicleFormSchema>;
