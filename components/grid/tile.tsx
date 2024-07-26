@@ -154,7 +154,7 @@ export const TileImage = ({
   return (
     <div
       className={clsx(
-        'aspect-h-1 aspect-w-1 relative h-[80px] w-[80px] overflow-hidden rounded  border bg-white',
+        'aspect-h-1 aspect-w-1 relative h-[80px] w-[80px] overflow-hidden rounded border bg-white',
         {
           'border-2 border-secondary': active,
           'border-neutral-200': !active

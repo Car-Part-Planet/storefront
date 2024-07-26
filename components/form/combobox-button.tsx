@@ -12,7 +12,7 @@ export default function ComboboxButton({ className, ...props }: ComboboxButtonPr
       )}
       {...props}
     >
-      <ChevronDownIcon className="fill-black/60 group-data-[hover]:fill-black size-5" />
+      <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black" />
     </HeadlessComboboxButton>
   );
 }

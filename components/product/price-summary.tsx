@@ -33,7 +33,8 @@ const PriceSummary = ({ variants, defaultPrice, storePrefix }: PriceSummaryProps
   const deliveryPrice =
     deliveryOptions.find((option) => option.key === selectedDeliveryOption)?.price ?? 0;
   const currencyCode = variant?.price.currencyCode || defaultPrice.currencyCode;
-  const corePrice = selectedCoreChargeOption === CORE_WAIVER ? 0 : variant?.coreCharge?.amount ?? 0;
+  const corePrice =
+    selectedCoreChargeOption === CORE_WAIVER ? 0 : (variant?.coreCharge?.amount ?? 0);
 
   const totalPrice = Number(price) + deliveryPrice + Number(corePrice);
 
