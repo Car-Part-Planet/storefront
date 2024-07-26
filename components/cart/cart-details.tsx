@@ -28,7 +28,7 @@ const CartDetails = ({ cart }: { cart: Cart }) => {
     resolver: zodResolver(vehicleFormSchema),
     defaultValues: {
       customer_vin: cart?.attributes.find((a) => a.key === 'customer_vin')?.value,
-      customer_mileage: cart?.attributes.find((a) => a.key === 'customer_mileage')?.value
+      customer_mileage: Number(cart?.attributes.find((a) => a.key === 'customer_mileage')?.value)
     }
   });
 

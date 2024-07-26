@@ -43,7 +43,7 @@ export async function addItem(
 
 export async function setMetafields(
   prevState: any,
-  formData: { customer_vin: string; customer_mileage: string }
+  formData: { customer_vin: string; customer_mileage: number }
 ) {
   const cartId = cookies().get('cartId')?.value;
 
@@ -59,7 +59,7 @@ export async function setMetafields(
       },
       {
         key: 'customer_mileage',
-        value: formData.customer_mileage
+        value: formData.customer_mileage.toString()
       }
     ]);
 
