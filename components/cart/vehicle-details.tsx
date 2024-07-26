@@ -4,7 +4,7 @@ import * as zod from 'zod';
 
 export const vehicleFormSchema = zod.object({
   customer_vin: zod.string({ required_error: 'Vin number is required' }),
-  customer_mileage: zod.coerce.number({ required_error: 'Mileage is required' }).int()
+  customer_mileage: zod.coerce.number({ required_error: 'Mileage is required' }).int().positive()
 });
 
 export type VehicleFormSchema = zod.infer<typeof vehicleFormSchema>;
