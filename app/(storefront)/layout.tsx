@@ -1,4 +1,4 @@
-import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import Banner from 'components/banner';
 import Navbar from 'components/layout/navbar';
 import { GeistSans } from 'geist/font/sans';
@@ -7,7 +7,7 @@ import { Metadata } from 'next';
 import { ReactNode, Suspense } from 'react';
 import '../globals.css';
 
-const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME, STORE_PREFIX, SHOPIFY_ORIGIN_URL, GTM_ID } =
+const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME, STORE_PREFIX, SHOPIFY_ORIGIN_URL, GA_ID } =
   process.env;
 const baseUrl = SHOPIFY_ORIGIN_URL ? SHOPIFY_ORIGIN_URL : 'http://localhost:3000';
 const twitterCreator = TWITTER_CREATOR ? ensureStartsWith(TWITTER_CREATOR, '@') : undefined;
@@ -38,7 +38,6 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={GeistSans.variable}>
-      {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
       <body className="min-h-screen overflow-hidden bg-white text-black selection:bg-primary-muted">
         <div className="flex h-screen max-h-screen flex-col overflow-auto">
           <header className="sticky top-0 z-10">
@@ -51,6 +50,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           </Suspense>
         </div>
       </body>
+      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>
   );
 }

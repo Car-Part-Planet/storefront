@@ -12,14 +12,13 @@ import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct, getProductRecommendations } from 'lib/shopify';
 import { Image, Product } from 'lib/shopify/types';
 
-const { SITE_NAME, STORE_PREFIX } = process.env
+const { SITE_NAME, STORE_PREFIX } = process.env;
 
 export async function generateMetadata({
   params
 }: {
   params: { handle: string };
-}): Promise<Metadata>
-{
+}): Promise<Metadata> {
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();
@@ -40,15 +39,15 @@ export async function generateMetadata({
     },
     openGraph: url
       ? {
-        images: [
-          {
-            url,
-            width,
-            height,
-            alt
-          }
-        ]
-      }
+          images: [
+            {
+              url,
+              width,
+              height,
+              alt
+            }
+          ]
+        }
       : null
   };
 }
@@ -59,8 +58,7 @@ export default async function ProductPage({
 }: {
   params: { handle: string };
   searchParams?: { [key: string]: string | string[] | undefined };
-})
-{
+}) {
   const product = await getProduct(params.handle);
 
   if (!product) return notFound();
@@ -72,15 +70,31 @@ export default async function ProductPage({
     )
   );
 
-  const additionalProperties: Array<{ title: string, key: keyof Product, value: string | undefined }> = [
-    { key: 'transmissionType', title: 'Transmission Type', value: product.transmissionType?.toString() },
-    { key: 'transmissionSpeeds', title: 'Number of Speeds', value: `${product.transmissionSpeeds?.[0]}-Speed` },
+  const additionalProperties: Array<{
+    title: string;
+    key: keyof Product;
+    value: string | undefined;
+  }> = [
+    {
+      key: 'transmissionType',
+      title: 'Transmission Type',
+      value: product.transmissionType?.toString()
+    },
+    {
+      key: 'transmissionSpeeds',
+      title: 'Number of Speeds',
+      value: `${product.transmissionSpeeds?.[0]}-Speed`
+    },
     { key: 'driveType', title: 'Drivetrain', value: product.driveType?.[0] },
-    { key: 'engineCylinders', title: 'Number of Cylinders', value: `${product.engineCylinders?.[0]} Cylinders` },
+    {
+      key: 'engineCylinders',
+      title: 'Number of Cylinders',
+      value: `${product.engineCylinders?.[0]} Cylinders`
+    },
     { key: 'transmissionCode', title: 'Transmission Code', value: product.transmissionCode?.[0] }
   ];
 
-  const validProperties = additionalProperties.filter((property) => product[property.key])
+  const validProperties = additionalProperties.filter((property) => product[property.key]);
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -88,7 +102,7 @@ export default async function ProductPage({
     description: product.description || product.seo.description,
     image: product.featuredImage?.url,
     sku: variant?.sku?.substring(0, 6),
-    additionalProperty: validProperties.map(prop => ({
+    additionalProperty: validProperties.map((prop) => ({
       '@type': 'PropertyValue',
       name: prop.title,
       value: prop.value
@@ -124,7 +138,7 @@ export default async function ProductPage({
         },
         warrantyScope: 'https://schema.org/PartsAndLaborWarrantyScope'
       }
-    },
+    }
   };
 
   return (
@@ -171,8 +185,7 @@ export default async function ProductPage({
   );
 }
 
-async function RelatedProducts({ id }: { id: string })
-{
+async function RelatedProducts({ id }: { id: string }) {
   const relatedProducts = await getProductRecommendations(id);
 
   if (!relatedProducts.length) return null;
