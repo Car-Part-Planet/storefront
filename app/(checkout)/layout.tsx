@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from '@next/third-parties/google';
 import Banner from 'components/banner';
 import LogoSquare from 'components/logo-square';
 import { GeistSans } from 'geist/font/sans';
@@ -6,7 +7,7 @@ import Link from 'next/link';
 import { ReactNode, Suspense } from 'react';
 import '../globals.css';
 
-const { STORE_PREFIX, SITE_NAME } = process.env;
+const { STORE_PREFIX, SITE_NAME, GA_ID } = process.env;
 export const metadata: Metadata = {
   title: `Cart | ${SITE_NAME}`,
   icons: {
@@ -32,6 +33,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <Suspense>{children}</Suspense>
         </main>
       </body>
+      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>
   );
 }
