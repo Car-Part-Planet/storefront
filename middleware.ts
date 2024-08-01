@@ -1,21 +1,24 @@
 import { URL_PREFIXES } from 'lib/constants';
 import { ensureLoggedIn, getOrigin } from 'lib/shopify/auth';
+import { createUrl } from 'lib/utils';
 import { getRedirectData } from 'lib/vercel-kv';
 import { NextRequest, NextResponse } from 'next/server';
 
-const shouldRemoveSearchParams = (search: string) => {
+const shouldRemoveSearchParams = (search: string) =>
+{
   const paramString = search.split('?')[1];
   if (!paramString) {
     return true;
   }
   const searchParams = new URLSearchParams(paramString);
-  if (searchParams.size === 1 && (searchParams.has('tag') || searchParams.has('code'))) {
+  if (searchParams.has('tag') || searchParams.has('code')) {
     return false;
   }
   return true;
 };
 
-export async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest)
+{
   console.log('client ip adress', request.ip);
 
   const pathname = request.nextUrl.pathname;
@@ -33,11 +36,21 @@ export async function middleware(request: NextRequest) {
     if (!search || shouldRemoveSearchParams(search)) {
       destination = await getRedirectData(pathname);
     } else {
-      destination = await getRedirectData(`${pathname}${decodeURIComponent(search)}`);
+      const searchParams = new URLSearchParams(search);
+      const newSearchParams = new URLSearchParams();
+      ['tag', 'code'].forEach(key => {
+        if(searchParams.has(key)) {
+          newSearchParams.set(key, searchParams.get(key)!);
+        }
+      })
+      destination = await getRedirectData(createUrl(pathname, newSearchParams));
     }
 
     if (destination) {
-      return NextResponse.redirect(new URL(destination, request.url), 301);
+      const newSearchParams = new URLSearchParams(search);
+      newSearchParams.delete('tag');
+      newSearchParams.delete('code');
+      return NextResponse.redirect(new URL(createUrl(destination, newSearchParams), request.url), 301);
     }
   }
 
@@ -57,36 +70,4 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - icons
-     * - images
-     * - logo
-     */
-    {
-      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)',
-      missing: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch' }
-      ]
-    },
-    {
-      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)',
-      has: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch' }
-      ]
-    },
-    {
-      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)',
-      has: [{ type: 'header', key: 'x-present' }],
-      missing: [{ type: 'header', key: 'x-missing', value: 'prefetch' }]
-    }
-  ]
-};
+
