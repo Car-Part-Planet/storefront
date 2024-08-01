@@ -4,25 +4,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import LoadingDots from 'components/loading-dots';
 import Price from 'components/price';
-import { isLoggedIn } from 'components/profile/actions';
 import { Cart } from 'lib/shopify/types';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { setMetafields } from './actions';
 import LineItem from './line-item';
 import VehicleDetails, { VehicleFormSchema, vehicleFormSchema } from './vehicle-details';
 
-const getCheckoutUrlWithAuthentication = (url: string) => {
-  const checkoutUrl = new URL(url);
-  checkoutUrl.searchParams.append('logged_in', 'true');
-  return checkoutUrl.toString();
-};
-
-const CartDetails = ({ cart }: { cart: Cart }) => {
-  const router = useRouter();
+const CartDetails = ({ cart, checkoutUrl }: { cart: Cart; checkoutUrl: string }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | undefined>();
+  const linkRef = useRef<HTMLAnchorElement>(null);
 
   const { control, handleSubmit } = useForm<VehicleFormSchema>({
     resolver: zodResolver(vehicleFormSchema),
@@ -59,12 +51,7 @@ const CartDetails = ({ cart }: { cart: Cart }) => {
       if (message) {
         setMessage(message);
       } else {
-        const isAuthenticated = await isLoggedIn();
-        const checkoutUrl = isAuthenticated
-          ? getCheckoutUrlWithAuthentication(cart.checkoutUrl)
-          : cart.checkoutUrl;
-        console.log(checkoutUrl);
-        router.push(checkoutUrl);
+        linkRef.current?.click();
       }
     } catch (error) {
       setMessage('Error updating vehicle details');
@@ -120,6 +107,7 @@ const CartDetails = ({ cart }: { cart: Cart }) => {
             </div>
           </dl>
           <div className="mt-6">
+            <a href={checkoutUrl} className="invisible" ref={linkRef} />
             <button
               type="submit"
               className={clsx(
