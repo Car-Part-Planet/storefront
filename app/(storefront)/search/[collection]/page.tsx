@@ -47,8 +47,6 @@ export async function generateMetadata({
       title,
       images: {
         url: `/logo/${STORE_PREFIX}/logo.svg`,
-        width: 380,
-        height: 50,
         alt: title
       }
     }
