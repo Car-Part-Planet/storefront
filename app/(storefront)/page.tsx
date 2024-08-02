@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       title: SITE_NAME,
       images: {
-        url: `/logo/${STORE_PREFIX}/logo.png`,
+        url: `/logo/${STORE_PREFIX}/logo.jpg`,
         alt: SITE_NAME
       }
     },

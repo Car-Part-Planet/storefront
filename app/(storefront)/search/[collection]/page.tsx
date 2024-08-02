@@ -46,7 +46,7 @@ export async function generateMetadata({
       type: 'website',
       title,
       images: {
-        url: `/logo/${STORE_PREFIX}/logo.svg`,
+        url: `/logo/${STORE_PREFIX}/logo.jpg`,
         alt: title
       }
     }
