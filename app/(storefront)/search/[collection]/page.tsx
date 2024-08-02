@@ -34,10 +34,11 @@ export async function generateMetadata({
   if (!collection) return notFound();
 
   const title = collection.seo?.title || collection.title;
+  const description =
+    collection.seo?.description || collection.description || `${collection.title} products`;
   return {
     title,
-    description:
-      collection.seo?.description || collection.description || `${collection.title} products`,
+    description,
     robots: {
       follow: true,
       index: true
@@ -45,8 +46,9 @@ export async function generateMetadata({
     openGraph: {
       type: 'website',
       title,
+      description,
       images: {
-        url: `/logo/${STORE_PREFIX}/logo.jpg`,
+        url: `/logo/${STORE_PREFIX}/logo-icon.png`,
         alt: title
       }
     }
