@@ -30,18 +30,14 @@ export default async function Page() {
   }
 
   const isAuthenticated = await isLoggedIn();
-  const gaClientId = cookies().get('_ga')?.value;
-
   const checkoutUrl = isAuthenticated
     ? getCheckoutUrlWithAuthentication(cart.checkoutUrl)
     : cart.checkoutUrl;
 
-  const checkoutUrlWithGA = gaClientId ? `${checkoutUrl}&client_id=${gaClientId}` : checkoutUrl;
-
   return (
     <div>
       <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">My Cart</h1>
-      <CartDetails cart={cart} checkoutUrl={checkoutUrlWithGA} />
+      <CartDetails cart={cart} checkoutUrl={checkoutUrl} />
     </div>
   );
 }
