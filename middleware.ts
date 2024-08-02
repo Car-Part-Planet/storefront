@@ -4,8 +4,7 @@ import { createUrl } from 'lib/utils';
 import { getRedirectData } from 'lib/vercel-kv';
 import { NextRequest, NextResponse } from 'next/server';
 
-const shouldRemoveSearchParams = (search: string) =>
-{
+const shouldRemoveSearchParams = (search: string) => {
   const paramString = search.split('?')[1];
   if (!paramString) {
     return true;
@@ -17,10 +16,9 @@ const shouldRemoveSearchParams = (search: string) =>
   return true;
 };
 
-export async function middleware(request: NextRequest)
-{
-  console.log('client ip adress', request.ip);
+const isProd = process.env.NODE_ENV === 'production';
 
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   if (pathname.startsWith('/account')) {
     const origin = getOrigin(request);
@@ -29,7 +27,7 @@ export async function middleware(request: NextRequest)
   }
 
   // only enable redirect logic on production
-  if (process.env.NODE_ENV === 'production') {
+  if (isProd) {
     const search = request.nextUrl.search; // get the search query string
     let destination;
 
@@ -38,11 +36,11 @@ export async function middleware(request: NextRequest)
     } else {
       const searchParams = new URLSearchParams(search);
       const newSearchParams = new URLSearchParams();
-      ['tag', 'code'].forEach(key => {
-        if(searchParams.has(key)) {
+      ['tag', 'code'].forEach((key) => {
+        if (searchParams.has(key)) {
           newSearchParams.set(key, searchParams.get(key)!);
         }
-      })
+      });
       destination = await getRedirectData(createUrl(pathname, newSearchParams));
     }
 
@@ -50,7 +48,10 @@ export async function middleware(request: NextRequest)
       const newSearchParams = new URLSearchParams(search);
       newSearchParams.delete('tag');
       newSearchParams.delete('code');
-      return NextResponse.redirect(new URL(createUrl(destination, newSearchParams), request.url), 301);
+      return NextResponse.redirect(
+        new URL(createUrl(destination, newSearchParams), request.url),
+        301
+      );
     }
   }
 
