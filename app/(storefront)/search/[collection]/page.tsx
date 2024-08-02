@@ -22,6 +22,8 @@ import ProductsGridPlaceholder from 'components/layout/search/placeholder';
 import SortingMenu from 'components/layout/search/sorting-menu';
 import { Suspense } from 'react';
 
+const { STORE_PREFIX } = process.env;
+
 export async function generateMetadata({
   params
 }: {
@@ -31,13 +33,24 @@ export async function generateMetadata({
 
   if (!collection) return notFound();
 
+  const title = collection.seo?.title || collection.title;
+  const description =
+    collection.seo?.description || collection.description || `${collection.title} products`;
   return {
-    title: collection.seo?.title || collection.title,
-    description:
-      collection.seo?.description || collection.description || `${collection.title} products`,
+    title,
+    description,
     robots: {
       follow: true,
       index: true
+    },
+    openGraph: {
+      type: 'website',
+      title,
+      description,
+      images: {
+        url: `/logo/${STORE_PREFIX}/logo-icon.png`,
+        alt: title
+      }
     }
   };
 }

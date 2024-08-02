@@ -7,14 +7,22 @@ import Footer from 'components/layout/footer';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-const { SITE_NAME, SITE_VERIFICATION_ID } = process.env;
+const { SITE_NAME, SITE_VERIFICATION_ID, STORE_PREFIX } = process.env;
 
 export async function generateMetadata(): Promise<Metadata> {
+  const description = `${SITE_NAME} is your ultimate destination for all your drivetrain replacement needs.`;
+
   return {
     title: SITE_NAME,
-    description: `${SITE_NAME} is your ultimate destination for all your drivetrain replacement needs.`,
+    description,
     openGraph: {
-      type: 'website'
+      type: 'website',
+      title: SITE_NAME,
+      description,
+      images: {
+        url: `/logo/${STORE_PREFIX}/logo-icon.png`,
+        alt: SITE_NAME
+      }
     },
     robots: {
       follow: true,
