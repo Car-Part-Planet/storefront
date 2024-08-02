@@ -46,7 +46,7 @@ export async function generateMetadata({
       type: 'website',
       title,
       images: {
-        url: new URL(`../../public/logo/${STORE_PREFIX}/logo.svg`, import.meta.url).toString(),
+        url: `/logo/${STORE_PREFIX}/logo.svg`,
         width: 380,
         height: 50,
         alt: title
