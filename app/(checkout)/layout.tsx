@@ -11,7 +11,7 @@ const { STORE_PREFIX, SITE_NAME, GA_ID } = process.env;
 export const metadata: Metadata = {
   title: `Cart | ${SITE_NAME}`,
   icons: {
-    icon: `/logo/${STORE_PREFIX}/logo-icon.png`
+    icon: `/logo/${STORE_PREFIX}/favicon.png`
   }
 };
 
