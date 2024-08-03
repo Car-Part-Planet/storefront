@@ -3,10 +3,10 @@
 import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/outline';
 import Price from 'components/price';
 import SideDialog from 'components/side-dialog';
+import { useProduct, useUpdateURL } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
 import { CoreChargeOption, ProductVariant } from 'lib/shopify/types';
-import { cn, createUrl } from 'lib/utils';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { cn } from 'lib/utils';
 import { ReactNode, useState } from 'react';
 
 type CoreChargeProps = {
@@ -15,27 +15,16 @@ type CoreChargeProps = {
 };
 
 const CoreCharge = ({ variants, children }: CoreChargeProps) => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
-
+  const { variant, updateOption, state } = useProduct();
+  const updateUrl = useUpdateURL();
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const optionSearchParams = new URLSearchParams(searchParams);
-  const coreVariantIdSearchParam = optionSearchParams.get(CORE_VARIANT_ID_KEY);
-
-  const variant = variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every(
-      (option) => option.value === optionSearchParams.get(option.name.toLowerCase())
-    )
-  );
+  const coreVariantIdSearchParam = state[CORE_VARIANT_ID_KEY];
 
   const { coreCharge, waiverAvailable, coreVariantId } = variant ?? {};
 
   const handleSelectCoreChargeOption = (coreVariantId: string) => {
-    optionSearchParams.set(CORE_VARIANT_ID_KEY, coreVariantId);
-
-    const newUrl = createUrl(pathname, optionSearchParams);
-    router.replace(newUrl, { scroll: false });
+    const newState = updateOption(CORE_VARIANT_ID_KEY, coreVariantId);
+    updateUrl(newState);
   };
 
   const coreChargeOptions = [
@@ -52,7 +41,7 @@ const CoreCharge = ({ variants, children }: CoreChargeProps) => {
       }
   ].filter(Boolean) as CoreChargeOption[];
 
-  if (!optionSearchParams.has(CORE_VARIANT_ID_KEY) && coreChargeOptions.length > 0) {
+  if (!coreVariantIdSearchParam && coreChargeOptions.length > 0) {
     handleSelectCoreChargeOption((coreChargeOptions[0] as CoreChargeOption).value);
   }
 

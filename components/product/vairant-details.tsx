@@ -2,21 +2,16 @@
 
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import Price from 'components/price';
-import { Product, ProductVariant } from 'lib/shopify/types';
+import { useProduct } from 'context/product-context';
+import { Product } from 'lib/shopify/types';
 import { findVariantWithMinPrice } from 'lib/utils';
-import { useSearchParams } from 'next/navigation';
 
 type VariantDetailsProps = {
   product: Product;
 };
 
 const VariantDetails = ({ product }: VariantDetailsProps) => {
-  const searchParams = useSearchParams();
-  const variant = product.variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every(
-      (option) => option.value === searchParams.get(option.name.toLowerCase())
-    )
-  );
+  const { variant } = useProduct();
 
   const variantWithMinPrice = findVariantWithMinPrice(product.variants);
 

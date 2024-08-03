@@ -23,14 +23,11 @@ export function ProductDescription({ product }: { product: Product }) {
 
         <VariantDetails product={product} />
       </div>
-      <Suspense fallback={null}>
-        <VariantSelector
-          options={product.options}
-          variants={product.variants}
-          minPrice={product.priceRange.minVariantPrice}
-        />
-      </Suspense>
-
+      <VariantSelector
+        options={product.options}
+        variants={product.variants}
+        minPrice={product.priceRange.minVariantPrice}
+      />
       {product.descriptionHtml ? (
         <Prose
           className="mb-4 text-sm leading-tight dark:text-white/[60%]"
