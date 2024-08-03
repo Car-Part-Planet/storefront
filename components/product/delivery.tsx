@@ -3,10 +3,10 @@
 import { TruckIcon } from '@heroicons/react/24/outline';
 import Price from 'components/price';
 import SideDialog from 'components/side-dialog';
+import { useProduct, useUpdateURL } from 'context/product-context';
 import { DELIVERY_OPTION_KEY } from 'lib/constants';
-import { cn, createUrl } from 'lib/utils';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { cn } from 'lib/utils';
+import { ReactNode, useEffect, useState } from 'react';
 
 const options = ['Commercial', 'Residential'] as const;
 
@@ -41,26 +41,19 @@ const Delivery = ({
   siteName: string | undefined;
   phoneBlock: ReactNode;
 }) => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
+  const { state, updateOption } = useProduct();
+  const updateUrl = useUpdateURL();
 
   const [openingDialog, setOpeningDialog] = useState<'information' | 'terms-conditions' | null>(
     null
   );
 
-  const handleSelectDelivery = useCallback(
-    (option: Option) => {
-      const newSearchParams = new URLSearchParams(searchParams.toString());
-      newSearchParams.set(DELIVERY_OPTION_KEY, option);
+  const handleSelectDelivery = (option: Option) => {
+    const newState = updateOption(DELIVERY_OPTION_KEY, option);
+    updateUrl(newState);
+  };
 
-      const newUrl = createUrl(pathname, newSearchParams);
-      router.replace(newUrl, { scroll: false });
-    },
-    [pathname, router, searchParams]
-  );
-
-  const selectedDeliveryOption = searchParams.get(DELIVERY_OPTION_KEY);
+  const selectedDeliveryOption = state[DELIVERY_OPTION_KEY];
   useEffect(() => {
     if (!selectedDeliveryOption) {
       handleSelectDelivery(options[0]);

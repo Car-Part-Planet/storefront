@@ -4,9 +4,9 @@ import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { addItem } from 'components/cart/actions';
 import LoadingDots from 'components/loading-dots';
+import { useProduct } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
 import { ProductVariant } from 'lib/shopify/types';
-import { useSearchParams } from 'next/navigation';
 import { useFormState, useFormStatus } from 'react-dom';
 
 function SubmitButton({
@@ -68,16 +68,11 @@ export function AddToCart({
   availableForSale: boolean;
 }) {
   const [message, formAction] = useFormState(addItem, null);
-  const searchParams = useSearchParams();
-  const variant = variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every(
-      (option) => option.value === searchParams.get(option.name.toLowerCase())
-    )
-  );
+  const { variant, state } = useProduct();
   const selectedVariantId = variant?.id;
-  const missingCoreVariantId = variant?.coreVariantId && !searchParams.has(CORE_VARIANT_ID_KEY);
+  const missingCoreVariantId = variant?.coreVariantId && !state[CORE_VARIANT_ID_KEY];
 
-  const coreVariantId = searchParams.get(CORE_VARIANT_ID_KEY);
+  const coreVariantId = state[CORE_VARIANT_ID_KEY];
 
   // remove special core-waiver value as it is not a valid variant
   const addingVariants = (

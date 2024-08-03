@@ -2,9 +2,9 @@
 
 import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import SideDialog from 'components/side-dialog';
-import { Product, ProductVariant } from 'lib/shopify/types';
+import { useProduct } from 'context/product-context';
+import { Product } from 'lib/shopify/types';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import WarrantySelector from './warranty-selector';
 
@@ -20,18 +20,10 @@ const Warranty = ({
   siteName: string | undefined;
   storePrefix: string;
 }) => {
-  const searchParams = useSearchParams();
-
   const [openingDialog, setOpeningDialog] = useState<'included' | 'terms-conditions' | null>(null);
-  const optionSearchParams = new URLSearchParams(searchParams);
+  const { variant } = useProduct();
 
-  const selectedVariant = product.variants.find((variant: ProductVariant) =>
-    variant.selectedOptions.every(
-      (option) => option.value === optionSearchParams.get(option.name.toLowerCase())
-    )
-  );
-
-  const warrantyYears = selectedVariant?.warranty_years || '3';
+  const warrantyYears = variant?.warranty_years || '3';
 
   return (
     <div className="flex flex-col text-xs lg:text-sm">

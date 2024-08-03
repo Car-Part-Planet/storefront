@@ -1,9 +1,9 @@
 'use client';
 
 import Price from 'components/price';
+import { useProduct } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER, DELIVERY_OPTION_KEY } from 'lib/constants';
 import { Money, ProductVariant } from 'lib/shopify/types';
-import { useSearchParams } from 'next/navigation';
 import { getDeliveryOptions } from './delivery';
 
 type PriceSummaryProps = {
@@ -13,17 +13,11 @@ type PriceSummaryProps = {
 };
 
 const PriceSummary = ({ variants, defaultPrice, storePrefix }: PriceSummaryProps) => {
-  const searchParams = useSearchParams();
-
-  const variant = variants.find((variant) =>
-    variant.selectedOptions.every(
-      (option) => option.value === searchParams.get(option.name.toLowerCase())
-    )
-  );
+  const { variant, state } = useProduct();
 
   const price = variant?.price.amount || defaultPrice.amount;
-  const selectedCoreChargeOption = searchParams.get(CORE_VARIANT_ID_KEY);
-  const selectedDeliveryOption = searchParams.get(DELIVERY_OPTION_KEY);
+  const selectedCoreChargeOption = state[CORE_VARIANT_ID_KEY];
+  const selectedDeliveryOption = state[DELIVERY_OPTION_KEY];
 
   // Determine delivery prices based on storePrefix
   const commercialPrice = storePrefix === 'reman-transmission' ? 299 : 0;
