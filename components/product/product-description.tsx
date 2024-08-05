@@ -56,7 +56,7 @@ export function ProductDescription({ product }: { product: Product }) {
         storePrefix={STORE_PREFIX}
       />
       <Suspense fallback={null}>
-        <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
+        <AddToCart availableForSale={product.availableForSale} productName={product.title} />
       </Suspense>
       <SpecialOffer />
     </>

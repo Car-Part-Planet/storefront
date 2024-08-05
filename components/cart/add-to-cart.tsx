@@ -1,20 +1,22 @@
 'use client';
 
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { sendGAEvent } from '@next/third-parties/google';
 import clsx from 'clsx';
 import { addItem } from 'components/cart/actions';
 import LoadingDots from 'components/loading-dots';
 import { useProduct } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
-import { ProductVariant } from 'lib/shopify/types';
 import { useFormState, useFormStatus } from 'react-dom';
 
 function SubmitButton({
   availableForSale,
-  disabled
+  disabled,
+  onClick
 }: {
   availableForSale: boolean;
   disabled: boolean;
+  onClick: () => void;
 }) {
   const { pending } = useFormStatus();
   const buttonClasses =
@@ -45,7 +47,11 @@ function SubmitButton({
   return (
     <button
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
-        if (pending) e.preventDefault();
+        if (pending) {
+          e.preventDefault();
+          return;
+        }
+        onClick();
       }}
       aria-label="Add to cart"
       aria-disabled={pending}
@@ -61,11 +67,11 @@ function SubmitButton({
 }
 
 export function AddToCart({
-  variants,
-  availableForSale
+  availableForSale,
+  productName
 }: {
-  variants: ProductVariant[];
   availableForSale: boolean;
+  productName: string;
 }) {
   const [message, formAction] = useFormState(addItem, null);
   const { variant, state } = useProduct();
@@ -90,6 +96,16 @@ export function AddToCart({
 
   const actionWithVariant = formAction.bind(null, addingVariants);
 
+  const sendAddToCartEvent = () => {
+    if (!variant) return;
+
+    sendGAEvent('event', 'add_to_cart', {
+      currency: variant.price.currencyCode,
+      value: variant.price.amount,
+      items: [{ item_id: variant.sku, item_name: productName }]
+    });
+  };
+
   return (
     <form action={actionWithVariant}>
       <SubmitButton
@@ -97,6 +113,7 @@ export function AddToCart({
         disabled={Boolean(
           !selectedVariantId || missingCoreVariantId || parseFloat(variant.price.amount) === 0
         )}
+        onClick={sendAddToCartEvent}
       />
       <p aria-live="polite" className="sr-only" role="status">
         {message}
