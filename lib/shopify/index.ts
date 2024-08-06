@@ -887,7 +887,7 @@ export async function getMenu(handle: string): Promise<Menu[]> {
   ): Menu[] =>
     menu.map((item) => ({
       title: item.title,
-      path: normalizeUrl(domain, item.url),
+      path: normalizeUrl(item.url),
       items: item.items?.length ? formatMenuItems(item.items) : []
     }));
 

@@ -78,8 +78,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function normalizeUrl(domain: string, url: string) {
-  const cleanUrl = url.replace(domain, '');
+export function normalizeUrl(url: string) {
+  const cleanUrl = new URL(url).pathname;
 
   if (cleanUrl.startsWith('/collections')) {
     return getCollectionUrl(cleanUrl.replace('/collections', ''), false);
