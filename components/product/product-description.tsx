@@ -37,7 +37,7 @@ export function ProductDescription({ product }: { product: Product }) {
 
       <ProductDetails product={product} />
       <div className="mb-2 border-t py-4 dark:border-neutral-700">
-        <CoreCharge variants={product.variants}>
+        <CoreCharge>
           <CoreDialogContent />
         </CoreCharge>
       </div>

@@ -5,26 +5,28 @@ import Price from 'components/price';
 import SideDialog from 'components/side-dialog';
 import { useProduct, useUpdateURL } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
-import { CoreChargeOption, ProductVariant } from 'lib/shopify/types';
+import { CoreChargeOption } from 'lib/shopify/types';
 import { cn } from 'lib/utils';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState, useTransition } from 'react';
 
 type CoreChargeProps = {
-  variants: ProductVariant[];
   children: ReactNode;
 };
 
-const CoreCharge = ({ variants, children }: CoreChargeProps) => {
+const CoreCharge = ({ children }: CoreChargeProps) => {
   const { variant, updateOption, state } = useProduct();
   const updateUrl = useUpdateURL();
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const coreVariantIdSearchParam = state[CORE_VARIANT_ID_KEY];
+  const [, startTransition] = useTransition();
 
   const { coreCharge, waiverAvailable, coreVariantId } = variant ?? {};
 
   const handleSelectCoreChargeOption = (coreVariantId: string) => {
-    const newState = updateOption(CORE_VARIANT_ID_KEY, coreVariantId);
-    updateUrl(newState);
+    startTransition(() => {
+      const newState = updateOption(CORE_VARIANT_ID_KEY, coreVariantId);
+      updateUrl(newState);
+    });
   };
 
   const coreChargeOptions = [
@@ -41,9 +43,11 @@ const CoreCharge = ({ variants, children }: CoreChargeProps) => {
       }
   ].filter(Boolean) as CoreChargeOption[];
 
-  if (!coreVariantIdSearchParam && coreChargeOptions.length > 0) {
-    handleSelectCoreChargeOption((coreChargeOptions[0] as CoreChargeOption).value);
-  }
+  useEffect(() => {
+    if (!coreVariantIdSearchParam && coreChargeOptions.length > 0) {
+      handleSelectCoreChargeOption((coreChargeOptions[0] as CoreChargeOption).value);
+    }
+  }, [coreChargeOptions, coreVariantIdSearchParam]);
 
   const openDialog = () => setIsOpenDialog(true);
   const closeDialog = () => setIsOpenDialog(false);

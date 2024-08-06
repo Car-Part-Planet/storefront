@@ -8,8 +8,7 @@ import { useProduct, useUpdateURL } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
 import { CoreChargeOption, Money, ProductOption, ProductVariant } from 'lib/shopify/types';
 import { findVariantWithMinPrice } from 'lib/utils';
-import { usePathname, useRouter } from 'next/navigation';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState, useTransition } from 'react';
 
 type Combination = {
   id: string;
@@ -26,11 +25,10 @@ export function VariantSelector({
   variants: ProductVariant[];
   minPrice: Money;
 }) {
-  const router = useRouter();
-  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const { state, updateOptions } = useProduct();
   const updateURL = useUpdateURL();
+  const [, startTransition] = useTransition();
 
   const combinations: Combination[] = variants.map((variant) => ({
     id: variant.id,
@@ -53,14 +51,16 @@ export function VariantSelector({
       const defaultVariant =
         variantWithMinPrice || variants.find((variant) => variant.availableForSale);
       if (defaultVariant) {
-        const newState = updateOptions(
-          defaultVariant.selectedOptions.map((option) => ({
-            name: option.name.toLowerCase(),
-            value: option.value
-          }))
-        );
+        startTransition(() => {
+          const newState = updateOptions(
+            defaultVariant.selectedOptions.map((option) => ({
+              name: option.name.toLowerCase(),
+              value: option.value
+            }))
+          );
 
-        updateURL(newState);
+          updateURL(newState);
+        });
       }
     }
   }, [combinations, variantWithMinPrice, variants]);
