@@ -1,7 +1,6 @@
 import { getCart } from 'lib/shopify';
 import { cookies } from 'next/headers';
-import Link from 'next/link';
-import OpenCart from './open-cart';
+import CartWrapper from './cart-wrapper';
 
 export default async function Cart() {
   const cartId = cookies().get('cartId')?.value;
@@ -11,9 +10,5 @@ export default async function Cart() {
     cart = await getCart(cartId);
   }
 
-  return (
-    <Link href="/cart">
-      <OpenCart quantity={cart?.totalQuantity} />
-    </Link>
-  );
+  return <CartWrapper quantity={cart?.totalQuantity} />;
 }

@@ -6,6 +6,8 @@ import Grid from 'components/grid';
 import { GridTileImage } from 'components/grid/tile';
 import LoadingDots from 'components/loading-dots';
 import { Product } from 'lib/shopify/types';
+import { SearchParams } from 'lib/types';
+import { createUrl } from 'lib/utils';
 import { useState } from 'react';
 import { getProductsInCollection, searchProducts } from './actions';
 
@@ -20,7 +22,7 @@ const ProductsList = ({
     endCursor: string;
     hasNextPage: boolean;
   };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: SearchParams;
   collection?: string;
 }) => {
   const [products, setProducts] = useState(initialProducts);
@@ -62,7 +64,14 @@ const ProductsList = ({
               src={product.featuredImage?.url}
               fill
               sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
-              href={`/product/${product.handle}`}
+              href={
+                searchParams
+                  ? createUrl(
+                      `/product/${product.handle}`,
+                      new URLSearchParams(searchParams as Record<string, string>)
+                    )
+                  : `/product/${product.handle}`
+              }
               priority={index > 10 ? false : true}
             />
           </Grid.Item>
