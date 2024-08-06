@@ -1,13 +1,14 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 import Banner from 'components/banner';
 import LogoSquare from 'components/logo-square';
+import MicrosoftClarityScript from 'components/microsoft-clarity-script';
 import { GeistSans } from 'geist/font/sans';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { ReactNode, Suspense } from 'react';
 import '../globals.css';
 
-const { STORE_PREFIX, SITE_NAME, GA_ID } = process.env;
+const { STORE_PREFIX, SITE_NAME, GA_ID, MICROSOFT_CLARITY_ID } = process.env;
 export const metadata: Metadata = {
   title: `Cart | ${SITE_NAME}`,
   icons: {
@@ -34,6 +35,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         </main>
       </body>
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+      {MICROSOFT_CLARITY_ID && <MicrosoftClarityScript id={MICROSOFT_CLARITY_ID} />}
     </html>
   );
 }

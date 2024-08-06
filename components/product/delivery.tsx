@@ -6,7 +6,7 @@ import SideDialog from 'components/side-dialog';
 import { useProduct, useUpdateURL } from 'context/product-context';
 import { DELIVERY_OPTION_KEY } from 'lib/constants';
 import { cn } from 'lib/utils';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState, useTransition } from 'react';
 
 const options = ['Commercial', 'Residential'] as const;
 
@@ -43,14 +43,17 @@ const Delivery = ({
 }) => {
   const { state, updateOption } = useProduct();
   const updateUrl = useUpdateURL();
+  const [, startTransition] = useTransition();
 
   const [openingDialog, setOpeningDialog] = useState<'information' | 'terms-conditions' | null>(
     null
   );
 
   const handleSelectDelivery = (option: Option) => {
-    const newState = updateOption(DELIVERY_OPTION_KEY, option);
-    updateUrl(newState);
+    startTransition(() => {
+      const newState = updateOption(DELIVERY_OPTION_KEY, option);
+      updateUrl(newState);
+    });
   };
 
   const selectedDeliveryOption = state[DELIVERY_OPTION_KEY];
@@ -58,7 +61,7 @@ const Delivery = ({
     if (!selectedDeliveryOption) {
       handleSelectDelivery(options[0]);
     }
-  }, [handleSelectDelivery, selectedDeliveryOption]);
+  }, [selectedDeliveryOption]);
 
   // Conditional price values based on storePrefix
   const commercialPrice = storePrefix === 'reman-transmission' ? 299 : 0;

@@ -1,14 +1,22 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 import Banner from 'components/banner';
 import Navbar from 'components/layout/navbar';
+import MicrosoftClarityScript from 'components/microsoft-clarity-script';
 import { GeistSans } from 'geist/font/sans';
 import { ensureStartsWith } from 'lib/utils';
 import { Metadata } from 'next';
 import { ReactNode, Suspense } from 'react';
 import '../globals.css';
 
-const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME, STORE_PREFIX, SHOPIFY_ORIGIN_URL, GA_ID } =
-  process.env;
+const {
+  TWITTER_CREATOR,
+  TWITTER_SITE,
+  SITE_NAME,
+  STORE_PREFIX,
+  SHOPIFY_ORIGIN_URL,
+  GA_ID,
+  MICROSOFT_CLARITY_ID
+} = process.env;
 const baseUrl = SHOPIFY_ORIGIN_URL ? SHOPIFY_ORIGIN_URL : 'http://localhost:3000';
 const twitterCreator = TWITTER_CREATOR ? ensureStartsWith(TWITTER_CREATOR, '@') : undefined;
 const twitterSite = TWITTER_SITE ? ensureStartsWith(TWITTER_SITE, 'https://') : undefined;
@@ -51,6 +59,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         </div>
       </body>
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+      {MICROSOFT_CLARITY_ID && <MicrosoftClarityScript id={MICROSOFT_CLARITY_ID} />}
     </html>
   );
 }
