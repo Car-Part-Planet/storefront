@@ -15,6 +15,7 @@ import { Fragment, Suspense, useEffect, useState } from 'react';
 
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Menu } from 'lib/shopify/types';
+import { createUrl } from 'lib/utils';
 import Search, { SearchSkeleton } from './search';
 
 export default function MobileMenu({ menu }: { menu: Menu[] }) {
@@ -98,7 +99,7 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                               {item.items.map((subItem: Menu) => (
                                 <Link
                                   key={subItem.title}
-                                  href={subItem.path}
+                                  href={createUrl(subItem.path, searchParams)}
                                   onClick={closeMobileMenu}
                                 >
                                   {subItem.title}
