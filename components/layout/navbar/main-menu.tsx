@@ -4,13 +4,15 @@ import { Popover, PopoverGroup, PopoverPanel, Transition } from '@headlessui/rea
 import clsx from 'clsx';
 import { URL_PREFIXES } from 'lib/constants';
 import { Menu } from 'lib/shopify/types';
+import { createUrl } from 'lib/utils';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Fragment, useState } from 'react';
 
 const MainMenu = ({ menu }: { menu: Menu[] }) => {
   const pathname = usePathname();
   const [open, setOpen] = useState('');
+  const searchParams = useSearchParams();
 
   return menu.length ? (
     <div className="mt-2 hidden h-11 w-full border-b text-sm font-medium md:flex">
@@ -24,7 +26,7 @@ const MainMenu = ({ menu }: { menu: Menu[] }) => {
               return (
                 <Link
                   key={`navbar-${item.title}-${item.path}`}
-                  href={item.path}
+                  href={createUrl(item.path, searchParams)}
                   className={`flex h-full items-center ${isActiveItem ? 'text-black' : 'text-neutral-600 hover:text-black'}`}
                 >
                   {item.title}
@@ -41,7 +43,7 @@ const MainMenu = ({ menu }: { menu: Menu[] }) => {
                   onMouseLeave={() => setOpen('')}
                 >
                   <Link
-                    href={item.path}
+                    href={createUrl(item.path, searchParams)}
                     className={clsx(
                       'relative z-10 flex items-center border-b-2 px-2 pt-px transition-colors duration-200 ease-out focus-visible:ring-0 focus-visible:ring-offset-0',
                       {
