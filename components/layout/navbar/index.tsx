@@ -45,7 +45,9 @@ export default async function Navbar() {
           </div>
         </div>
 
-        <MainMenu menu={menu} />
+        <Suspense>
+          <MainMenu menu={menu} />
+        </Suspense>
       </div>
     </nav>
   );
