@@ -47,7 +47,7 @@ const PriceSummary = ({ variants, defaultPrice, storePrefix }: PriceSummaryProps
         <Price amount={price} currencyCode={currencyCode} className="text-2xl font-semibold" />
       </div>
       <div className="flex flex-row items-center justify-between">
-        <span className="text-sm text-gray-400">{`Core Charge ${selectedCoreChargeOption === CORE_WAIVER ? '(Waived for 30 days)' : ''}`}</span>
+        <span className="text-sm text-gray-400">{`Fully Refundable Core Charge ${selectedCoreChargeOption === CORE_WAIVER ? '(Waived for 30 days)' : ''}`}</span>
         {selectedCoreChargeOption === CORE_WAIVER ? (
           <span className="text-sm text-gray-400">{`+$0.00`}</span>
         ) : (

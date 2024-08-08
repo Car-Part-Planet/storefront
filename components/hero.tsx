@@ -22,7 +22,7 @@ const offers = [
     icon: 'arrow-path-rounded-square'
   },
   {
-    title: 'No Core Charge for 30 Days',
+    title: 'Fully Refundable Core Charge',
     icon: 'currency-dollar'
   },
   {

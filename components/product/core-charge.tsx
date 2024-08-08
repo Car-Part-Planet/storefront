@@ -46,7 +46,7 @@ const CoreCharge = ({ variants, children }: CoreChargeProps) => {
     },
     coreVariantId &&
       coreCharge && {
-        label: 'Pay Core Upfront',
+        label: 'Fully Refundable',
         value: coreVariantId,
         price: coreCharge
       }
