@@ -5,6 +5,8 @@ import { Button } from './ui';
 const PhoneButton = () => {
   return (
     <div className="fixed bottom-6 right-6 block md:hidden">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
+
       <a href={phoneNumber?.link}>
         <Button
           variant="solid"

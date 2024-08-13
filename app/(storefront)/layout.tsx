@@ -57,8 +57,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <Suspense>
             <main>{children}</main>
           </Suspense>
-          <PhoneButton />
         </div>
+        <PhoneButton />
       </body>
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
       {MICROSOFT_CLARITY_ID && <MicrosoftClarityScript id={MICROSOFT_CLARITY_ID} />}
