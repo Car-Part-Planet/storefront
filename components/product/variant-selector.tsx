@@ -63,6 +63,7 @@ export function VariantSelector({
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [combinations, variantWithMinPrice, variants]);
 
   const hasNoOptionsOrJustOneOption =

@@ -75,6 +75,7 @@ export function ProductProvider({
       variant,
       updateOptions
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [state, variant]
   );
 
@@ -97,6 +98,6 @@ export function useUpdateURL() {
     Object.entries(state).forEach(([key, value]) => {
       newParams.set(key, value);
     });
-    router.push(`?${newParams.toString()}`, { scroll: false });
+    router.replace(`?${newParams.toString()}`, { scroll: false });
   };
 }

@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="en" className={GeistSans.variable}>
       <body className="min-h-screen overflow-hidden bg-white text-black selection:bg-primary-muted">
         <div className="flex h-screen max-h-screen flex-col overflow-auto">
-          <header className="sticky top-0 z-10">
+          <header>
             <Banner />
             <Navbar />
           </header>
