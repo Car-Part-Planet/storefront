@@ -83,24 +83,6 @@ export const config = {
      * - images
      * - logo
      */
-    {
-      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)',
-      missing: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch' }
-      ]
-    },
-    {
-      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)',
-      has: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch' }
-      ]
-    },
-    {
-      source: '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)',
-      has: [{ type: 'header', key: 'x-present' }],
-      missing: [{ type: 'header', key: 'x-missing', value: 'prefetch' }]
-    }
+    '/((?!api|_next/static|icons|images|logo|_next/image|favicon.ico|product|cart).*)'
   ]
 };
