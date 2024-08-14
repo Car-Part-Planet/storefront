@@ -2,6 +2,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import Banner from 'components/banner';
 import Navbar from 'components/layout/navbar';
 import MicrosoftClarityScript from 'components/microsoft-clarity-script';
+import PhoneButton from 'components/phone-button';
 import { GeistSans } from 'geist/font/sans';
 import { ensureStartsWith } from 'lib/utils';
 import { Metadata } from 'next';
@@ -57,6 +58,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <main>{children}</main>
           </Suspense>
         </div>
+        <PhoneButton />
       </body>
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
       {MICROSOFT_CLARITY_ID && <MicrosoftClarityScript id={MICROSOFT_CLARITY_ID} />}
