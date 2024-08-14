@@ -23,7 +23,7 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
           <Image
             className="h-full w-full object-contain"
             fill
-            sizes="(min-width: 1024px) 30vw, 100vw"
+            sizes="(min-width: 1512px) 33vw, (min-width: 1280px) 50vw, 100vw"
             alt={images[imageIndex]?.altText as string}
             src={images[imageIndex]?.src as string}
             priority={true}
