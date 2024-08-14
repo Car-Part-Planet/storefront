@@ -28,9 +28,9 @@ const AdditionalInformation = async ({
   const pageContent = await getMetaobjectsByIds(contentIds);
 
   return (
-    <div className="my-6 w-full divide-y">
+    <div className="my-6 w-full divide-y border-t">
       {pageContent.map((block) => (
-        <div key={block.id} className="py-5">
+        <div key={block.id} className="py-6">
           <PageContent block={block} />
         </div>
       ))}

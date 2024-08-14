@@ -39,7 +39,7 @@ function SubmitButton({
         className={clsx(buttonClasses, disabledClasses)}
       >
         <ShoppingCartIcon className="h-5" />
-        Add To Cart
+        Buy Now
       </button>
     );
   }
@@ -61,7 +61,7 @@ function SubmitButton({
       })}
     >
       {pending ? <LoadingDots className="bg-white" /> : <ShoppingCartIcon className="h-5" />}
-      Add To Cart
+      Buy Now
     </button>
   );
 }

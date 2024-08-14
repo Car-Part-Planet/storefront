@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import BreadcrumbComponent from 'components/breadcrumb';
 import { GridTileImage } from 'components/grid/tile';
 import Footer from 'components/layout/footer';
+import ProductActions from 'components/product/actions';
 import AdditionalInformation from 'components/product/additional-information';
 import { Gallery } from 'components/product/gallery';
 import { ProductDescription } from 'components/product/product-description';
@@ -72,28 +73,35 @@ export default async function ProductPage({
             <BreadcrumbComponent type="product" handle={product.handle} />
           </div>
           <div className="my-3 flex flex-col space-x-0 lg:flex-row lg:gap-8 lg:space-x-3">
-            <div className="h-full w-full basis-full lg:basis-7/12">
-              <ProductDescription product={product} />
+            <div className="flex basis-8/12 flex-col xl:basis-9/12">
+              <div className="flex w-full gap-x-8">
+                <div className="hidden xl:block xl:basis-1/3">
+                  <Suspense
+                    fallback={
+                      <div className="aspect-square relative h-full max-h-[550px] w-full overflow-hidden" />
+                    }
+                  >
+                    <Gallery
+                      images={product.images.slice(0, 5).map((image: Image) => ({
+                        src: image.url,
+                        altText: image.altText
+                      }))}
+                    />
+                  </Suspense>
+                </div>
+                <div className="h-full basis-full xl:basis-2/3">
+                  <ProductDescription product={product} />
+                </div>
+              </div>
               <Suspense>
                 <AdditionalInformation product={product} searchParams={searchParams} />
               </Suspense>
             </div>
-
-            <div className="hidden lg:block lg:basis-5/12">
-              <Suspense
-                fallback={
-                  <div className="aspect-square relative h-full max-h-[550px] w-full overflow-hidden" />
-                }
-              >
-                <Gallery
-                  images={product.images.slice(0, 5).map((image: Image) => ({
-                    src: image.url,
-                    altText: image.altText
-                  }))}
-                />
-              </Suspense>
+            <div className="h-full w-full basis-4/12 xl:basis-3/12">
+              <ProductActions product={product} />
             </div>
           </div>
+
           <Suspense>
             <RelatedProducts id={product.id} />
           </Suspense>

@@ -29,62 +29,60 @@ const storeConfig: Record<
 
 const config = storeConfig[STORE_PREFIX!] || storeConfig.default;
 
+const Offer = ({
+  title,
+  description,
+  icon
+}: {
+  title?: string;
+  description?: string;
+  icon: JSX.Element;
+}) => {
+  return (
+    <div className="flex items-start gap-3">
+      <div className="rounded-md bg-gray-100 p-2">{icon}</div>
+      <div className="text-content-dark flex flex-col">
+        <span className="text-sm font-medium md:text-base">{title}</span>
+        <span className="hidden text-sm md:flex">{description}</span>
+      </div>
+    </div>
+  );
+};
+
 const SpecialOffer = () => {
   return (
-    <div className="mt-10 grid grid-cols-2 gap-y-5 xl:grid-cols-3">
-      <div className="flex items-start gap-3">
-        <TruckIcon className="size-10 text-primary" />
-        <div className="flex flex-col">
-          <span className="font-medium uppercase">{config?.shippingTitle}</span>
-          <span className="mr-2.5 text-sm font-light">{config?.shippingText}</span>
-        </div>
-      </div>
-      <div className="flex items-start gap-3">
-        <CurrencyDollarIcon className="size-10 text-primary" />
-        <div className="flex flex-col">
-          <span className="font-medium uppercase">Best Price Guarantee</span>
-          <span className="mr-2.5 text-sm font-light">
-            We will match or beat any competitor&apos;s pricing
-          </span>
-        </div>
-      </div>
-      <div className="flex items-start gap-3">
-        <ShieldCheckIcon className="size-8 text-primary" />
-        <div className="flex flex-col">
-          <span className="font-medium uppercase">{config?.warrantyTitle}</span>
-          <span className="mr-2.5 text-sm font-light">{config?.warrantyText}</span>
-        </div>
-      </div>
+    <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-5 xl:mt-5 xl:gap-5">
+      <Offer
+        title={config?.shippingTitle}
+        description={config?.shippingText}
+        icon={<TruckIcon className="size-6 text-primary" />}
+      />
+      <Offer
+        icon={<CurrencyDollarIcon className="size-6 text-primary" />}
+        title="Best Price Guarantee"
+        description="We will match or beat any competitor's pricing"
+      />
+      <Offer
+        icon={<ShieldCheckIcon className="size-6 text-primary" />}
+        title={config?.warrantyTitle}
+        description={config?.warrantyText}
+      />
+      <Offer
+        title="Excellent Support"
+        description="End-to-end, expert care from our customer service team"
+        icon={<UsersIcon className="size-6 text-primary" />}
+      />
+      <Offer
+        icon={<ArrowPathIcon className="size-6 text-primary" />}
+        title="Core Charge Waiver"
+        description="Avoid the core charge by returning within 30 days"
+      />
 
-      <div className="flex items-start gap-3">
-        <UsersIcon className="size-10 text-primary" />
-        <div className="flex flex-col">
-          <span className="font-medium uppercase">Excellent Support</span>
-          <span className="mr-2.5 text-sm font-light">
-            End-to-end, expert care from our customer service team
-          </span>
-        </div>
-      </div>
-
-      <div className="flex items-start gap-3">
-        <ArrowPathIcon className="size-10 text-primary" />
-        <div className="flex flex-col">
-          <span className="font-medium uppercase">Core Charge Waiver</span>
-          <span className="mr-2.5 text-sm font-light">
-            Avoid the core charge by returning within 30 days
-          </span>
-        </div>
-      </div>
-
-      <div className="flex items-start gap-3">
-        <StarIcon className="size-10 text-primary" />
-        <div className="flex flex-col">
-          <span className="font-medium uppercase">Free Core Return</span>
-          <span className="mr-2.5 text-sm font-light">
-            Unlike competitors, we pay for the return of your core
-          </span>
-        </div>
-      </div>
+      <Offer
+        icon={<StarIcon className="size-6 text-primary" />}
+        title="Free Core Return"
+        description="Unlike competitors, we pay for the return of your core"
+      />
     </div>
   );
 };
