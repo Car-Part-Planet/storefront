@@ -43,7 +43,11 @@ const CoreCharge = ({ children }: CoreChargeProps) => {
   ].filter(Boolean) as CoreChargeOption[];
 
   useEffect(() => {
-    if (!coreVariantIdSearchParam && coreChargeOptions.length > 0) {
+    if (
+      (!coreVariantIdSearchParam ||
+        !coreChargeOptions.find((option) => option.value === coreVariantIdSearchParam)) &&
+      coreChargeOptions.length > 0
+    ) {
       handleSelectCoreChargeOption((coreChargeOptions[0] as CoreChargeOption).value);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

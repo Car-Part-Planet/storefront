@@ -108,7 +108,7 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                             </DisclosurePanel>
                           </Disclosure>
                         ) : (
-                          <Link href={item.path} onClick={closeMobileMenu}>
+                          <Link href={createUrl(item.path, searchParams)} onClick={closeMobileMenu}>
                             {item.title}
                           </Link>
                         )}
