@@ -19,10 +19,16 @@ const ProductActions = ({ product }: { product: Product }) => {
       <Warranty product={product} siteName={SITE_NAME} storePrefix={STORE_PREFIX!} />
       <Delivery storePrefix={STORE_PREFIX} siteName={SITE_NAME} phoneBlock={<PhoneBlock />} />
 
-      <PriceSummary defaultPrice={product.priceRange.minVariantPrice} storePrefix={STORE_PREFIX} />
-      <Suspense fallback={null}>
-        <AddToCart availableForSale={product.availableForSale} productName={product.title} />
-      </Suspense>
+      <PriceSummary
+        product={product}
+        defaultPrice={product.priceRange.minVariantPrice}
+        storePrefix={STORE_PREFIX}
+      />
+      <div className="hidden md:block">
+        <Suspense fallback={null}>
+          <AddToCart availableForSale={product.availableForSale} productName={product.title} />
+        </Suspense>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import Prose from 'components/prose';
 import { Image, Product } from 'lib/shopify/types';
 import { Suspense } from 'react';
+import ProductActions from './actions';
 import { Gallery } from './gallery';
 import ProductDetails from './product-details';
 import SpecialOffer from './special-offer';
@@ -30,6 +31,9 @@ export function ProductDescription({ product }: { product: Product }) {
       </div>
       <SpecialOffer />
 
+      <div className="mt-6 block md:hidden">
+        <ProductActions product={product} />
+      </div>
       {product.descriptionHtml ? (
         <Prose
           className="mb-4 text-sm leading-tight dark:text-white/[60%]"

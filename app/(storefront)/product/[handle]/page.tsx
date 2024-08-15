@@ -72,8 +72,8 @@ export default async function ProductPage({
           <div className="hidden lg:block">
             <BreadcrumbComponent type="product" handle={product.handle} />
           </div>
-          <div className="my-3 flex flex-col space-x-0 lg:flex-row lg:gap-8 lg:space-x-3">
-            <div className="flex basis-8/12 flex-col xl:basis-9/12">
+          <div className="my-3 flex flex-col space-x-0 md:flex-row lg:gap-8 lg:space-x-3">
+            <div className="flex basis-full flex-col md:basis-8/12 xl:basis-9/12">
               <div className="flex w-full gap-x-8">
                 <div className="hidden xl:block xl:basis-1/3">
                   <Suspense
@@ -97,7 +97,7 @@ export default async function ProductPage({
                 <AdditionalInformation product={product} searchParams={searchParams} />
               </Suspense>
             </div>
-            <div className="h-full w-full basis-4/12 xl:basis-3/12">
+            <div className="hidden md:block md:basis-4/12 xl:basis-3/12">
               <ProductActions product={product} />
             </div>
           </div>

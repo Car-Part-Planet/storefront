@@ -1,10 +1,22 @@
+'use client';
+
 import { PhoneIcon } from '@heroicons/react/24/solid';
+import clsx from 'clsx';
 import { phoneNumber } from 'lib/constants';
+import { usePathname } from 'next/navigation';
 import { Button } from './ui';
 
 const PhoneButton = () => {
+  const pathname = usePathname();
+  const isProductPage = pathname.startsWith('/product/');
+
   return (
-    <div className="fixed bottom-6 right-6 block md:hidden">
+    <div
+      className={clsx('fixed right-6 block md:hidden', {
+        'bottom-24': isProductPage,
+        'bottom-6': !isProductPage
+      })}
+    >
       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
 
       <a href={phoneNumber?.link}>
