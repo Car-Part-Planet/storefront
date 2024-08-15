@@ -11,6 +11,7 @@ import {
 } from 'lib/shopify';
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export async function addItem(
   prevState: any,
@@ -35,10 +36,12 @@ export async function addItem(
 
   try {
     await addToCart(cartId, selectedVariantIds);
-    revalidateTag(TAGS.cart);
   } catch (e) {
     return 'Error adding item to cart';
   }
+
+  revalidateTag(TAGS.cart);
+  redirect('/cart');
 }
 
 export async function setMetafields(

@@ -4,12 +4,15 @@ import CartDetails from 'components/cart/cart-details';
 import { isLoggedIn } from 'components/profile/actions';
 import { getCart } from 'lib/shopify';
 import { SearchParams } from 'lib/types';
+import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
-const getCheckoutUrlWithAuthentication = (url: string) => {
-  const checkoutUrl = new URL(url);
-  checkoutUrl.searchParams.append('logged_in', 'true');
-  return checkoutUrl.toString();
+const { STORE_PREFIX, SITE_NAME } = process.env;
+export const metadata: Metadata = {
+  title: `Cart | ${SITE_NAME}`,
+  icons: {
+    icon: `/logo/${STORE_PREFIX}/favicon.png`
+  }
 };
 
 export default async function Page({ searchParams }: { searchParams: SearchParams }) {
@@ -46,7 +49,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
   );
 
   return (
-    <div>
+    <div className="mx-auto max-w-2xl px-4 pb-24 pt-4 sm:px-6 sm:pt-8 lg:max-w-7xl lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">My Cart</h1>
       <CartDetails cart={cart} checkoutUrl={finalUrl.href} />
     </div>

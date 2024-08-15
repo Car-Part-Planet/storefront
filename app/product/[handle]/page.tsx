@@ -65,7 +65,7 @@ export default async function ProductPage({
   if (!product) return notFound();
 
   return (
-    <div className="xl:px-2">
+    <>
       <ProductProvider product={product}>
         <ProductSchema product={product} />
         <div className="mx-auto mt-4 max-w-screen-2xl px-8 xl:px-4">
@@ -108,7 +108,7 @@ export default async function ProductPage({
         </div>
         <Footer />
       </ProductProvider>
-    </div>
+    </>
   );
 }
 

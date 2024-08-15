@@ -7,7 +7,7 @@ import { GeistSans } from 'geist/font/sans';
 import { ensureStartsWith } from 'lib/utils';
 import { Metadata } from 'next';
 import { ReactNode, Suspense } from 'react';
-import '../globals.css';
+import './globals.css';
 
 const {
   TWITTER_CREATOR,
@@ -18,6 +18,7 @@ const {
   GA_ID,
   MICROSOFT_CLARITY_ID
 } = process.env;
+
 const baseUrl = SHOPIFY_ORIGIN_URL ? SHOPIFY_ORIGIN_URL : 'http://localhost:3000';
 const twitterCreator = TWITTER_CREATOR ? ensureStartsWith(TWITTER_CREATOR, '@') : undefined;
 const twitterSite = TWITTER_SITE ? ensureStartsWith(TWITTER_SITE, 'https://') : undefined;
@@ -47,17 +48,17 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={GeistSans.variable}>
-      <body className="min-h-screen overflow-hidden bg-white text-black selection:bg-primary-muted">
-        <div className="flex h-screen max-h-screen flex-col overflow-auto">
+      <body className="bg-white text-black selection:bg-primary-muted">
+        <div className="flex flex-col">
           <header>
             <Banner />
             <Navbar />
           </header>
-
           <Suspense>
             <main>{children}</main>
           </Suspense>
         </div>
+
         <PhoneButton />
       </body>
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
