@@ -3,7 +3,7 @@ import { getMetaobjectsByIds } from 'lib/shopify';
 import { Product } from 'lib/shopify/types';
 import groupBy from 'lodash.groupby';
 
-const VehicleCombatibility = async ({ product }: { product: Product }) => {
+const VehicleCompatibility = async ({ product }: { product: Product }) => {
   const [makesData, modelsData, yearsData] = await Promise.all([
     getMetaobjectsByIds(product.makes || []),
     getMetaobjectsByIds(product.models || []),
@@ -31,7 +31,7 @@ const VehicleCombatibility = async ({ product }: { product: Product }) => {
     }
   });
 
-  const colums = [
+  const columns = [
     {
       key: 'make',
       title: 'Make'
@@ -49,9 +49,9 @@ const VehicleCombatibility = async ({ product }: { product: Product }) => {
   return (
     <div className="mt-10 flex flex-col gap-y-4 border-t pt-5 content-visibility-auto contain-intrinsic-size-[auto_500px]">
       <h3 className="text-lg font-semibold leading-6 text-content-dark">Vehicle Compatibility</h3>
-      <Table columns={colums} data={data} />
+      <Table columns={columns} data={data} />
     </div>
   );
 };
 
-export default VehicleCombatibility;
+export default VehicleCompatibility;
