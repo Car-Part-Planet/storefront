@@ -425,6 +425,9 @@ export type Product = Omit<
   | 'transmissionSpeeds'
   | 'transmissionCode'
   | 'transmissionTag'
+  | 'makes'
+  | 'models'
+  | 'years'
 > & {
   variants: ProductVariant[];
   images: Image[];
@@ -435,6 +438,9 @@ export type Product = Omit<
   transmissionSpeeds: number[] | null;
   transmissionCode: string[] | null;
   transmissionTag: string[] | null;
+  makes: string[] | null;
+  models: string[] | null;
+  years: string[] | null;
 };
 
 export type ProductOption = {
@@ -582,6 +588,9 @@ export type ShopifyProduct = {
   transmissionCode: { value: string } | null;
   driveType: { value: string } | null;
   transmissionSpeeds: { value: string } | null;
+  makes: { value: string } | null;
+  models: { value: string } | null;
+  years: { value: string } | null;
 };
 
 export type ShopifyCartOperation = {

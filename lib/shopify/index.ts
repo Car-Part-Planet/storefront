@@ -497,6 +497,9 @@ const reshapeProduct = (
     transmissionSpeeds: parseMetaFieldValue<number[]>(product.transmissionSpeeds),
     transmissionTag: parseMetaFieldValue<string[]>(product.transmissionTag),
     driveType: parseMetaFieldValue<string[]>(product.driveType),
+    makes: parseMetaFieldValue<string[]>(product.makes),
+    models: parseMetaFieldValue<string[]>(product.models),
+    years: parseMetaFieldValue<string[]>(product.years),
     transmissionType: product.transmissionType
       ? (product.transmissionType.value as TransmissionType)
       : null,

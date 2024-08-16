@@ -37,7 +37,7 @@ const RichTextBlock = ({ block, className }: { block: Content; className?: strin
     const Heading = `h${block.level}` as keyof JSX.IntrinsicElements;
     return (
       <Heading
-        className={clsx('text-content-strong', {
+        className={clsx('text-content-dark', {
           'text-3xl': block.level === 2,
           'text-2xl': block.level === 3,
           'text-lg': block.level === 4,
@@ -82,7 +82,7 @@ const RichTextBlock = ({ block, className }: { block: Content; className?: strin
   }
 
   return (
-    <p className="text-content-strong">
+    <p className="text-content-dark">
       {block.children.map((child, index) => (
         <RichTextBlock key={index} block={child} />
       ))}

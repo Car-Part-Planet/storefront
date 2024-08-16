@@ -10,6 +10,7 @@ import AdditionalInformation from 'components/product/additional-information';
 import { Gallery } from 'components/product/gallery';
 import { ProductDescription } from 'components/product/product-description';
 import ProductSchema from 'components/product/ProductSchema';
+import VehicleCombatibility from 'components/product/vehicle-compatibility';
 import { ProductProvider } from 'context/product-context';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct, getProductRecommendations } from 'lib/shopify';
@@ -93,6 +94,9 @@ export default async function ProductPage({
                   <ProductDescription product={product} />
                 </div>
               </div>
+              <Suspense>
+                <VehicleCombatibility product={product} />
+              </Suspense>
               <Suspense>
                 <AdditionalInformation product={product} searchParams={searchParams} />
               </Suspense>

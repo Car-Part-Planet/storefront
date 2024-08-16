@@ -104,6 +104,15 @@ const productFragment = /* GraphQL */ `
     transmissionTag: metafield(namespace: "custom", key: "transmission_tag") {
       value
     }
+    makes: metafield(namespace: "custom", key: "make_composite") {
+      value
+    }
+    models: metafield(namespace: "custom", key: "make_model_composite") {
+      value
+    }
+    years: metafield(namespace: "custom", key: "make_model_year_composite") {
+      value
+    }
     images(first: 20) {
       edges {
         node {
