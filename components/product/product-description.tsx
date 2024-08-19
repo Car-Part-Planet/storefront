@@ -5,6 +5,7 @@ import ProductActions from './actions';
 import { Gallery } from './gallery';
 import PartAttributes from './part-attributes';
 import ProductDetails from './product-details';
+import RemanufacturingUpdates from './remanufacturing-updates';
 import SpecialOffer from './special-offer';
 import VariantDetails from './vairant-details';
 import VehicleCompatibility from './vehicle-compatibility';
@@ -34,12 +35,13 @@ export function ProductDescription({ product }: { product: Product }) {
           <VehicleCompatibility product={product} />
         </Suspense>
         <PartAttributes />
+        <RemanufacturingUpdates />
       </div>
-      <SpecialOffer />
 
       <div className="mt-6 block md:hidden">
         <ProductActions product={product} />
       </div>
+      <SpecialOffer />
       {product.descriptionHtml ? (
         <Prose
           className="mb-4 text-sm leading-tight dark:text-white/[60%]"

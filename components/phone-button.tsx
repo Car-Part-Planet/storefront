@@ -10,6 +10,10 @@ const PhoneButton = () => {
   const pathname = usePathname();
   const isProductPage = pathname.startsWith('/product/');
 
+  if (!phoneNumber) {
+    return null;
+  }
+
   return (
     <div
       className={clsx('fixed right-6 block md:hidden', {
@@ -19,7 +23,7 @@ const PhoneButton = () => {
     >
       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
 
-      <a href={phoneNumber?.link}>
+      <a href={phoneNumber.link}>
         <Button
           variant="solid"
           color="primary"

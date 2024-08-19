@@ -38,8 +38,8 @@ function SubmitButton({
         aria-disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
-        <ShoppingCartIcon className="h-5" />
-        Buy Now
+        <ShoppingCartIcon className="h-4" />
+        Add to Cart
       </button>
     );
   }
@@ -61,7 +61,7 @@ function SubmitButton({
       })}
     >
       {pending ? <LoadingDots className="bg-white" /> : <ShoppingCartIcon className="h-5" />}
-      Buy Now
+      Add to Cart
     </button>
   );
 }

@@ -11,6 +11,7 @@ import { Gallery } from 'components/product/gallery';
 import PartAttributes from 'components/product/part-attributes';
 import { ProductDescription } from 'components/product/product-description';
 import ProductSchema from 'components/product/ProductSchema';
+import RemanufacturingUpdates from 'components/product/remanufacturing-updates';
 import VehicleCompatibility from 'components/product/vehicle-compatibility';
 import { ProductProvider } from 'context/product-context';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
@@ -100,6 +101,7 @@ export default async function ProductPage({
                   <VehicleCompatibility product={product} />
                 </Suspense>
                 <PartAttributes />
+                <RemanufacturingUpdates />
               </div>
 
               <Suspense>

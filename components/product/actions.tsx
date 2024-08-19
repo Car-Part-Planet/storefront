@@ -20,9 +20,9 @@ const ProductActions = ({ product }: { product: Product }) => {
       <Delivery storePrefix={STORE_PREFIX} siteName={SITE_NAME} phoneBlock={<PhoneBlock />} />
 
       <PriceSummary
-        product={product}
         defaultPrice={product.priceRange.minVariantPrice}
         storePrefix={STORE_PREFIX}
+        product={product}
       />
       <div className="hidden md:block">
         <Suspense fallback={null}>

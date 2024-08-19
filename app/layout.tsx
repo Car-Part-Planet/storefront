@@ -49,13 +49,13 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en" className={GeistSans.variable}>
       <body className="bg-white text-black selection:bg-primary-muted">
-        <div className="flex flex-col">
+        <div className="flex h-screen flex-col">
           <header>
             <Banner />
             <Navbar />
           </header>
           <Suspense>
-            <main>{children}</main>
+            <main className="max-h-full grow overflow-y-auto">{children}</main>
           </Suspense>
         </div>
 

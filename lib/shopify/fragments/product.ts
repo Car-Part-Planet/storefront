@@ -80,6 +80,9 @@ const productFragment = /* GraphQL */ `
           partAttributes: metafield(namespace: "custom", key: "part_attributes") {
             value
           }
+          remanufacturingUpdates: metafield(namespace: "custom", key: "remanufacturing_updates") {
+            value
+          }
         }
       }
     }
