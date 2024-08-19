@@ -3,9 +3,11 @@ import { Image, Product } from 'lib/shopify/types';
 import { Suspense } from 'react';
 import ProductActions from './actions';
 import { Gallery } from './gallery';
+import PartAttributes from './part-attributes';
 import ProductDetails from './product-details';
 import SpecialOffer from './special-offer';
 import VariantDetails from './vairant-details';
+import VehicleCompatibility from './vehicle-compatibility';
 
 export function ProductDescription({ product }: { product: Product }) {
   return (
@@ -28,6 +30,10 @@ export function ProductDescription({ product }: { product: Product }) {
             }))}
           />
         </Suspense>
+        <Suspense>
+          <VehicleCompatibility product={product} />
+        </Suspense>
+        <PartAttributes />
       </div>
       <SpecialOffer />
 

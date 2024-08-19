@@ -474,6 +474,7 @@ export type ProductVariant = {
     quantity: number;
     id: string;
   };
+  partAttributes: Record<string, string> | null;
 };
 
 export type ShopifyCartProductVariant = {
@@ -501,6 +502,7 @@ export type ShopifyProductVariant = Omit<
   | 'warranty_years'
   | 'condition'
   | 'addOnProduct'
+  | 'partAttributes'
 > & {
   waiverAvailable: { value: string };
   coreVariantId: { value: string } | null;
@@ -512,6 +514,7 @@ export type ShopifyProductVariant = Omit<
   condition: { value: string } | null;
   addOnProductId: { value: string } | null;
   addOnQuantity: { value: string } | null;
+  partAttributes: { value: string } | null;
 };
 
 export type SEO = {

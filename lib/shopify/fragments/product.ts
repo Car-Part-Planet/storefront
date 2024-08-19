@@ -77,6 +77,9 @@ const productFragment = /* GraphQL */ `
           addOnProductId: metafield(namespace: "custom", key: "add_on") {
             value
           }
+          partAttributes: metafield(namespace: "custom", key: "part_attributes") {
+            value
+          }
         }
       }
     }

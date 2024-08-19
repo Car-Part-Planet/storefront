@@ -8,6 +8,7 @@ import Footer from 'components/layout/footer';
 import ProductActions from 'components/product/actions';
 import AdditionalInformation from 'components/product/additional-information';
 import { Gallery } from 'components/product/gallery';
+import PartAttributes from 'components/product/part-attributes';
 import { ProductDescription } from 'components/product/product-description';
 import ProductSchema from 'components/product/ProductSchema';
 import VehicleCompatibility from 'components/product/vehicle-compatibility';
@@ -94,9 +95,13 @@ export default async function ProductPage({
                   <ProductDescription product={product} />
                 </div>
               </div>
-              <Suspense>
-                <VehicleCompatibility product={product} />
-              </Suspense>
+              <div className="hidden xl:block">
+                <Suspense>
+                  <VehicleCompatibility product={product} />
+                </Suspense>
+                <PartAttributes />
+              </div>
+
               <Suspense>
                 <AdditionalInformation product={product} searchParams={searchParams} />
               </Suspense>

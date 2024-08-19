@@ -470,6 +470,7 @@ const reshapeVariants = (variants: ShopifyProductVariant[]): ProductVariant[] =>
     supplier: variant.supplier?.value || null,
     warranty_years: variant.warranty_years?.value || null,
     estimatedDelivery: variant.estimatedDelivery?.value || null,
+    partAttributes: parseMetaFieldValue<Record<string, string>>(variant.partAttributes),
     condition: variant.condition?.value || null,
     ...(addOnProductId
       ? {

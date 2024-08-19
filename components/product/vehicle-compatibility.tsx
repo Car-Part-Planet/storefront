@@ -2,6 +2,7 @@ import Table from 'components/page/table';
 import { getMetaobjectsByIds } from 'lib/shopify';
 import { Product } from 'lib/shopify/types';
 import groupBy from 'lodash.groupby';
+import AccordionDetails from './accordion-details';
 
 const VehicleCompatibility = async ({ product }: { product: Product }) => {
   const [makesData, modelsData, yearsData] = await Promise.all([
@@ -47,9 +48,10 @@ const VehicleCompatibility = async ({ product }: { product: Product }) => {
   ];
 
   return (
-    <div className="mt-10 flex flex-col gap-y-4 border-t pt-5 content-visibility-auto contain-intrinsic-size-[auto_500px]">
-      <h3 className="text-lg font-semibold leading-6 text-content-dark">Vehicle Compatibility</h3>
-      <Table columns={columns} data={data} />
+    <div className="mt-10 flex flex-col border-t content-visibility-auto contain-intrinsic-size-[auto_500px]">
+      <AccordionDetails title="Vehicle Compatibility">
+        <Table columns={columns} data={data} />
+      </AccordionDetails>
     </div>
   );
 };
