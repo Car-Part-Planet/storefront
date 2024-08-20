@@ -60,7 +60,7 @@ const FiltersDialogContainer = ({
     <>
       <div className="flex w-full justify-center border-b border-t py-2 sm:border-t-0">
         <div className="flex flex-col items-center justify-center space-y-0.5">
-          <span className="font-semibold">{partType?.label}</span>
+          <span className="font-semibold">{partType?.label || 'Select Part Type'}</span>
           {!shouldHideYMMRow && (
             <div className="flex items-center space-x-2 divide-x px-2">
               <span className="text-sm">{selectedMake?.label}</span>
