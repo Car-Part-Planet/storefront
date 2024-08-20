@@ -58,26 +58,31 @@ const FiltersDialogContainer = ({
 
   return (
     <>
-      <div className="flex w-full justify-center border-b border-t py-2 sm:border-t-0">
+      <button
+        className="flex w-full justify-center border-b border-t py-2 sm:border-t-0"
+        onClick={openDialog}
+      >
         <div className="flex flex-col items-center justify-center space-y-0.5">
-          <span className="font-semibold">{partType?.label || 'Select Part Type'}</span>
+          <span className="font-semibold">
+            {shouldHideYMMRow ? 'Search Our Inventory' : partType?.label}
+          </span>
           {!shouldHideYMMRow && (
             <div className="flex items-center space-x-2 divide-x px-2">
               <span className="text-sm">{selectedMake?.label}</span>
               <span className="pl-2 text-sm">{selectedModel?.label}</span>
               <span className="pl-2 text-sm">{selectedYear?.label}</span>
-              <button className="ml-3 rounded-full border p-1 text-center" onClick={openDialog}>
+              <div className="ml-3 rounded-full border p-1 text-center">
                 <ChevronDownIcon className="size-4" />
-              </button>
+              </div>
             </div>
           )}
         </div>
         {shouldHideYMMRow && (
-          <button className="ml-2 p-1 text-center" onClick={openDialog}>
+          <div className="ml-2 p-1 text-center">
             <ChevronDownIcon className="size-4" />
-          </button>
+          </div>
         )}
-      </div>
+      </button>
       <FiltersDialog title={title} closeDialog={closeDialog} open={open}>
         {children}
       </FiltersDialog>
