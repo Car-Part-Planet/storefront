@@ -1,6 +1,7 @@
 import PageContent from 'components/page/page-content';
 import { getMetaobject, getMetaobjectsByIds } from 'lib/shopify';
 import { Product } from 'lib/shopify/types';
+import { SearchParams } from 'lib/types';
 import { getSelectedProductVariant } from 'lib/utils';
 import kebabCase from 'lodash.kebabcase';
 
@@ -9,7 +10,7 @@ const AdditionalInformation = async ({
   searchParams
 }: {
   product: Product;
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: SearchParams;
 }) => {
   const selectedVariant = getSelectedProductVariant({ product, searchParams });
 
@@ -28,7 +29,7 @@ const AdditionalInformation = async ({
   const pageContent = await getMetaobjectsByIds(contentIds);
 
   return (
-    <div className="mt-6 w-full divide-y border-t px-2 xl:mt-0">
+    <div className="w-full divide-y border-t px-2">
       {pageContent.map((block) => (
         <div key={block.id} className="py-6">
           <PageContent block={block} />

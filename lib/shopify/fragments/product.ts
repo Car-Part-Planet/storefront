@@ -83,6 +83,9 @@ const productFragment = /* GraphQL */ `
           remanufacturingUpdates: metafield(namespace: "custom", key: "remanufacturing_updates") {
             value
           }
+          installationManual: metafield(namespace: "custom", key: "installation_manual") {
+            value
+          }
         }
       }
     }

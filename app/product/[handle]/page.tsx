@@ -8,6 +8,7 @@ import Footer from 'components/layout/footer';
 import ProductActions from 'components/product/actions';
 import AdditionalInformation from 'components/product/additional-information';
 import { Gallery } from 'components/product/gallery';
+import InstallationManual from 'components/product/installation-manual';
 import PartAttributes from 'components/product/part-attributes';
 import { ProductDescription } from 'components/product/product-description';
 import ProductSchema from 'components/product/ProductSchema';
@@ -102,6 +103,12 @@ export default async function ProductPage({
                 </Suspense>
                 <PartAttributes />
                 <RemanufacturingUpdates />
+              </div>
+
+              <div className="content-visibility-auto contain-intrinsic-size-[auto_300px]">
+                <Suspense>
+                  <InstallationManual product={product} searchParams={searchParams} />
+                </Suspense>
               </div>
 
               <Suspense>
