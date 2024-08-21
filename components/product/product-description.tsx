@@ -7,7 +7,7 @@ import PartAttributes from './part-attributes';
 import ProductDetails from './product-details';
 import RemanufacturingUpdates from './remanufacturing-updates';
 import SpecialOffer from './special-offer';
-import VariantDetails from './vairant-details';
+import VariantDetails from './variant-details';
 import VehicleCompatibility from './vehicle-compatibility';
 
 export function ProductDescription({ product }: { product: Product }) {

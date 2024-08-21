@@ -65,8 +65,27 @@ const VariantDetails = ({ product }: VariantDetailsProps) => {
       <Price
         amount={String(price)}
         currencyCode={currencyCode}
-        className="text-2xl font-semibold text-emerald-500 md:text-4xl"
+        className="text-2xl font-semibold text-emerald-500"
       />
+      <div className="mt-2 flex flex-wrap items-center justify-start gap-2">
+        <p className="text-sm">
+          <strong>SKU:</strong> {variant?.sku || 'N/A'}
+        </p>
+        <span className="text-sm">|</span>
+        <p className="text-sm">
+          <strong>Condition:</strong> {variant?.condition || 'N/A'}
+        </p>
+        <span className="text-sm">|</span>
+        <p className="text-sm">
+          <strong>Mileage:</strong> {variant?.mileage || 'N/A'}
+        </p>
+        {!variant?.availableForSale ? (
+          <>
+            <span className="text-sm">|</span>
+            <span className="text-sm text-red-600">Out of Stock</span>
+          </>
+        ) : null}
+      </div>
       <div className="mb-5 mt-3 flex flex-wrap items-center gap-3">
         <VariantSelector
           options={product.options}

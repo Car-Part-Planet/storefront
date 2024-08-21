@@ -6,7 +6,6 @@ import {
   CpuChipIcon,
   CubeTransparentIcon
 } from '@heroicons/react/24/outline';
-import { ArrowTrendingUpIcon, HashtagIcon } from '@heroicons/react/24/solid';
 import { useProduct } from 'context/product-context';
 import { Product } from 'lib/shopify/types';
 
@@ -24,7 +23,7 @@ const Detail = ({
       {icon}
       <div className="flex flex-col text-sm">
         <span className="text-content-dark">{title}</span>
-        <span className="text-content-dark font-medium">{value}</span>
+        <span className="font-medium text-content-dark">{value}</span>
       </div>
     </div>
   );
@@ -36,16 +35,6 @@ const ProductDetails = ({ product }: { product: Product }) => {
   return (
     <div className="mt-10 flex flex-col gap-3">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-        <Detail
-          title="Part number"
-          value={variant?.sku}
-          icon={<HashtagIcon className="size-4" />}
-        />
-        <Detail
-          title="Condition"
-          value={variant?.condition}
-          icon={<ArrowTrendingUpIcon className="size-4" />}
-        />
         {product.transmissionType && (
           <Detail
             title="Type"
