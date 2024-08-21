@@ -1,12 +1,9 @@
-'use client';
-
 import {
   BeakerIcon,
   BoltIcon,
   CpuChipIcon,
   CubeTransparentIcon
 } from '@heroicons/react/24/outline';
-import { useProduct } from 'context/product-context';
 import { Product } from 'lib/shopify/types';
 
 const Detail = ({
@@ -30,8 +27,6 @@ const Detail = ({
 };
 
 const ProductDetails = ({ product }: { product: Product }) => {
-  const { variant } = useProduct();
-
   return (
     <div className="mt-10 flex flex-col gap-3">
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3">

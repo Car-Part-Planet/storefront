@@ -476,6 +476,7 @@ export type ProductVariant = {
   };
   partAttributes: Record<string, string> | null;
   remanufacturingUpdates: string | null;
+  installationManual: string | null;
 };
 
 export type ShopifyCartProductVariant = {
@@ -505,6 +506,7 @@ export type ShopifyProductVariant = Omit<
   | 'addOnProduct'
   | 'partAttributes'
   | 'remanufacturingUpdates'
+  | 'installationManual'
 > & {
   waiverAvailable: { value: string };
   coreVariantId: { value: string } | null;
@@ -518,6 +520,7 @@ export type ShopifyProductVariant = Omit<
   addOnQuantity: { value: string } | null;
   partAttributes: { value: string } | null;
   remanufacturingUpdates: { value: string } | null;
+  installationManual: { value: string } | null;
 };
 
 export type SEO = {
