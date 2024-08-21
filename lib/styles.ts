@@ -9,7 +9,8 @@ export const carPartPlanetColor = {
     DEFAULT: '#6b7280', // gray-500
     emphasis: '#374151', // gray-700
     strong: '#111827', // gray-900
-    inverted: '#ffffff' // white
+    inverted: '#ffffff', // white,
+    dark: '#1A1A25'
   },
   dark: '#091242',
   secondary: '#EF6C02',
@@ -32,7 +33,8 @@ export const remanTransmissionColor = {
     DEFAULT: '#6b7280', // gray-500
     emphasis: '#374151', // gray-700
     strong: '#111827', // gray-900
-    inverted: '#ffffff' // white
+    inverted: '#ffffff', // white
+    dark: '#1A1A25'
   },
   dark: '#091242',
   secondary: '#1A99DE',
@@ -55,7 +57,8 @@ export const transmissionLocatorColor = {
     DEFAULT: '#6b7280', // gray-500
     emphasis: '#374151', // gray-700
     strong: '#111827', // gray-900
-    inverted: '#ffffff' // white
+    inverted: '#ffffff', // white
+    dark: '#1A1A25'
   },
   dark: '#091242',
   secondary: '#D94F3D',

@@ -1,18 +1,22 @@
 'use client';
-
+import { AddToCart } from 'components/cart/add-to-cart';
 import Price from 'components/price';
+import { Button } from 'components/ui';
 import { useProduct } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER, DELIVERY_OPTION_KEY } from 'lib/constants';
-import { Money, ProductVariant } from 'lib/shopify/types';
+import { Money, Product } from 'lib/shopify/types';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { getDeliveryOptions } from './delivery';
+import DuePrice from './due-price';
+import FixedBuySection from './fixed-buy-section';
 
 type PriceSummaryProps = {
-  variants: ProductVariant[];
   defaultPrice: Money;
   storePrefix: string | undefined;
+  product: Product;
 };
 
-const PriceSummary = ({ variants, defaultPrice, storePrefix }: PriceSummaryProps) => {
+const PriceSummary = ({ defaultPrice, storePrefix, product }: PriceSummaryProps) => {
   const { variant, state } = useProduct();
 
   const price = variant?.price.amount || defaultPrice.amount;
@@ -35,44 +39,92 @@ const PriceSummary = ({ variants, defaultPrice, storePrefix }: PriceSummaryProps
   // Determine shipping label based on deliveryPrice
   const shippingLabel = deliveryPrice === 0 ? 'Free Shipping' : 'Flat Rate Shipping';
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      setIsVisible(!!entry?.isIntersecting);
+    });
+
+    const element = containerRef.current;
+
+    if (element) {
+      observer.observe(element);
+    }
+
+    return () => {
+      if (element) {
+        observer.unobserve(element);
+      }
+    };
+  }, []);
+
+  const handleClickOptions = () => {
+    containerRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
+  };
+
   return (
-    <div className="mb-3 flex flex-col gap-2">
-      <div className="flex flex-row items-center justify-between">
-        <span className="text-xl font-semibold">Our Price</span>
-        <Price amount={price} currencyCode={currencyCode} className="text-2xl font-semibold" />
-      </div>
-      <div className="flex flex-row items-center justify-between">
-        <span className="text-sm text-gray-400">{`Fully Refundable Core Charge ${selectedCoreChargeOption === CORE_WAIVER ? '(Waived for 30 days)' : ''}`}</span>
-        {selectedCoreChargeOption === CORE_WAIVER ? (
-          <span className="text-sm text-gray-400">{`+$0.00`}</span>
-        ) : (
+    <>
+      <div className="mb-3 flex flex-col gap-2 pt-5">
+        <div className="flex flex-row items-center justify-between">
+          <span className="text-sm font-medium">Subtotal</span>
+          <Price amount={price} currencyCode={currencyCode} className="text-sm font-medium" />
+        </div>
+        <div className="flex flex-row items-center justify-between">
+          <span className="text-xs">{`Fully Refundable Core Charge ${selectedCoreChargeOption === CORE_WAIVER ? '(Waived for 30 days)' : ''}`}</span>
+          {selectedCoreChargeOption === CORE_WAIVER ? (
+            <span className="text-xs">{`+$0.00`}</span>
+          ) : (
+            <Price
+              amount={variant?.coreCharge?.amount ?? '0'}
+              currencyCode={currencyCode}
+              className="text-xs"
+              prefix="+"
+            />
+          )}
+        </div>
+        <div className="flex flex-row items-center justify-between">
+          <span className="text-xs">{`${shippingLabel} (${selectedDeliveryOption} address)`}</span>
           <Price
-            amount={variant?.coreCharge?.amount ?? '0'}
+            amount={String(deliveryPrice)}
             currencyCode={currencyCode}
-            className="text-sm text-gray-400"
+            className="text-xs"
             prefix="+"
           />
+        </div>
+        <hr />
+        <DuePrice
+          ref={containerRef}
+          direction="horizontal"
+          price={String(totalPrice)}
+          currencyCode={currencyCode}
+        />
+      </div>
+      <FixedBuySection>
+        <DuePrice price={String(totalPrice)} currencyCode={currencyCode} direction="vertical" />
+        {isVisible ? (
+          <Suspense fallback={null}>
+            <AddToCart availableForSale={product.availableForSale} productName={product.title} />
+          </Suspense>
+        ) : (
+          <Button
+            variant="solid"
+            color="primary"
+            className="py-3 font-normal tracking-wide"
+            onClick={handleClickOptions}
+            size="lg"
+          >
+            Select Options
+          </Button>
         )}
-      </div>
-      <div className="flex flex-row items-center justify-between">
-        <span className="text-sm text-gray-400">{`${shippingLabel} (${selectedDeliveryOption} address)`}</span>
-        <Price
-          amount={String(deliveryPrice)}
-          currencyCode={currencyCode}
-          className="text-sm text-gray-400"
-          prefix="+"
-        />
-      </div>
-      <hr />
-      <div className="flex flex-row items-center justify-between">
-        <span className="text-sm text-gray-400">To Pay Today</span>
-        <Price
-          amount={String(totalPrice)}
-          currencyCode={currencyCode}
-          className="text-sm text-gray-400"
-        />
-      </div>
-    </div>
+      </FixedBuySection>
+    </>
   );
 };
 

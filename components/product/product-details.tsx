@@ -1,47 +1,75 @@
+'use client';
+
 import {
   BeakerIcon,
   BoltIcon,
-  CogIcon,
   CpuChipIcon,
   CubeTransparentIcon
 } from '@heroicons/react/24/outline';
+import { useProduct } from 'context/product-context';
 import { Product } from 'lib/shopify/types';
 
-const ProductDetails = ({ product }: { product: Product }) => {
+const Detail = ({
+  icon,
+  title,
+  value
+}: {
+  icon: JSX.Element;
+  title: string;
+  value?: string | null;
+}) => {
   return (
-    <div className="mb-3 flex flex-col gap-3">
-      <span className="font-medium">Details</span>
-      <div className="grid grid-cols-3 gap-y-3 text-sm sm:grid-cols-4">
+    <div className="flex flex-row items-center gap-3 rounded bg-gray-100 px-5 py-3">
+      {icon}
+      <div className="flex flex-col text-sm">
+        <span className="text-content-dark">{title}</span>
+        <span className="font-medium text-content-dark">{value}</span>
+      </div>
+    </div>
+  );
+};
+
+const ProductDetails = ({ product }: { product: Product }) => {
+  const { variant } = useProduct();
+
+  return (
+    <div className="mt-10 flex flex-col gap-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
         {product.transmissionType && (
-          <div className="flex flex-row items-center gap-2">
-            <CubeTransparentIcon className="size-4 text-primary" />
-            {product.transmissionType}
-          </div>
+          <Detail
+            title="Type"
+            value={product.transmissionType}
+            icon={<CubeTransparentIcon className="size-4" />}
+          />
         )}
 
         {product.transmissionSpeeds && product.transmissionSpeeds.length && (
-          <div className="flex flex-row items-center gap-2">
-            <BoltIcon className="size-4 text-primary" />
-            {`${product.transmissionSpeeds[0]}-Speed`}
-          </div>
+          <Detail
+            title="Speeds"
+            value={`${product.transmissionSpeeds[0]}-Speed`}
+            icon={<BoltIcon className="size-4" />}
+          />
         )}
         {product.driveType && (
-          <div className="flex flex-row items-center gap-2">
-            <CogIcon className="size-4 text-primary" />
-            {product.driveType}
-          </div>
+          <Detail
+            title="Drive type"
+            value={product.driveType[0]}
+            icon={<BoltIcon className="size-4" />}
+          />
         )}
         {product.engineCylinders?.length && (
-          <div className="flex flex-row items-center gap-2">
-            <BeakerIcon className="size-4 text-primary" />
-            {`${product.engineCylinders[0]} Cylinders`}
-          </div>
+          <Detail
+            title="Number of cylinders"
+            value={`${product.engineCylinders[0]} Cylinders`}
+            icon={<BeakerIcon className="size-4" />}
+          />
         )}
         {product.transmissionCode?.length && (
-          <div className="flex flex-row items-center gap-2">
-            <CpuChipIcon className="size-4 text-primary" />
-            {product.transmissionCode[0]}
-          </div>
+          <Detail
+            title="Code"
+            value={product.transmissionCode[0]}
+            icon={<CpuChipIcon className="size-4" />}
+          />
         )}
       </div>
     </div>

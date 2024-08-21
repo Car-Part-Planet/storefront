@@ -1,6 +1,5 @@
 'use client';
 
-import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import SideDialog from 'components/side-dialog';
 import { useProduct } from 'context/product-context';
 import { Product } from 'lib/shopify/types';
@@ -26,18 +25,12 @@ const Warranty = ({
   const warrantyYears = variant?.warranty_years || '3';
 
   return (
-    <div className="flex flex-col text-xs lg:text-sm">
-      <div className="mb-3 flex flex-row items-center space-x-1 divide-x divide-gray-400 leading-none lg:space-x-3">
-        <div className="flex flex-row items-center space-x-2 text-base font-medium">
-          <ShieldCheckIcon className="h-5 w-5" />
-          <span>Warranty</span>
-        </div>
-        <div className="pl-2">
-          <button
-            onClick={() => setOpeningDialog('included')}
-            className="text-xs text-blue-800 hover:underline lg:text-sm"
-          >
-            What&apos;s Included
+    <div className="flex flex-col pt-5 text-xs lg:text-sm">
+      <div className="mb-3 flex flex-row items-center justify-between">
+        <span className="text-sm font-medium">Warranty</span>
+        <div className="flex gap-2 divide-x text-xs">
+          <button onClick={() => setOpeningDialog('included')} className="text-blue-700 underline">
+            What&apos;s included?
           </button>
           <SideDialog
             title="Warranty Details"
@@ -432,14 +425,8 @@ const Warranty = ({
               </p>
             </section>
           </SideDialog>
-        </div>
-        <div className="pl-2">
-          <Link
-            href="/warranty-info"
-            target="_blank"
-            className="text-xs text-blue-800 hover:underline lg:text-sm"
-          >
-            Terms & Conditions
+          <Link href="/warranty-info" target="_blank" className="pl-2 text-blue-700 underline">
+            T&Cs
           </Link>
         </div>
       </div>

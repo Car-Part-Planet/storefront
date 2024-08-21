@@ -1,7 +1,7 @@
 'use client';
 
+import { Field, Label, Radio, RadioGroup } from '@headlessui/react';
 import Price from 'components/price';
-import { cn } from 'lib/utils';
 import { ReactNode, useState } from 'react';
 
 const options = ['Included', 'Premium Labor', '+1 Year'] as const;
@@ -27,31 +27,29 @@ const WarrantySelector = ({ years }: { years: string }) => {
     price: number;
   }> = [
     {
-      template: <span className="font-bold">{`${formatWarrantyYears(years)} Warranty`}</span>,
+      template: <span>{`${formatWarrantyYears(years)} Warranty`}</span>,
       price: 0,
       key: 'Included'
     }
   ];
 
   return (
-    <ul className="flex min-h-16 flex-row space-x-4 pt-2">
-      {plans.map((plan) => (
-        <li key={plan.key} className="flex w-32">
-          <button
-            onClick={() => setSelectedOptions(plan.key)}
-            className={cn(
-              'font-base flex w-full flex-col flex-wrap items-center justify-center space-y-0.5 rounded border text-center text-xs',
-              {
-                'border-0 ring-2 ring-secondary': plan.key === selectedOptions
-              }
-            )}
+    <RadioGroup value={selectedOptions} onChange={setSelectedOptions} className="space-y-2">
+      {plans.map((option) => (
+        <Field key={option.key} className="flex w-full items-center gap-2">
+          <Radio
+            value={option.key}
+            className="group flex size-4 items-center justify-center rounded-full border bg-white data-[checked]:bg-primary"
           >
-            {plan.template}
-            <Price amount={String(plan.price)} currencyCode="USD" />
-          </button>
-        </li>
+            <span className="invisible size-1.5 rounded-full bg-white group-data-[checked]:visible" />
+          </Radio>
+          <Label className="flex text-sm">
+            <span className="mr-1">{option.template}</span>
+            (<Price amount={option.price.toString()} currencyCode="USD" />)
+          </Label>
+        </Field>
       ))}
-    </ul>
+    </RadioGroup>
   );
 };
 

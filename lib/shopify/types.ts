@@ -425,6 +425,9 @@ export type Product = Omit<
   | 'transmissionSpeeds'
   | 'transmissionCode'
   | 'transmissionTag'
+  | 'makes'
+  | 'models'
+  | 'years'
 > & {
   variants: ProductVariant[];
   images: Image[];
@@ -435,6 +438,9 @@ export type Product = Omit<
   transmissionSpeeds: number[] | null;
   transmissionCode: string[] | null;
   transmissionTag: string[] | null;
+  makes: string[] | null;
+  models: string[] | null;
+  years: string[] | null;
 };
 
 export type ProductOption = {
@@ -468,6 +474,8 @@ export type ProductVariant = {
     quantity: number;
     id: string;
   };
+  partAttributes: Record<string, string> | null;
+  remanufacturingUpdates: string | null;
 };
 
 export type ShopifyCartProductVariant = {
@@ -495,6 +503,8 @@ export type ShopifyProductVariant = Omit<
   | 'warranty_years'
   | 'condition'
   | 'addOnProduct'
+  | 'partAttributes'
+  | 'remanufacturingUpdates'
 > & {
   waiverAvailable: { value: string };
   coreVariantId: { value: string } | null;
@@ -506,6 +516,8 @@ export type ShopifyProductVariant = Omit<
   condition: { value: string } | null;
   addOnProductId: { value: string } | null;
   addOnQuantity: { value: string } | null;
+  partAttributes: { value: string } | null;
+  remanufacturingUpdates: { value: string } | null;
 };
 
 export type SEO = {
@@ -582,6 +594,9 @@ export type ShopifyProduct = {
   transmissionCode: { value: string } | null;
   driveType: { value: string } | null;
   transmissionSpeeds: { value: string } | null;
+  makes: { value: string } | null;
+  models: { value: string } | null;
+  years: { value: string } | null;
 };
 
 export type ShopifyCartOperation = {

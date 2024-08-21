@@ -77,6 +77,12 @@ const productFragment = /* GraphQL */ `
           addOnProductId: metafield(namespace: "custom", key: "add_on") {
             value
           }
+          partAttributes: metafield(namespace: "custom", key: "part_attributes") {
+            value
+          }
+          remanufacturingUpdates: metafield(namespace: "custom", key: "remanufacturing_updates") {
+            value
+          }
         }
       }
     }
@@ -102,6 +108,15 @@ const productFragment = /* GraphQL */ `
       value
     }
     transmissionTag: metafield(namespace: "custom", key: "transmission_tag") {
+      value
+    }
+    makes: metafield(namespace: "custom", key: "make_composite") {
+      value
+    }
+    models: metafield(namespace: "custom", key: "make_model_composite") {
+      value
+    }
+    years: metafield(namespace: "custom", key: "make_model_year_composite") {
       value
     }
     images(first: 20) {

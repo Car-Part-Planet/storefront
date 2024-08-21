@@ -2,15 +2,17 @@
 
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronRightIcon, PhoneIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 import Price from 'components/price';
 import { useProduct, useUpdateURL } from 'context/product-context';
-import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
+import { CORE_VARIANT_ID_KEY, CORE_WAIVER, phoneNumberMap } from 'lib/constants';
 import { CoreChargeOption, Money, ProductOption, ProductVariant } from 'lib/shopify/types';
 import { findVariantWithMinPrice } from 'lib/utils';
-import { Fragment, useEffect, useState, useTransition } from 'react';
+import startCase from 'lodash.startcase';
+import { Fragment, useState } from 'react';
 
-type Combination = {
+export type Combination = {
   id: string;
   availableForSale: boolean;
   [key: string]: string | boolean; // ie. { color: 'Red', size: 'Large', ... }
@@ -19,58 +21,40 @@ type Combination = {
 export function VariantSelector({
   options,
   variants,
-  minPrice
+  minPrice,
+  condition,
+  combinations
 }: {
   options: ProductOption[];
   variants: ProductVariant[];
   minPrice: Money;
+  condition: 'remanufactured' | 'used';
+  combinations: Combination[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const { state, updateOptions } = useProduct();
   const updateURL = useUpdateURL();
-  const [, startTransition] = useTransition();
-
-  const combinations: Combination[] = variants.map((variant) => ({
-    id: variant.id,
-    availableForSale: variant.availableForSale,
-    ...variant.selectedOptions.reduce(
-      (accumulator, option) => ({ ...accumulator, [option.name.toLowerCase()]: option.value }),
-      {}
-    )
-  }));
 
   const variantWithMinPrice = findVariantWithMinPrice(variants);
-
-  // If a variant is not selected, we want to select the first available for sale variant as default
-  useEffect(() => {
-    const hasSelectedVariant = Object.entries(state).some(([key, value]) => {
-      return combinations.some((combination) => combination[key] === value);
-    });
-
-    if (!hasSelectedVariant) {
-      const defaultVariant =
-        variantWithMinPrice || variants.find((variant) => variant.availableForSale);
-      if (defaultVariant) {
-        startTransition(() => {
-          const newState = updateOptions(
-            defaultVariant.selectedOptions.map((option) => ({
-              name: option.name.toLowerCase(),
-              value: option.value
-            }))
-          );
-
-          updateURL(newState);
-        });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [combinations, variantWithMinPrice, variants]);
-
   const hasNoOptionsOrJustOneOption =
     !options.length || (options.length === 1 && options[0]?.values.length === 1);
 
   if (hasNoOptionsOrJustOneOption) {
     return null;
+  }
+
+  const numberOfVariants = variants.length;
+  if (numberOfVariants === 0) {
+    const phoneNumber = phoneNumberMap[process.env.NEXT_PUBLIC_STORE_PREFIX!];
+    return (
+      <a
+        className="flex flex-row items-center gap-1 rounded-lg bg-gray-100 px-4 py-3 text-sm text-blue-700 hover:bg-gray-200"
+        href={phoneNumber?.link}
+      >
+        <span>Call for {condition} options availibility</span>
+        <PhoneIcon className="ml-1 size-4" />
+      </a>
+    );
   }
 
   const currencyCode = variants[0]?.price.currencyCode || 'USD';
@@ -87,16 +71,18 @@ export function VariantSelector({
   const closeModal = () => setIsOpen(false);
 
   return (
-    <div className="mb-6 flex flex-col gap-1 rounded-md border p-2 text-sm font-medium sm:flex-row">
-      <span>See more Remanufactured and Used Options</span>
+    <>
       <button
-        className="flex flex-row gap-0.5 font-normal text-blue-800 hover:underline"
+        className="flex flex-row items-center gap-1 rounded-lg bg-gray-100 px-4 py-3 text-sm hover:bg-gray-200"
         aria-label="Open variants selector"
         onClick={openModal}
       >
-        <span className="sm:hidden">from</span>
-        <span className="hidden sm:inline"> from </span>
+        <span>
+          {variants.length} {condition} {variants.length > 1 ? 'options' : 'option'}
+        </span>
+        <span>from</span>
         <Price amount={updatedMinPrice.amount} currencyCode={updatedMinPrice.currencyCode} />
+        <ChevronRightIcon className="ml-2 size-4 text-gray-700" />
       </button>
       <Transition show={isOpen} as={Fragment}>
         <Dialog onClose={closeModal} className="relative z-50">
@@ -122,7 +108,7 @@ export function VariantSelector({
           >
             <DialogPanel className="fixed bottom-0 right-0 top-0 flex h-full w-full flex-col border-l border-neutral-200 bg-white/80 p-6 text-black backdrop-blur-xl md:w-[500px]">
               <div className="flex items-center justify-between">
-                <p className="text-lg font-semibold">Remanufactured & Used Options</p>
+                <p className="text-lg font-semibold">{startCase(condition)} Options</p>
 
                 <button aria-label="Close cart" onClick={closeModal} className="text-black">
                   <XMarkIcon className="h-6" />
@@ -155,13 +141,17 @@ export function VariantSelector({
                             ? variantsById[isAvailableForSale.id]
                             : undefined;
 
+                          if (!variant) {
+                            return null;
+                          }
+
                           const coreChargeOptions = [
-                            variant?.waiverAvailable && {
+                            variant.waiverAvailable && {
                               label: 'Core Waiver',
                               value: CORE_WAIVER,
                               price: { amount: 0, currencyCode: variant?.price.currencyCode }
                             },
-                            variant?.coreVariantId &&
+                            variant.coreVariantId &&
                               variant.coreCharge && {
                                 label: 'Core Charge',
                                 value: variant.coreVariantId,
@@ -203,20 +193,16 @@ export function VariantSelector({
                               >
                                 <div className="flex w-full flex-row items-center justify-between">
                                   <div className="flex flex-col items-start gap-1">
-                                    {variant ? (
-                                      <Price
-                                        amount={variant.price.amount}
-                                        currencyCode={variant.price.currencyCode}
-                                        className="text-base font-semibold"
-                                      />
-                                    ) : null}
+                                    <Price
+                                      amount={variant.price.amount}
+                                      currencyCode={variant.price.currencyCode}
+                                      className="text-base font-semibold"
+                                    />
                                     <div className="flex items-center gap-1">
                                       <span className="text-xs font-medium text-gray-600">
                                         SKU:
                                       </span>
-                                      <span className="text-xs text-gray-600">
-                                        {variant?.sku || 'N/A'}
-                                      </span>
+                                      <span className="text-xs text-gray-600">{variant.sku}</span>
                                     </div>
                                   </div>
                                   {!isAvailableForSale ? (
@@ -239,15 +225,15 @@ export function VariantSelector({
                                 <div className="mt-2 flex w-full flex-col gap-1 border-t border-gray-300 pl-1 pt-2 text-xs tracking-normal">
                                   <div className="flex flex-row items-center gap-2">
                                     <span>Condition:</span>
-                                    <span>{variant?.condition || 'N/A'}</span>
+                                    <span>{variant.condition || 'N/A'}</span>
                                   </div>
                                   <div className="flex flex-row items-center gap-2">
                                     <span>Estimated Delivery:</span>
-                                    <span>{variant?.estimatedDelivery || 'N/A'}</span>
+                                    <span>{variant.estimatedDelivery || 'N/A'}</span>
                                   </div>
                                   <div className="flex flex-row items-center gap-2">
                                     <span>Mileage:</span>
-                                    <span>{variant?.mileage || 'N/A'}</span>
+                                    <span>{variant.mileage || 'N/A'}</span>
                                   </div>
                                 </div>
                               </button>
@@ -263,6 +249,6 @@ export function VariantSelector({
           </TransitionChild>
         </Dialog>
       </Transition>
-    </div>
+    </>
   );
 }

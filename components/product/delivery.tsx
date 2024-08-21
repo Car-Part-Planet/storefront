@@ -1,11 +1,10 @@
 'use client';
 
-import { TruckIcon } from '@heroicons/react/24/outline';
+import { Field, Label, Radio, RadioGroup } from '@headlessui/react';
 import Price from 'components/price';
 import SideDialog from 'components/side-dialog';
 import { useProduct, useUpdateURL } from 'context/product-context';
 import { DELIVERY_OPTION_KEY } from 'lib/constants';
-import { cn } from 'lib/utils';
 import { ReactNode, useEffect, useState, useTransition } from 'react';
 
 const options = ['Commercial', 'Residential'] as const;
@@ -21,12 +20,12 @@ export const getDeliveryOptions = (
   price: number;
 }> => [
   {
-    template: <span className="font-bold">Commercial</span>,
+    template: 'Commercial',
     price: commercialPrice,
     key: 'Commercial' as Option
   },
   {
-    template: <span className="font-bold">Residential</span>,
+    template: 'Residential',
     price: residentialPrice,
     key: 'Residential' as Option
   }
@@ -61,6 +60,7 @@ const Delivery = ({
     if (!selectedDeliveryOption) {
       handleSelectDelivery(options[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDeliveryOption]);
 
   // Conditional price values based on storePrefix
@@ -70,16 +70,13 @@ const Delivery = ({
   const deliveryOptions = getDeliveryOptions(commercialPrice, residentialPrice);
 
   return (
-    <div className="flex flex-col text-xs lg:text-sm">
-      <div className="mb-3 flex flex-row items-center space-x-1 divide-x divide-gray-400 leading-none lg:space-x-3">
-        <div className="flex flex-row items-center space-x-2 text-base font-medium">
-          <TruckIcon className="h-5 w-5" />
-          <span>Delivery</span>
-        </div>
-        <div className="pl-2">
+    <div className="flex flex-col pt-5 text-xs lg:text-sm">
+      <div className="mb-3 flex flex-row items-center justify-between">
+        <span className="text-sm font-medium">Delivery</span>
+        <div>
           <button
             onClick={() => setOpeningDialog('information')}
-            className="text-xs text-blue-800 hover:underline lg:text-sm"
+            className="text-xs text-blue-700 underline"
           >
             Shipping Policy
           </button>
@@ -172,24 +169,26 @@ const Delivery = ({
           </SideDialog>
         </div>
       </div>
-      <ul className="flex min-h-16 flex-row space-x-4 pt-2">
+      <RadioGroup
+        value={selectedDeliveryOption}
+        onChange={handleSelectDelivery}
+        className="space-y-2"
+      >
         {deliveryOptions.map((option) => (
-          <li className="flex w-32" key={option.key}>
-            <button
-              onClick={() => handleSelectDelivery(option.key)}
-              className={cn(
-                'font-base flex w-full flex-col flex-wrap items-center justify-center space-y-0.5 rounded border text-center text-xs',
-                {
-                  'border-0 ring-2 ring-secondary': selectedDeliveryOption === option.key
-                }
-              )}
+          <Field key={option.key} className="flex w-full items-center gap-2">
+            <Radio
+              value={option.key}
+              className="group flex size-4 items-center justify-center rounded-full border bg-white data-[checked]:bg-primary"
             >
-              {option.template}
-              <Price amount={String(option.price)} currencyCode="USD" />
-            </button>
-          </li>
+              <span className="invisible size-1.5 rounded-full bg-white group-data-[checked]:visible" />
+            </Radio>
+            <Label className="flex text-sm">
+              <span className="mr-1">{option.template}</span>
+              (<Price amount={option.price.toString()} currencyCode="USD" />)
+            </Label>
+          </Field>
         ))}
-      </ul>
+      </RadioGroup>
     </div>
   );
 };

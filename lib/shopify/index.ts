@@ -470,7 +470,9 @@ const reshapeVariants = (variants: ShopifyProductVariant[]): ProductVariant[] =>
     supplier: variant.supplier?.value || null,
     warranty_years: variant.warranty_years?.value || null,
     estimatedDelivery: variant.estimatedDelivery?.value || null,
+    partAttributes: parseMetaFieldValue<Record<string, string>>(variant.partAttributes),
     condition: variant.condition?.value || null,
+    remanufacturingUpdates: variant.remanufacturingUpdates?.value || null,
     ...(addOnProductId
       ? {
           addOnProduct: {
@@ -497,6 +499,9 @@ const reshapeProduct = (
     transmissionSpeeds: parseMetaFieldValue<number[]>(product.transmissionSpeeds),
     transmissionTag: parseMetaFieldValue<string[]>(product.transmissionTag),
     driveType: parseMetaFieldValue<string[]>(product.driveType),
+    makes: parseMetaFieldValue<string[]>(product.makes),
+    models: parseMetaFieldValue<string[]>(product.models),
+    years: parseMetaFieldValue<string[]>(product.years),
     transmissionType: product.transmissionType
       ? (product.transmissionType.value as TransmissionType)
       : null,

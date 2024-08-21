@@ -5,10 +5,14 @@ import { Suspense } from 'react';
 import BreadcrumbComponent from 'components/breadcrumb';
 import { GridTileImage } from 'components/grid/tile';
 import Footer from 'components/layout/footer';
+import ProductActions from 'components/product/actions';
 import AdditionalInformation from 'components/product/additional-information';
 import { Gallery } from 'components/product/gallery';
+import PartAttributes from 'components/product/part-attributes';
 import { ProductDescription } from 'components/product/product-description';
 import ProductSchema from 'components/product/ProductSchema';
+import RemanufacturingUpdates from 'components/product/remanufacturing-updates';
+import VehicleCompatibility from 'components/product/vehicle-compatibility';
 import { ProductProvider } from 'context/product-context';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct, getProductRecommendations } from 'lib/shopify';
@@ -64,43 +68,58 @@ export default async function ProductPage({
   if (!product) return notFound();
 
   return (
-    <div className="xl:px-2">
+    <>
       <ProductProvider product={product}>
         <ProductSchema product={product} />
         <div className="mx-auto mt-4 max-w-screen-2xl px-8 xl:px-4">
           <div className="hidden lg:block">
             <BreadcrumbComponent type="product" handle={product.handle} />
           </div>
-          <div className="my-3 flex flex-col space-x-0 lg:flex-row lg:gap-8 lg:space-x-3">
-            <div className="h-full w-full basis-full lg:basis-7/12">
-              <ProductDescription product={product} />
+          <div className="my-3 flex flex-col space-x-0 md:flex-row lg:gap-8 lg:space-x-3">
+            <div className="flex basis-full flex-col md:basis-8/12 xl:basis-9/12">
+              <div className="flex w-full gap-x-8">
+                <div className="hidden xl:block xl:basis-1/3">
+                  <Suspense
+                    fallback={
+                      <div className="aspect-square relative h-full max-h-[550px] w-full overflow-hidden" />
+                    }
+                  >
+                    <Gallery
+                      images={product.images.slice(0, 5).map((image: Image) => ({
+                        src: image.url,
+                        altText: image.altText
+                      }))}
+                    />
+                  </Suspense>
+                </div>
+                <div className="h-full basis-full xl:basis-2/3">
+                  <ProductDescription product={product} />
+                </div>
+              </div>
+              <div className="hidden xl:block">
+                <Suspense>
+                  <VehicleCompatibility product={product} />
+                </Suspense>
+                <PartAttributes />
+                <RemanufacturingUpdates />
+              </div>
+
               <Suspense>
                 <AdditionalInformation product={product} searchParams={searchParams} />
               </Suspense>
             </div>
-
-            <div className="hidden lg:block lg:basis-5/12">
-              <Suspense
-                fallback={
-                  <div className="aspect-square relative h-full max-h-[550px] w-full overflow-hidden" />
-                }
-              >
-                <Gallery
-                  images={product.images.slice(0, 5).map((image: Image) => ({
-                    src: image.url,
-                    altText: image.altText
-                  }))}
-                />
-              </Suspense>
+            <div className="hidden md:block md:basis-4/12 xl:basis-3/12">
+              <ProductActions product={product} />
             </div>
           </div>
+
           <Suspense>
             <RelatedProducts id={product.id} />
           </Suspense>
         </div>
         <Footer />
       </ProductProvider>
-    </div>
+    </>
   );
 }
 

@@ -89,7 +89,7 @@ export const URL_PREFIXES = [
   '/remanufactured-engines'
 ];
 
-const phoneNumberMap: Record<string, { title: string; link: string }> = {
+export const phoneNumberMap: Record<string, { title: string; link: string }> = {
   'reman-transmission': {
     title: '(888) 242-2605',
     link: 'tel:8882422605'
@@ -113,7 +113,6 @@ const phoneNumberMap: Record<string, { title: string; link: string }> = {
 };
 
 const { STORE_PREFIX } = process.env;
-
 export const phoneNumber = phoneNumberMap[STORE_PREFIX!];
 
 const filterTitleMap: Record<string, string> = {
