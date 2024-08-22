@@ -8,7 +8,7 @@ import Price from 'components/price';
 import { useProduct, useUpdateURL } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER, phoneNumberMap } from 'lib/constants';
 import { CoreChargeOption, Money, ProductOption, ProductVariant } from 'lib/shopify/types';
-import { findVariantWithMinPrice } from 'lib/utils';
+import { findVariantWithMinPrice, formatNumber } from 'lib/utils';
 import startCase from 'lodash.startcase';
 import { Fragment, useState } from 'react';
 
@@ -43,7 +43,7 @@ export function VariantSelector({
     return null;
   }
 
-  const numberOfVariants = variants.length;
+  const numberOfVariants = variants.filter(({ availableForSale }) => availableForSale).length;
   if (numberOfVariants === 0) {
     const phoneNumber = phoneNumberMap[process.env.NEXT_PUBLIC_STORE_PREFIX!];
     return (
@@ -78,7 +78,7 @@ export function VariantSelector({
         onClick={openModal}
       >
         <span>
-          {variants.length} {condition} {variants.length > 1 ? 'options' : 'option'}
+          {numberOfVariants} {condition} {numberOfVariants > 1 ? 'options' : 'option'}
         </span>
         <span>from</span>
         <Price amount={updatedMinPrice.amount} currencyCode={updatedMinPrice.currencyCode} />
@@ -170,6 +170,9 @@ export function VariantSelector({
                           }
                           // The option is active if it's in the url params.
                           const isActive = state[optionNameLowerCase] === value;
+                          const estimatedDelivery =
+                            condition === 'used' ? '7-10 Business Days' : variant.estimatedDelivery;
+
                           return (
                             <li
                               key={value}
@@ -227,13 +230,20 @@ export function VariantSelector({
                                     <span>Condition:</span>
                                     <span>{variant.condition || 'N/A'}</span>
                                   </div>
-                                  <div className="flex flex-row items-center gap-2">
-                                    <span>Estimated Delivery:</span>
-                                    <span>{variant.estimatedDelivery || 'N/A'}</span>
-                                  </div>
+                                  {estimatedDelivery ? (
+                                    <div className="flex flex-row items-center gap-2">
+                                      <span>Estimated Delivery:</span>
+                                      <span>{estimatedDelivery}</span>
+                                    </div>
+                                  ) : null}
+
                                   <div className="flex flex-row items-center gap-2">
                                     <span>Mileage:</span>
-                                    <span>{variant.mileage || 'N/A'}</span>
+                                    <span>
+                                      {variant.mileage
+                                        ? formatNumber(Number(variant.mileage))
+                                        : '0 miles'}
+                                    </span>
                                   </div>
                                 </div>
                               </button>

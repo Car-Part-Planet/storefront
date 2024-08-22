@@ -48,7 +48,7 @@ const VehicleCompatibility = async ({ product }: { product: Product }) => {
   ];
 
   return (
-    <div className="mt-10 flex flex-col border-t content-visibility-auto contain-intrinsic-size-[auto_500px]">
+    <div className="flex flex-col border-t content-visibility-auto contain-intrinsic-size-[auto_500px]">
       <AccordionDetails title="Vehicle Compatibility">
         <Table columns={columns} data={data} />
       </AccordionDetails>
