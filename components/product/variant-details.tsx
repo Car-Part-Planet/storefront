@@ -3,7 +3,7 @@
 import Price from 'components/price';
 import { useProduct, useUpdateURL } from 'context/product-context';
 import { Product } from 'lib/shopify/types';
-import { findVariantWithMinPrice } from 'lib/utils';
+import { findVariantWithMinPrice, formatNumber } from 'lib/utils';
 import { useEffect, useMemo, useTransition } from 'react';
 import { Combination, VariantSelector } from './variant-selector';
 
@@ -77,7 +77,8 @@ const VariantDetails = ({ product }: VariantDetailsProps) => {
         </p>
         <span className="text-sm">|</span>
         <p className="text-sm">
-          <strong>Mileage:</strong> {variant?.mileage || 'N/A'}
+          <strong>Mileage:</strong>{' '}
+          {variant?.mileage ? formatNumber(Number(variant.mileage)) : '0 miles'}
         </p>
         {!variant?.availableForSale ? (
           <>

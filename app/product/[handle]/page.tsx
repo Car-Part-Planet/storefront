@@ -78,8 +78,8 @@ export default async function ProductPage({
           </div>
           <div className="my-3 flex flex-col space-x-0 md:flex-row lg:gap-8 lg:space-x-3">
             <div className="flex basis-full flex-col md:basis-8/12 xl:basis-9/12">
-              <div className="flex w-full gap-x-8">
-                <div className="hidden xl:block xl:basis-1/3">
+              <div className="hidden xl:flex">
+                <div className="hidden xl:mr-8 xl:block xl:basis-1/3">
                   <Suspense
                     fallback={
                       <div className="aspect-square relative h-full max-h-[550px] w-full overflow-hidden" />
@@ -93,10 +93,15 @@ export default async function ProductPage({
                     />
                   </Suspense>
                 </div>
-                <div className="h-full basis-full xl:basis-2/3">
+                <div className="basis-2/3">
                   <ProductDescription product={product} />
                 </div>
               </div>
+
+              <div className="block xl:hidden">
+                <ProductDescription product={product} />
+              </div>
+
               <div className="hidden xl:block">
                 <Suspense>
                   <VehicleCompatibility product={product} />

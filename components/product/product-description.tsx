@@ -13,11 +13,11 @@ import VehicleCompatibility from './vehicle-compatibility';
 export function ProductDescription({ product }: { product: Product }) {
   return (
     <>
-      <div className="flex flex-col">
-        <h1 className="text-xl font-semibold md:text-2xl">{product.title}</h1>
-
-        <VariantDetails product={product} />
+      <div className="w-auto max-w-full overflow-hidden">
+        <h1 className="break-words text-xl font-semibold md:text-2xl">{product.title}</h1>
       </div>
+
+      <VariantDetails product={product} />
       <div className="block xl:hidden">
         <Suspense
           fallback={
@@ -32,7 +32,9 @@ export function ProductDescription({ product }: { product: Product }) {
           />
         </Suspense>
         <Suspense>
-          <VehicleCompatibility product={product} />
+          <div className="mt-6">
+            <VehicleCompatibility product={product} />
+          </div>
         </Suspense>
         <PartAttributes />
         <RemanufacturingUpdates />
