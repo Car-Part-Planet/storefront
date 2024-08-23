@@ -1,5 +1,6 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 import Banner from 'components/banner';
+import ExitPopup from 'components/exit-popup';
 import Navbar from 'components/layout/navbar';
 import MicrosoftClarityScript from 'components/microsoft-clarity-script';
 import PhoneButton from 'components/phone-button';
@@ -58,7 +59,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             <main className="max-h-full grow overflow-y-auto">{children}</main>
           </Suspense>
         </div>
-
+        <ExitPopup />
         <PhoneButton />
       </body>
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
