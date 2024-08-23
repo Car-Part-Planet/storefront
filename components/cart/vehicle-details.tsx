@@ -26,7 +26,6 @@ const VehicleDetails = ({ control }: VehicleDetailsProps) => {
             <Input
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 text-dark shadow-sm focus:outline-none data-[focus]:border-primary/80 data-[focus]:ring-primary/80 sm:text-sm"
-              autoFocus
               {...field}
             />
             {error && (
