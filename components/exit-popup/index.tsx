@@ -11,11 +11,11 @@ const ExitPopup = () => {
   const { registerHandler } = useExitIntent({
     desktop: {
       triggerOnIdle: false,
-      delayInSecondsToTrigger: 5,
+      delayInSecondsToTrigger: 8,
       triggerOnMouseLeave: true
     },
     mobile: {
-      delayInSecondsToTrigger: 1,
+      delayInSecondsToTrigger: 8,
       triggerOnIdle: true
     },
     cookie: {
