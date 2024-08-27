@@ -116,7 +116,7 @@ const PriceSummary = ({ defaultPrice, storePrefix, product }: PriceSummaryProps)
           <Button
             variant="solid"
             color="primary"
-            className="py-3 font-normal tracking-wide"
+            className="px-3 py-2 font-normal tracking-wide"
             onClick={handleClickOptions}
             size="lg"
           >

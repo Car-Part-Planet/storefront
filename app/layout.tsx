@@ -1,9 +1,6 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
-import Banner from 'components/banner';
 import ExitPopup from 'components/exit-popup';
-import Navbar from 'components/layout/navbar';
 import MicrosoftClarityScript from 'components/microsoft-clarity-script';
-import PhoneButton from 'components/phone-button';
 import { GeistSans } from 'geist/font/sans';
 import { ensureStartsWith } from 'lib/utils';
 import { Metadata } from 'next';
@@ -49,18 +46,11 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={GeistSans.variable}>
-      <body className="overflow-y-hidden bg-white text-black selection:bg-primary-muted">
-        <div className="flex h-screen flex-col">
-          <header>
-            <Banner />
-            <Navbar />
-          </header>
-          <Suspense>
-            <main className="max-h-full grow overflow-y-auto">{children}</main>
-          </Suspense>
+      <body className="bg-white text-black selection:bg-primary-muted">
+        <div className="flex h-screen flex-col overflow-hidden">
+          <Suspense>{children}</Suspense>
         </div>
         <ExitPopup />
-        <PhoneButton />
       </body>
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
       {MICROSOFT_CLARITY_ID && <MicrosoftClarityScript id={MICROSOFT_CLARITY_ID} />}

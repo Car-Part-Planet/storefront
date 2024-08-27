@@ -2,9 +2,12 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
+import Banner from 'components/banner';
 import BreadcrumbComponent from 'components/breadcrumb';
 import { GridTileImage } from 'components/grid/tile';
 import Footer from 'components/layout/footer';
+import Navbar from 'components/layout/navbar';
+import PhoneButton from 'components/phone-button';
 import ProductActions from 'components/product/actions';
 import AdditionalInformation from 'components/product/additional-information';
 import { Gallery } from 'components/product/gallery';
@@ -70,67 +73,76 @@ export default async function ProductPage({
 
   return (
     <>
-      <ProductProvider product={product}>
-        <ProductSchema product={product} />
-        <div className="mx-auto mt-4 max-w-screen-2xl px-8 xl:px-4">
-          <div className="hidden lg:block">
-            <BreadcrumbComponent type="product" handle={product.handle} />
-          </div>
-          <div className="my-3 flex flex-col space-x-0 md:flex-row lg:gap-8 lg:space-x-3">
-            <div className="flex basis-full flex-col md:basis-8/12 xl:basis-9/12">
-              <div className="hidden xl:flex">
-                <div className="hidden xl:mr-8 xl:block xl:basis-1/3">
-                  <Suspense
-                    fallback={
-                      <div className="aspect-square relative h-full max-h-[550px] w-full overflow-hidden" />
-                    }
-                  >
-                    <Gallery
-                      images={product.images.slice(0, 5).map((image: Image) => ({
-                        src: image.url,
-                        altText: image.altText
-                      }))}
-                    />
-                  </Suspense>
+      <header>
+        <Banner />
+        <Navbar />
+      </header>
+      <main className="max-h-full overflow-auto">
+        <ProductProvider product={product}>
+          <ProductSchema product={product} />
+          <div className="mx-auto mt-4 max-w-screen-2xl px-8 xl:px-4">
+            <div className="hidden lg:block">
+              <BreadcrumbComponent type="product" handle={product.handle} />
+            </div>
+            <div className="my-3 flex flex-col space-x-0 md:flex-row lg:gap-8 lg:space-x-3">
+              <div className="flex basis-full flex-col md:basis-8/12 xl:basis-9/12">
+                <div className="hidden xl:flex">
+                  <div className="hidden xl:mr-8 xl:block xl:basis-1/3">
+                    <Suspense
+                      fallback={
+                        <div className="aspect-square relative h-full max-h-[550px] w-full overflow-hidden" />
+                      }
+                    >
+                      <Gallery
+                        images={product.images.slice(0, 5).map((image: Image) => ({
+                          src: image.url,
+                          altText: image.altText
+                        }))}
+                      />
+                    </Suspense>
+                  </div>
+                  <div className="basis-2/3">
+                    <ProductDescription product={product} />
+                  </div>
                 </div>
-                <div className="basis-2/3">
+
+                <div className="block xl:hidden">
                   <ProductDescription product={product} />
                 </div>
-              </div>
 
-              <div className="block xl:hidden">
-                <ProductDescription product={product} />
-              </div>
+                <div className="hidden xl:block">
+                  <Suspense>
+                    <VehicleCompatibility product={product} />
+                  </Suspense>
+                  <PartAttributes />
+                  <RemanufacturingUpdates />
+                </div>
 
-              <div className="hidden xl:block">
+                <div className="content-visibility-auto contain-intrinsic-size-[auto_300px]">
+                  <Suspense>
+                    <InstallationManual product={product} searchParams={searchParams} />
+                  </Suspense>
+                </div>
+
                 <Suspense>
-                  <VehicleCompatibility product={product} />
-                </Suspense>
-                <PartAttributes />
-                <RemanufacturingUpdates />
-              </div>
-
-              <div className="content-visibility-auto contain-intrinsic-size-[auto_300px]">
-                <Suspense>
-                  <InstallationManual product={product} searchParams={searchParams} />
+                  <AdditionalInformation product={product} searchParams={searchParams} />
                 </Suspense>
               </div>
+              <div className="hidden md:block md:basis-4/12 xl:basis-3/12">
+                <ProductActions product={product} />
+              </div>
+            </div>
 
-              <Suspense>
-                <AdditionalInformation product={product} searchParams={searchParams} />
-              </Suspense>
-            </div>
-            <div className="hidden md:block md:basis-4/12 xl:basis-3/12">
-              <ProductActions product={product} />
-            </div>
+            <Suspense>
+              <RelatedProducts id={product.id} />
+            </Suspense>
           </div>
-
-          <Suspense>
-            <RelatedProducts id={product.id} />
-          </Suspense>
-        </div>
-        <Footer />
-      </ProductProvider>
+        </ProductProvider>
+        <PhoneButton />
+        <Suspense>
+          <Footer />
+        </Suspense>
+      </main>
     </>
   );
 }
