@@ -1,4 +1,6 @@
 import { ArrowLeftIcon, CheckCircleIcon, TruckIcon } from '@heroicons/react/24/outline';
+import Banner from 'components/banner';
+import Navbar from 'components/layout/navbar';
 import ActivateWarranty from 'components/orders/activate-warranty';
 import CoreReturn from 'components/orders/core-return';
 import OrderConfirmation from 'components/orders/order-confirmation';
@@ -6,6 +8,7 @@ import OrderStatuses from 'components/orders/order-statuses';
 import OrderSummary from 'components/orders/order-summary';
 import OrderSummaryMobile from 'components/orders/order-summary-mobile';
 import PaymentsDetails from 'components/orders/payment-details';
+import PhoneButton from 'components/phone-button';
 import { Card } from 'components/ui';
 import Badge from 'components/ui/badge';
 import Heading from 'components/ui/heading';
@@ -234,37 +237,44 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
 
   return (
     <>
-      <OrderSummaryMobile order={order} />
-      <div className="mx-auto max-w-6xl p-6">
-        <div className="mb-6 flex justify-between">
-          <div className="flex items-start gap-2">
-            <Link href="/account">
-              <ArrowLeftIcon className="mt-1 h-6 w-6" />
-            </Link>
-            <div>
-              <Heading as="h1">Order {order.name}</Heading>
-              <Label>Confirmed {toPrintDate(order.processedAt)}</Label>
+      <header>
+        <Banner />
+        <Navbar />
+      </header>
+      <main className="max-h-full overflow-auto">
+        <OrderSummaryMobile order={order} />
+        <div className="mx-auto max-w-6xl p-6">
+          <div className="mb-6 flex justify-between">
+            <div className="flex items-start gap-2">
+              <Link href="/account">
+                <ArrowLeftIcon className="mt-1 h-6 w-6" />
+              </Link>
+              <div>
+                <Heading as="h1">Order {order.name}</Heading>
+                <Label>Confirmed {toPrintDate(order.processedAt)}</Label>
+              </div>
+            </div>
+            <div className="flex items-start gap-2">
+              <OrderStatuses order={order} className="hidden flex-wrap gap-2 lg:flex" />
+              <OrderConfirmation order={order} />
+              <ActivateWarranty order={order} />
+              <CoreReturn order={order} />
             </div>
           </div>
-          <div className="flex items-start gap-2">
-            <OrderStatuses order={order} className="hidden flex-wrap gap-2 lg:flex" />
-            <OrderConfirmation order={order} />
-            <ActivateWarranty order={order} />
-            <CoreReturn order={order} />
+          <OrderStatuses order={order} className="my-6 flex flex-wrap gap-2 lg:hidden" />
+          <div className="flex items-start gap-6">
+            <div className="flex flex-1 flex-col gap-6">
+              <Fulfillments order={order} />
+              <Unfulfilled order={order} />
+              <OrderDetails order={order} />
+            </div>
+            <Card className="hidden lg:block lg:basis-5/12">
+              <OrderSummary order={order} />
+            </Card>
           </div>
         </div>
-        <OrderStatuses order={order} className="my-6 flex flex-wrap gap-2 lg:hidden" />
-        <div className="flex items-start gap-6">
-          <div className="flex flex-1 flex-col gap-6">
-            <Fulfillments order={order} />
-            <Unfulfilled order={order} />
-            <OrderDetails order={order} />
-          </div>
-          <Card className="hidden lg:block lg:basis-5/12">
-            <OrderSummary order={order} />
-          </Card>
-        </div>
-      </div>
+        <PhoneButton />
+      </main>
     </>
   );
 }

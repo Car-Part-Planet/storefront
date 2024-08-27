@@ -2,7 +2,7 @@
 
 import { PhoneIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
-import { phoneNumber } from 'lib/constants';
+import { phoneNumberMap } from 'lib/constants';
 import { usePathname } from 'next/navigation';
 import { Button } from './ui';
 
@@ -10,20 +10,17 @@ const PhoneButton = () => {
   const pathname = usePathname();
   const isProductPage = pathname.startsWith('/product/');
 
-  if (!phoneNumber) {
-    return null;
-  }
-
+  const phoneNumber = phoneNumberMap[process.env.NEXT_PUBLIC_STORE_PREFIX!];
   return (
     <div
       className={clsx('fixed right-6 block md:hidden', {
-        'bottom-24': isProductPage,
+        'bottom-20': isProductPage,
         'bottom-6': !isProductPage
       })}
     >
       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
 
-      <a href={phoneNumber.link}>
+      <a href={phoneNumber?.link}>
         <Button
           variant="solid"
           color="primary"
