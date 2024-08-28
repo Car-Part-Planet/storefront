@@ -5,6 +5,7 @@ import { useProduct, useUpdateURL } from 'context/product-context';
 import { Product } from 'lib/shopify/types';
 import { findVariantWithMinPrice, formatNumber } from 'lib/utils';
 import { useEffect, useMemo, useTransition } from 'react';
+import EmptyVariant from './empty-variants';
 import { Combination, VariantSelector } from './variant-selector';
 
 type VariantDetailsProps = {
@@ -88,13 +89,14 @@ const VariantDetails = ({ product }: VariantDetailsProps) => {
         ) : null}
       </div>
       <div className="mb-5 mt-3 flex flex-wrap items-center gap-3">
-        <VariantSelector
+        {/* <VariantSelector
           options={product.options}
           variants={product.variants.filter((v) => v.condition === 'Used')}
           minPrice={product.priceRange.minVariantPrice}
           condition="used"
           combinations={combinations}
-        />
+        /> */}
+        <EmptyVariant condition="used" />
         <VariantSelector
           options={product.options}
           variants={product.variants.filter((v) => v.condition === 'Remanufactured')}
