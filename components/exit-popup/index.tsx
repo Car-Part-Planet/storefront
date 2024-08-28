@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
-import { PhoneIcon } from '@heroicons/react/24/solid';
+import { PhoneIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { phoneNumberMap } from 'lib/constants';
 import { useState } from 'react';
 import { useExitIntent } from 'use-exit-intent';
@@ -45,7 +45,10 @@ const ExitPopup = () => {
             transition
             className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-sm sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
           >
-            <div>
+            <button className="absolute right-2 top-2 p-1" onClick={() => setOpen(false)}>
+              <XMarkIcon className="size-4" />
+            </button>
+            <div className="relative">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                 <PhoneIcon aria-hidden="true" className="h-6 w-6 text-primary" />
               </div>

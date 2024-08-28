@@ -46,8 +46,8 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={GeistSans.variable}>
-      <body className="bg-white text-black selection:bg-primary-muted">
-        <div className="flex h-screen flex-col overflow-hidden">
+      <body className="relative overflow-hidden bg-white text-black selection:bg-primary-muted">
+        <div className="flex h-screen flex-col">
           <Suspense>{children}</Suspense>
         </div>
         <ExitPopup />

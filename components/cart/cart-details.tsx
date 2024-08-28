@@ -73,7 +73,7 @@ const CartDetails = ({ cart, checkoutUrl }: { cart: Cart; checkoutUrl: string })
         </ul>
       </section>
       <form
-        className="mt-16 divide-y rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"
+        className="my-16 divide-y rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:my-0 lg:p-8"
         onSubmit={handleSubmit(onSubmit)}
       >
         <VehicleDetails control={control} />
