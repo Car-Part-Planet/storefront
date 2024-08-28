@@ -2,15 +2,16 @@
 
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { ChevronRightIcon, PhoneIcon } from '@heroicons/react/24/solid';
+import { ChevronRightIcon } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 import Price from 'components/price';
 import { useProduct, useUpdateURL } from 'context/product-context';
-import { CORE_VARIANT_ID_KEY, CORE_WAIVER, phoneNumberMap } from 'lib/constants';
+import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
 import { CoreChargeOption, Money, ProductOption, ProductVariant } from 'lib/shopify/types';
 import { findVariantWithMinPrice, formatNumber } from 'lib/utils';
 import startCase from 'lodash.startcase';
 import { Fragment, useState } from 'react';
+import EmptyVariant from './empty-variants';
 
 export type Combination = {
   id: string;
@@ -44,17 +45,9 @@ export function VariantSelector({
   }
 
   const numberOfVariants = variants.filter(({ availableForSale }) => availableForSale).length;
+
   if (numberOfVariants === 0) {
-    const phoneNumber = phoneNumberMap[process.env.NEXT_PUBLIC_STORE_PREFIX!];
-    return (
-      <a
-        className="flex flex-row items-center gap-1 rounded-lg bg-gray-100 px-4 py-3 text-sm text-blue-700 hover:bg-gray-200"
-        href={phoneNumber?.link}
-      >
-        <span>Call for {condition} options availibility</span>
-        <PhoneIcon className="ml-1 size-4" />
-      </a>
-    );
+    return <EmptyVariant condition={condition} />;
   }
 
   const currencyCode = variants[0]?.price.currencyCode || 'USD';

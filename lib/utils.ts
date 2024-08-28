@@ -163,7 +163,9 @@ export const getSelectedProductVariant = ({
 };
 
 export const findVariantWithMinPrice = (variants: ProductVariant[]) => {
-  const availableVariants = variants.filter((variant) => variant.availableForSale);
+  const availableVariants = variants.filter(
+    (variant) => variant.availableForSale && variant.condition !== 'Used'
+  );
 
   if (!availableVariants.length) return null;
 
