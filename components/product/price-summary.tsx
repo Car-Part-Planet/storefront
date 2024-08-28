@@ -1,11 +1,10 @@
 'use client';
 import { AddToCart } from 'components/cart/add-to-cart';
 import Price from 'components/price';
-import { Button } from 'components/ui';
 import { useProduct } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER, DELIVERY_OPTION_KEY } from 'lib/constants';
 import { Money, Product } from 'lib/shopify/types';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense } from 'react';
 import { getDeliveryOptions } from './delivery';
 import DuePrice from './due-price';
 import FixedBuySection from './fixed-buy-section';
@@ -39,36 +38,6 @@ const PriceSummary = ({ defaultPrice, storePrefix, product }: PriceSummaryProps)
   // Determine shipping label based on deliveryPrice
   const shippingLabel = deliveryPrice === 0 ? 'Free Shipping' : 'Flat Rate Shipping';
 
-  const [isVisible, setIsVisible] = useState(false);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      setIsVisible(!!entry?.isIntersecting);
-    });
-
-    const element = containerRef.current;
-
-    if (element) {
-      observer.observe(element);
-    }
-
-    return () => {
-      if (element) {
-        observer.unobserve(element);
-      }
-    };
-  }, []);
-
-  const handleClickOptions = () => {
-    containerRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center'
-    });
-  };
-
   return (
     <>
       <div className="mb-3 flex flex-col gap-2 pt-5">
@@ -99,30 +68,13 @@ const PriceSummary = ({ defaultPrice, storePrefix, product }: PriceSummaryProps)
           />
         </div>
         <hr />
-        <DuePrice
-          ref={containerRef}
-          direction="horizontal"
-          price={String(totalPrice)}
-          currencyCode={currencyCode}
-        />
+        <DuePrice direction="horizontal" price={String(totalPrice)} currencyCode={currencyCode} />
       </div>
       <FixedBuySection>
         <DuePrice price={String(totalPrice)} currencyCode={currencyCode} direction="vertical" />
-        {isVisible ? (
-          <Suspense fallback={null}>
-            <AddToCart availableForSale={product.availableForSale} productName={product.title} />
-          </Suspense>
-        ) : (
-          <Button
-            variant="solid"
-            color="primary"
-            className="px-3 py-2 font-normal tracking-wide"
-            onClick={handleClickOptions}
-            size="lg"
-          >
-            Select Options
-          </Button>
-        )}
+        <Suspense fallback={null}>
+          <AddToCart availableForSale={product.availableForSale} productName={product.title} />
+        </Suspense>
       </FixedBuySection>
     </>
   );
