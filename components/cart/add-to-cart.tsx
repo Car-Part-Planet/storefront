@@ -7,6 +7,8 @@ import { addItem } from 'components/cart/actions';
 import LoadingDots from 'components/loading-dots';
 import { useProduct } from 'context/product-context';
 import { CORE_VARIANT_ID_KEY, CORE_WAIVER } from 'lib/constants';
+import { createUrl } from 'lib/utils';
+import { useSearchParams } from 'next/navigation';
 import { useFormState, useFormStatus } from 'react-dom';
 
 function SubmitButton({
@@ -75,6 +77,8 @@ export function AddToCart({
 }) {
   const [message, formAction] = useFormState(addItem, null);
   const { variant, state } = useProduct();
+  const searchParams = useSearchParams();
+
   const selectedVariantId = variant?.id;
   const missingCoreVariantId = variant?.coreVariantId && !state[CORE_VARIANT_ID_KEY];
 
@@ -94,7 +98,10 @@ export function AddToCart({
     });
   }
 
-  const actionWithVariant = formAction.bind(null, addingVariants);
+  const actionWithVariant = formAction.bind(null, {
+    selectedVariantIds: addingVariants,
+    pathname: createUrl('/cart', searchParams)
+  });
 
   const sendAddToCartEvent = () => {
     if (!variant) return;

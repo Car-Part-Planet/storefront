@@ -15,7 +15,10 @@ import { redirect } from 'next/navigation';
 
 export async function addItem(
   prevState: any,
-  selectedVariantIds: Array<{ merchandiseId: string; quantity: number }>
+  params: {
+    selectedVariantIds: Array<{ merchandiseId: string; quantity: number }>;
+    pathname: string;
+  }
 ) {
   let cartId = cookies().get('cartId')?.value;
   let cart;
@@ -29,7 +32,7 @@ export async function addItem(
     cartId = cart.id;
     cookies().set('cartId', cartId);
   }
-
+  const { selectedVariantIds, pathname } = params;
   if (!selectedVariantIds.length) {
     return 'Missing product variant ID';
   }
@@ -41,7 +44,7 @@ export async function addItem(
   }
 
   revalidateTag(TAGS.cart);
-  redirect('/cart');
+  redirect(pathname);
 }
 
 export async function setMetafields(
