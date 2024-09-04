@@ -10,6 +10,7 @@ import Navbar from 'components/layout/navbar';
 import PhoneButton from 'components/phone-button';
 import ProductActions from 'components/product/actions';
 import AdditionalInformation from 'components/product/additional-information';
+import Descriptions from 'components/product/descriptions';
 import { Gallery } from 'components/product/gallery';
 import InstallationManual from 'components/product/installation-manual';
 import PartAttributes from 'components/product/part-attributes';
@@ -111,6 +112,7 @@ export default async function ProductPage({
                 </div>
 
                 <div className="hidden xl:block">
+                  <Descriptions />
                   <Suspense>
                     <VehicleCompatibility product={product} />
                   </Suspense>

@@ -86,6 +86,12 @@ const productFragment = /* GraphQL */ `
           installationManual: metafield(namespace: "custom", key: "installation_manual") {
             value
           }
+          includes: metafield(namespace: "custom", key: "includes") {
+            value
+          }
+          applicationSummary: metafield(namespace: "custom", key: "application_summary") {
+            value
+          }
         }
       }
     }
