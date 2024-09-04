@@ -2,6 +2,7 @@ import Prose from 'components/prose';
 import { Image, Product } from 'lib/shopify/types';
 import { Suspense } from 'react';
 import ProductActions from './actions';
+import Descriptions from './descriptions';
 import { Gallery } from './gallery';
 import PartAttributes from './part-attributes';
 import ProductDetails from './product-details';
@@ -31,11 +32,12 @@ export function ProductDescription({ product }: { product: Product }) {
             }))}
           />
         </Suspense>
-        <Suspense>
-          <div className="mt-6">
+        <div className="mt-6">
+          <Descriptions />
+          <Suspense>
             <VehicleCompatibility product={product} />
-          </div>
-        </Suspense>
+          </Suspense>
+        </div>
         <PartAttributes />
         <RemanufacturingUpdates />
       </div>
