@@ -25,7 +25,7 @@ const prepareFilePayload = ({
 const createStagedUploadFiles = async (params: UploadInput) => {
   try {
     const stagedTargets = await stageUploadFile(params);
-    if (!stagedTargets || stageUploadFile.length === 0) return null;
+    if (!stagedTargets || stagedTargets.length === 0) return null;
 
     return JSON.parse(JSON.stringify(stagedTargets[0]));
   } catch (error) {
