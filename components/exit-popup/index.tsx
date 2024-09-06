@@ -14,10 +14,6 @@ const ExitPopup = () => {
       delayInSecondsToTrigger: 8,
       triggerOnMouseLeave: true
     },
-    mobile: {
-      delayInSecondsToTrigger: 15,
-      triggerOnIdle: true
-    },
     cookie: {
       key: 'use-exit-intent'
     }
@@ -25,7 +21,8 @@ const ExitPopup = () => {
 
   registerHandler({
     id: 'exit-popup',
-    handler: () => setOpen(true)
+    handler: () => setOpen(true),
+    context: ['onDesktop']
   });
 
   const phoneNumber = process.env.NEXT_PUBLIC_STORE_PREFIX
