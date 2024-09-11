@@ -49,7 +49,7 @@ const cartFragment = /* GraphQL */ `
                 title
                 productType
               }
-              coreVariantId: metafield(key: "coreVariant", namespace: "custom") {
+              coreVariantId: metafield(key: "corevariant", namespace: "custom") {
                 value
               }
               addOnQuantity: metafield(namespace: "custom", key: "add_on_quantity") {
