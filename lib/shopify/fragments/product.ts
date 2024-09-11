@@ -53,7 +53,7 @@ const productFragment = /* GraphQL */ `
           waiverAvailable: metafield(namespace: "custom", key: "waiver_available") {
             value
           }
-          coreVariantId: metafield(namespace: "custom", key: "coreVariant") {
+          coreVariantId: metafield(namespace: "custom", key: "corevariant") {
             value
           }
           estimatedDelivery: metafield(namespace: "custom", key: "delivery") {
