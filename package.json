@@ -10,7 +10,7 @@
     "start": "next start",
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
-    "test": "pnpm prettier:check",
+    "test": "vitest",
     "lint": "next lint"
   },
   "dependencies": {
@@ -62,6 +62,7 @@
     "prettier-plugin-tailwindcss": "^0.6.5",
     "tailwindcss": "^3.4.6",
     "tailwindcss-content-visibility": "^0.2.0",
-    "typescript": "5.5.4"
+    "typescript": "5.5.4",
+    "vitest": "^2.1.0"
   }
 }

@@ -190,3 +190,21 @@ export function formatNumber(value: number) {
     compactDisplay: 'short'
   });
 }
+
+export function isValidShopifyCdnUrl(url: string) {
+  const shopifyCdnPattern =
+    /^https:\/\/cdn\.shopify\.com\/s\/files\/\d+\/\d+\/\d+\/\d+\/(?:files|products)\/[a-zA-Z0-9-_]+\.(jpg|jpeg|png|gif|webp)(\?v=\d+)?$/;
+
+  try {
+    const parsedUrl = new URL(url);
+    return shopifyCdnPattern.test(parsedUrl.href);
+  } catch (error) {
+    return false; // Invalid URL format
+  }
+}
+
+const maliciousPattern = /('|sleep|select|union|\*|script|drop|--)/i; // Simple example to exclude malicious patterns
+
+export function isSafeUrl(url: string) {
+  return !maliciousPattern.test(url);
+}
